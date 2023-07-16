@@ -1,19 +1,20 @@
 import java.util.Hashtable;
 import java.util.ArrayList;
+import java.util.Set;
 
 public class InvertedIndex {
     private Hashtable<String, ArrayList<Integer>> inverted_map;
-    private String[][] books;
+    private ArrayList<Set<String>> books;
 
-    public  InvertedIndex(String[][] books){
+    public  InvertedIndex(ArrayList<Set<String>> books){
         this.books = books;
         this.inverted_map = new Hashtable<String, ArrayList<Integer>>();
         CalculateIndexes();
     }
 
     private void CalculateIndexes(){
-        for (int i = 0; i < books.length; i++){
-            for (String word : books[i]){
+        for (int i = 0; i < books.stream().count(); i++){
+            for (String word : books.get(i)){
                 word = word.toLowerCase();
                 if(!inverted_map.containsKey(word)){
                     inverted_map.put(word, new ArrayList<Integer>());
