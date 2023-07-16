@@ -4,6 +4,6 @@ public class Main {
                 {"ali", "The", "Sun", "Moon"},
                 {"The", "Hossein", "Car"}};
         InvertedIndex ii = new InvertedIndex(books);
-        ii.PrintOutput();
+        FileReader.ReadBooks("G:\\CodeStar\\SE_Team03_Summer1402\\Phase_01\\Books");
     }
 }
