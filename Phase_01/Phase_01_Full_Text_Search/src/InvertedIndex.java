@@ -16,6 +16,9 @@ public class InvertedIndex {
         for (int i = 0; i < books.stream().count(); i++){
             for (String word : books.get(i)){
                 word = word.toLowerCase();
+                if(word.equals("")){
+                    continue;
+                }
                 if(!inverted_map.containsKey(word)){
                     inverted_map.put(word, new ArrayList<Integer>());
                 }
