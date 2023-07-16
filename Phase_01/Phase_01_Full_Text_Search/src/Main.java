@@ -1,5 +1,9 @@
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello Hossein!");
+        String[][] books = {{"Ali", "The", "Hossein", "Amir"},
+                {"ali", "The", "Sun", "Moon"},
+                {"The", "Hossein", "Car"}};
+        InvertedIndex ii = new InvertedIndex(books);
+        ii.PrintOutput();
     }
 }
