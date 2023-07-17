@@ -22,7 +22,7 @@ public class Main {
         List<String> documentsNames = FileReader.lastReadNames;
         ii = new InvertedIndex(documents);
         // input and search
-        System.out.println("if you want to stop the program enter 0");
+        System.out.println("if you want to stop the program enter empty");
         while (true) {
             inputCount = 0;
             containsStopWords = false;
@@ -55,7 +55,7 @@ public class Main {
         BufferedReader reader = new BufferedReader(
                 new InputStreamReader(System.in));
         String input = reader.readLine();
-        if(input.strip().equals("0")){
+        if(input.strip().equals("")){
             return false;
         }
         for (String word : input.split(" ")){
