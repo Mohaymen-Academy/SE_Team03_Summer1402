@@ -7,6 +7,8 @@ import java.util.Set;
 
 public class Main {
     private static ArrayList<Set<String>> documents;
+    private static int inputCount;
+    private static boolean containsStopWords;
     private static ArrayList<String> normalWords;
     private static ArrayList<String> plusWords;
     private static ArrayList<String> minusWords;
@@ -18,12 +20,21 @@ public class Main {
         documents = FileReader.ReadBooks("..\\Books");
         ii = new InvertedIndex(documents);
         // input and search
-        ReadInput();
-        Search();
-        System.out.println(searchResult);
+        System.out.println("if you want to stop the program enter 0");
+        while (true) {
+            if (!ReadInput()){
+                break;
+            }
+            if (containsStopWords && inputCount == 0) {
+                System.out.println("please be more specific!");
+            } else {
+                Search();
+                System.out.println(searchResult);
+            }
+        }
     }
 
-    public static void ReadInput() throws IOException {
+    public static Boolean ReadInput() throws IOException {
         normalWords = new ArrayList<String>();
         plusWords = new ArrayList<String>();
         minusWords = new ArrayList<String>();
@@ -31,7 +42,15 @@ public class Main {
         BufferedReader reader = new BufferedReader(
                 new InputStreamReader(System.in));
         String input = reader.readLine();
+        if(input.strip().equals("0")){
+            return false;
+        }
         for (String word : input.split(" ")){
+            if(Stop_Words.words.contains(word)){
+                containsStopWords = true;
+                continue;
+            }
+            inputCount++;
             if (word.charAt(0) == '+'){
                 plusWords.add(word.substring(1));
             }
@@ -42,6 +61,7 @@ public class Main {
                 normalWords.add(word);
             }
         }
+        return true;
     }
 
     public static void Search(){
