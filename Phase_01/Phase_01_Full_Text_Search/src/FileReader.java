@@ -24,9 +24,12 @@ public class FileReader {
                     Set<String> book = new HashSet<String>();
                     while(sc.hasNextLine()){
                         for(String word : sc.nextLine().strip().split(" ")) {
-                            if(Stop_Words.words.contains(word))
-                                continue;
-                            book.add(word.toLowerCase());
+                            for(String w : Normalize.Normalized(word)){
+                                if(Stop_Words.words.contains(w))
+                                    continue;
+                                book.add(w.toLowerCase());
+                            }
+
                         }
                     }
                     books.add(book);

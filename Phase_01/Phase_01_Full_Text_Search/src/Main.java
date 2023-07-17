@@ -46,19 +46,19 @@ public class Main {
             return false;
         }
         for (String word : input.split(" ")){
-            if(Stop_Words.words.contains(word)){
-                containsStopWords = true;
-                continue;
-            }
-            inputCount++;
-            if (word.charAt(0) == '+'){
-                plusWords.add(word.substring(1));
-            }
-            else if (word.charAt(0) == '-'){
-                minusWords.add(word.substring(1));
-            }
-            else{
-                normalWords.add(word);
+            for(String w : Normalize.Normalized(word)) {
+                if (Stop_Words.words.contains(w)) {
+                    containsStopWords = true;
+                    continue;
+                }
+                inputCount++;
+                if (w.charAt(0) == '+') {
+                    plusWords.add(w.substring(1));
+                } else if (w.charAt(0) == '-') {
+                    minusWords.add(w.substring(1));
+                } else {
+                    normalWords.add(w);
+                }
             }
         }
         return true;
