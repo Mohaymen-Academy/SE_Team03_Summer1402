@@ -15,7 +15,6 @@ public class InvertedIndex {
     private void CalculateIndexes(){
         for (int i = 0; i < books.stream().count(); i++){
             for (String word : books.get(i)){
-                word = word.toLowerCase();
                 if(word.equals("")){
                     continue;
                 }

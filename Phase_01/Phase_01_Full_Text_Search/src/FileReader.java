@@ -24,7 +24,7 @@ public class FileReader {
                     Set<String> book = new HashSet<String>();
                     while(sc.hasNextLine()){
                         for(String word : sc.nextLine().strip().split(" ")) {
-                            book.add(word);
+                            book.add(word.toLowerCase());
                         }
                     }
                     books.add(book);
