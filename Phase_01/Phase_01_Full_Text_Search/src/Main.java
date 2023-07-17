@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Main {
@@ -18,10 +19,13 @@ public class Main {
     public static void main(String[] args) throws IOException {
         // construct inverted index for documents
         documents = FileReader.ReadBooks("..\\Books");
+        List<String> documentsNames = FileReader.lastReadNames;
         ii = new InvertedIndex(documents);
         // input and search
         System.out.println("if you want to stop the program enter 0");
         while (true) {
+            inputCount = 0;
+            containsStopWords = false;
             if (!ReadInput()){
                 break;
             }
@@ -29,7 +33,16 @@ public class Main {
                 System.out.println("please be more specific!");
             } else {
                 Search();
-                System.out.println(searchResult);
+                if(searchResult.size() == 0){
+                    System.out.println("no result has been found!");
+                }
+                else {
+                    int j = 1;
+                    for (int i : searchResult){
+                        System.out.println((j) + ". " +documentsNames.get(i));
+                        j++;
+                    }
+                }
             }
         }
     }
@@ -54,9 +67,9 @@ public class Main {
                 }
                 inputCount++;
                 if (word.charAt(0) == '+') {
-                    plusWords.add(w.substring(1));
+                    plusWords.add(w);
                 } else if (word.charAt(0) == '-') {
-                    minusWords.add(w.substring(1));
+                    minusWords.add(w);
                 } else {
                     normalWords.add(w);
                 }
