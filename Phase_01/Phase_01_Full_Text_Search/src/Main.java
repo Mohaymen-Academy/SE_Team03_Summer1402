@@ -47,14 +47,15 @@ public class Main {
         }
         for (String word : input.split(" ")){
             for(String w : Normalize.Normalized(word)) {
+                w = w.toLowerCase();
                 if (Stop_Words.words.contains(w)) {
                     containsStopWords = true;
                     continue;
                 }
                 inputCount++;
-                if (w.charAt(0) == '+') {
+                if (word.charAt(0) == '+') {
                     plusWords.add(w.substring(1));
-                } else if (w.charAt(0) == '-') {
+                } else if (word.charAt(0) == '-') {
                     minusWords.add(w.substring(1));
                 } else {
                     normalWords.add(w);
