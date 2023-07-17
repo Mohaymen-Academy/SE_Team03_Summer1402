@@ -29,7 +29,6 @@ public class FileReader {
                     }
                     books.add(book);
                 }
-                System.out.println(books);
                 return books;
             }
 
