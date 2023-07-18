@@ -5,21 +5,65 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class FullTextSearch {
+
+    /**
+     * File reader.
+     */
     private final FileReader fileReader;
+
+    /**
+     * Inverted index.
+     */
     private final InvertedIndex invertedIndex;
+    /**
+     * Normalize content.
+     */
     private final Normalization normalization;
+
+    /**
+     * Count of accept words.
+     */
     private int inputCount;
+
+    /**
+     * Have stop words.
+     */
     private boolean containsStopWords;
+
+    /**
+     * Words that must be in the result.
+     */
     private ArrayList<String> normalWords;
+
+    /**
+     * words that at least on of them must be in the result.
+     */
     private ArrayList<String> plusWords;
+
+    /**
+     * Words that mustn't be in the result.
+     */
     private ArrayList<String> minusWords;
 
+    /**
+     * Constructor of full text search.
+     * @param documentsFolderPath   path of documents' folder.
+     * @param normalization   normalization method.
+     * @param tokenizer   tokenizer method.
+     * @throws FileNotFoundException   if path doesn't exist.
+     */
     public FullTextSearch(String documentsFolderPath, Normalization normalization, Tokenizer tokenizer) throws FileNotFoundException {
         this.normalization = normalization;
         fileReader = new FileReader(documentsFolderPath, normalization, "txt", tokenizer);
         invertedIndex = new InvertedIndex(fileReader.documents);
     }
 
+    /**
+     * Search query.
+     * @param searchInput   query.
+     * @return   name of documents that you request.
+     * @throws Exception   if query is null or query just have stop words.
+     */
     public String[] Search(String searchInput) throws Exception {
         if(searchInput.strip().equals("")){
             throw new Exception("Please enter some words!");
@@ -32,6 +76,11 @@ public class FullTextSearch {
         return GetResultDocumentsNames(resultSet);
     }
 
+    /**
+     * Gets name of documents.
+     * @param resultSet   documents' number.
+     * @return   name of documents.
+     */
     private String[] GetResultDocumentsNames(Set<Integer> resultSet){
         String[] resultDocumentsNames = new String[resultSet.size()];
         int j = 0;
@@ -42,6 +91,10 @@ public class FullTextSearch {
         return resultDocumentsNames;
     }
 
+    /**
+     * finds number of documents with calculate logic set.
+     * @return   number of documents.
+     */
     private Set<Integer> GetSearchResult(){
         Set<Integer> resultSet = new HashSet<>();
         for (int i = 0; i < fileReader.documents.size(); i++) {
@@ -67,6 +120,10 @@ public class FullTextSearch {
         return resultSet;
     }
 
+    /**
+     * Processes the search input and separate words.
+     * @param inputString   input string.
+     */
     private void ReadInput(String inputString) {
         normalWords = new ArrayList<>();
         plusWords = new ArrayList<>();
