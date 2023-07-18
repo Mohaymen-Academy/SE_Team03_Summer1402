@@ -3,7 +3,7 @@ import java.util.*;
 class Stop_Words{
 
     /**
-     * Removes this word from query and documents.
+     * The words that should be removed from query and documents.
      */
     public static Set<String> words = new HashSet<String>(Arrays.asList("", " ", "i", "me", "my", "myself", "we", "our",
             "ours", "ourselves", "you", "your", "yours", "yourself", "yourselves",

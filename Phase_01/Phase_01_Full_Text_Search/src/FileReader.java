@@ -39,23 +39,23 @@ public class FileReader {
      * @param file   file of document.
      * @return   string of extension.
      */
-    private String GetExtention(File file){
+    private String GetExtension(File file){
         String name = file.getName();
-        String[] splited = name.split("\\.");
-        return splited[splited.length - 1];
+        String[] split = name.split("\\.");
+        return split[split.length - 1];
     }
 
     /**
      * Finds all the documents in the folder (with the extension).
      * @param folderPath   path of documents' folder.
-     * @param extention   documents' file extension.
+     * @param extension   documents' file extension.
      */
-    private void GetFiles(String folderPath, String extention) {
+    private void GetFiles(String folderPath, String extension) {
         File folder = new File(folderPath);
         File[] folderFiles = folder.listFiles();
         for(File file : folderFiles) {
             String name = file.getName();
-            if(name.length() < extention.length() + 1 || !GetExtention(file).equals(extention)){
+            if(name.length() < extension.length() + 1 || !GetExtension(file).equals(extension)){
                 continue;
             }
             files.add(file);
@@ -68,7 +68,7 @@ public class FileReader {
     private void GetNames(){
         for(int i = 0; i < files.size(); i++){
             String name = files.get(i).getName();
-            documentsName[i] = name.substring(0, name.length() - GetExtention(files.get(i)).length());
+            documentsName[i] = name.substring(0, name.length() - GetExtension(files.get(i)).length());
         }
     }
 
@@ -97,4 +97,5 @@ public class FileReader {
             documents.add(document);
         }
     }
+
 }
