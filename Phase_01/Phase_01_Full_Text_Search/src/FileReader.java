@@ -88,9 +88,9 @@ public class FileReader {
             while(sc.hasNextLine()){
                 for(String word : sc.nextLine().strip().split(" ")) {
                     for(String w : normalization.Normalize(word)){
-                        if(Stop_Words.words.contains(w))
+                        if(Stop_Words.words.contains(w.toLowerCase()))
                             continue;
-                        document.add(w.toLowerCase());
+                        document.add(w);
                     }
                 }
             }

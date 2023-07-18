@@ -32,9 +32,6 @@ public class InvertedIndex {
     private void CalculateIndexes(){
         for (int i = 0; i < documents.size(); i++){
             for (String word : documents.get(i)){
-                if(word.equals("")){
-                    continue;
-                }
                 if(!indexMap.containsKey(word)){
                     indexMap.put(word, new HashSet<Integer>());
                 }
@@ -53,6 +50,14 @@ public class InvertedIndex {
             return indexMap.get(word);
         }
         return new HashSet<Integer>();
+    }
+
+    public void PrintOutput(){
+        for (String word : indexMap.keySet()) {
+            System.out.println("word : " + word
+                    + "\t\t books : "
+                    + indexMap.get(word));
+        }
     }
 
 }
