@@ -43,13 +43,26 @@ public class InvertedIndex {
     /**
      * Gets the documents that contains the word.
      * @param word   the search word.
-     * @return a set on indexes for documents.
+     * @return a set of indexes for documents.
      */
     public Set<Integer> GetDocumentSet(String word){
         if (indexMap.get(word) != null){
             return indexMap.get(word);
         }
         return new HashSet<Integer>();
+    }
+
+    /**
+     * Gets the list of documents that contains the words.
+     * @param words   the search words.
+     * @return a list of sets of indexes for documents.
+     */
+    public ArrayList<Set<Integer>> GetDocumentSets(ArrayList<String> words){
+        ArrayList<Set<Integer>> result = new ArrayList<Set<Integer>>();
+        for (String word : words) {
+            result.add(GetDocumentSet(word));
+        }
+        return result;
     }
 
     public void PrintOutput(){
