@@ -4,41 +4,55 @@ import java.util.ArrayList;
 import java.util.Set;
 
 public class InvertedIndex {
-    private Hashtable<String, Set<Integer>> inverted_map;
-    private ArrayList<Set<String>> books;
 
-    public  InvertedIndex(ArrayList<Set<String>> books){
-        this.books = books;
-        this.inverted_map = new Hashtable<String, Set<Integer>>();
+    /**
+     * The inverted index hashtable.
+     */
+    private Hashtable<String, Set<Integer>> indexMap;
+
+    /**
+     * The documents' content.
+     */
+    private ArrayList<Set<String>> documents;
+
+
+    /**
+     * Constructs an inverted index data structure and calculates the indexes.
+     * @param documents   the documents content.
+     */
+    public  InvertedIndex(ArrayList<Set<String>> documents){
+        this.documents = documents;
+        this.indexMap = new Hashtable<String, Set<Integer>>();
         CalculateIndexes();
     }
 
+    /**
+     * Calculates the indexes and stores in the hashtable.
+     */
     private void CalculateIndexes(){
-        for (int i = 0; i < books.size(); i++){
-            for (String word : books.get(i)){
+        for (int i = 0; i < documents.size(); i++){
+            for (String word : documents.get(i)){
                 if(word.equals("")){
                     continue;
                 }
-                if(!inverted_map.containsKey(word)){
-                    inverted_map.put(word, new HashSet<Integer>());
+                if(!indexMap.containsKey(word)){
+                    indexMap.put(word, new HashSet<Integer>());
                 }
-                inverted_map.get(word).add(i);
+                indexMap.get(word).add(i);
             }
         }
     }
 
+    /**
+     * Gets the documents that contains the word.
+     * @param word   the search word.
+     * @return a set on indexes for documents.
+     */
     public Set<Integer> GetDocumentSet(String word){
-        if (inverted_map.get(word) != null){
-            return inverted_map.get(word);
+        if (indexMap.get(word) != null){
+            return indexMap.get(word);
         }
         return new HashSet<Integer>();
     }
 
-    public void PrintOutput(){
-        for (String word : inverted_map.keySet()) {
-            System.out.println("word : " + word
-                    + "\t\t books : "
-                    + inverted_map.get(word));
-        }
-    }
 }
