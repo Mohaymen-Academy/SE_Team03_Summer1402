@@ -10,33 +10,23 @@ public class InvertedIndex {
      */
     private final Hashtable<String, Set<Integer>> indexMap;
 
-    /**
-     * The documents' content.
-     */
-    private final ArrayList<Set<String>> documents;
-
 
     /**
-     * Constructs an inverted index data structure and calculates the indexes.
-     * @param documents   the documents content.
+     * Constructs an inverted index data structure.
      */
-    public  InvertedIndex(ArrayList<Set<String>> documents){
-        this.documents = documents;
+    public  InvertedIndex(){
         this.indexMap = new Hashtable<>();
-        CalculateIndexes();
     }
 
     /**
      * Calculates the indexes and stores in the hashtable.
      */
-    private void CalculateIndexes(){
-        for (int i = 0; i < documents.size(); i++){
-            for (String word : documents.get(i)){
-                if(!indexMap.containsKey(word)){
-                    indexMap.put(word, new HashSet<>());
-                }
-                indexMap.get(word).add(i);
+    public void AddDada(int idx, ArrayList<String> words){
+        for (String word : words){
+            if(!indexMap.containsKey(word)){
+                indexMap.put(word, new HashSet<>());
             }
+            indexMap.get(word).add(idx);
         }
     }
 

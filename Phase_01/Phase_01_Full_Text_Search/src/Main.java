@@ -10,10 +10,14 @@ public class Main {
      * calling the Search method on your FullTextSearch instance.
      */
     public static void main(String[] args) throws IOException {
-        // construct the FullTextSearch instance with documents' path
-        FullTextSearch fts = new FullTextSearch("..\\Books",
-                new RemoveMarksAndUpperCaseNormalization(),
+        // construct the FullTextSearch instance.
+        FullTextSearch fts = new FullTextSearch(new RemoveMarksAndUpperCaseNormalization(),
                 new StringTokenizer(" "));
+
+        // read the documents in the folder and add them to search data.
+        for (Document d : FileReader.GetDocumentsInFolder("..\\Books", "txt")){
+            fts.AddDocument(d);
+        }
 
         System.out.println("if you want to stop the program enter empty");
         while (true) {

@@ -4,42 +4,11 @@ import java.util.*;
 public class FileReader {
 
     /**
-     * Document contents.
-     */
-    public ArrayList<Set<String>> documents;
-
-    /**
-     * Document name.
-     */
-    public String[] documentsName;
-
-    /**
-     * Document file.
-     */
-    private final List<File> files;
-
-    /**
-     * Constructs file reader.
-     * @param folderPath   path of documents' folder.
-     * @param normalization   normalization method.
-     * @param extension   documents' file extension.
-     * @throws FileNotFoundException   if path doesn't exist.
-     */
-    public FileReader(String folderPath, Normalization normalization, String extension, Tokenizer tokenizer) throws FileNotFoundException {
-        files = new ArrayList<>();
-        GetFiles(folderPath, extension);
-        documentsName = new String[files.size()];
-        GetNames();
-        documents = new ArrayList<>();
-        ReadDocuments(normalization, tokenizer);
-    }
-
-    /**
      * Gets extension of files.
      * @param file   file of document.
      * @return   string of extension.
      */
-    private String GetExtension(File file){
+    private static String GetExtension(File file){
         String name = file.getName();
         String[] split = name.split("\\.");
         return split[split.length - 1];
@@ -50,7 +19,8 @@ public class FileReader {
      * @param folderPath   path of documents' folder.
      * @param extension   documents' file extension.
      */
-    private void GetFiles(String folderPath, String extension) {
+    private static ArrayList<File> GetFiles(String folderPath, String extension) {
+        ArrayList<File> result = new ArrayList<>();
         File folder = new File(folderPath);
         File[] folderFiles = folder.listFiles();
         assert folderFiles != null;
@@ -59,42 +29,43 @@ public class FileReader {
             if(name.length() < extension.length() + 1 || !GetExtension(file).equals(extension)){
                 continue;
             }
-            files.add(file);
+            result.add(file);
         }
+        return result;
     }
 
     /**
-     * Stores name of document without extension.
+     * Gets file name and context and makes a document.
+     * @param file   the file to get the data from.
+     * @return returns the document.
+     * @throws FileNotFoundException   if the file path dose not exists.
      */
-    private void GetNames(){
-        for(int i = 0; i < files.size(); i++){
-            String name = files.get(i).getName();
-            documentsName[i] = name.substring(0, name.length() - GetExtension(files.get(i)).length());
+    private static Document GetDocument(File file) throws FileNotFoundException {
+        String name = file.getName();
+        Scanner sc = new Scanner(file);
+        StringBuilder sb = new StringBuilder();
+        while(sc.hasNextLine()){
+            sb.append(sc.nextLine().strip()).append(" ");
         }
+        return new Document(name.substring(0, name.length() - GetExtension(file).length()), sb.toString());
     }
 
     /**
-     * Reads documents' content and stores them.
-     * @param normalization   normalization method.
-     * @param tokenizer   tokenize method.
-     * @throws FileNotFoundException   if path doesn't exist.
+     * Reads all files in the folder with the specified extension and get the documents from them.
+     * @param folderPath   the folder path.
+     * @param extension   the file extension to read.
+     * @return a list of documents read from the folder.
      */
-    private void ReadDocuments(Normalization normalization, Tokenizer tokenizer) throws FileNotFoundException {
-        Scanner sc;
-        for(File file : files) {
-            sc = new Scanner(file);
-            Set<String> document = new HashSet<>();
-            while(sc.hasNextLine()){
-                for(String word : tokenizer.Tokenize(sc.nextLine().strip())) {
-                    for(String w : normalization.Normalize(word)){
-                        if(Stop_Words.words.contains(w.toLowerCase()))
-                            continue;
-                        document.add(w);
-                    }
-                }
+    public static ArrayList<Document> GetDocumentsInFolder(String folderPath, String extension){
+        ArrayList<Document> result = new ArrayList<>();
+        ArrayList<File> files = GetFiles(folderPath, extension);
+        for (File file : files){
+            try {
+                result.add(GetDocument(file));
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
             }
-            documents.add(document);
         }
+        return result;
     }
-
 }

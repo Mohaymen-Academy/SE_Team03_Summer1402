@@ -1,4 +1,3 @@
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -7,9 +6,9 @@ import java.util.Set;
 public class FullTextSearch {
 
     /**
-     * File reader.
+     * The name of documents.
      */
-    private final FileReader fileReader;
+    private final ArrayList<String> documentsName;
 
     /**
      * Inverted index.
@@ -19,6 +18,11 @@ public class FullTextSearch {
      * Normalize content.
      */
     private final Normalization normalization;
+
+    /**
+     * Tokenize method.
+     */
+    private final Tokenizer tokenizer;
 
     /**
      * Count of accept words.
@@ -47,15 +51,27 @@ public class FullTextSearch {
 
     /**
      * Constructor of full text search.
-     * @param documentsFolderPath   path of documents' folder.
      * @param normalization   normalization method.
      * @param tokenizer   tokenizer method.
-     * @throws FileNotFoundException   if path doesn't exist.
      */
-    public FullTextSearch(String documentsFolderPath, Normalization normalization, Tokenizer tokenizer) throws FileNotFoundException {
+    public FullTextSearch(Normalization normalization, Tokenizer tokenizer) {
         this.normalization = normalization;
-        fileReader = new FileReader(documentsFolderPath, normalization, "txt", tokenizer);
-        invertedIndex = new InvertedIndex(fileReader.documents);
+        this.tokenizer = tokenizer;
+        documentsName = new ArrayList<>();
+        invertedIndex = new InvertedIndex();
+    }
+
+    /**
+     * Add data to inverted index.
+     * @param document   the document to add.
+     */
+    public void AddDocument(Document document){
+        documentsName.add(document.name);
+        ArrayList<String> words = new ArrayList<>();
+        for (String word : tokenizer.Tokenize(document.context)){
+            words.addAll(Arrays.asList(normalization.Normalize(word)));
+        }
+        invertedIndex.AddDada(documentsName.size() - 1, words);
     }
 
     /**
@@ -85,7 +101,7 @@ public class FullTextSearch {
         String[] resultDocumentsNames = new String[resultSet.size()];
         int j = 0;
         for (int i : resultSet) {
-            resultDocumentsNames[j] = fileReader.documentsName[i];
+            resultDocumentsNames[j] = documentsName.get(i);
             j++;
         }
         return resultDocumentsNames;
@@ -97,7 +113,7 @@ public class FullTextSearch {
      */
     private Set<Integer> GetSearchResult(){
         Set<Integer> resultSet = new HashSet<>();
-        for (int i = 0; i < fileReader.documents.size(); i++) {
+        for (int i = 0; i < documentsName.size(); i++) {
             resultSet.add(i);
         }
 
