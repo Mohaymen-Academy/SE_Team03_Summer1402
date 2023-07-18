@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.Set;
 
 public class Main {
-    private static ArrayList<Set<String>> documents;
+    private static Normalization normalization;
+    private static FileReader fr;
     private static int inputCount;
     private static boolean containsStopWords;
     private static ArrayList<String> normalWords;
@@ -18,9 +19,9 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         // construct inverted index for documents
-        documents = FileReader.ReadBooks("..\\Books");
-        List<String> documentsNames = FileReader.lastReadNames;
-        ii = new InvertedIndex(documents);
+        normalization = new RemoveMarksNormalization();
+        FileReader fr = new FileReader("..\\Books", normalization, "txt");
+        ii = new InvertedIndex(fr.documents);
         // input and search
         System.out.println("if you want to stop the program enter empty");
         while (true) {
@@ -39,7 +40,7 @@ public class Main {
                 else {
                     int j = 1;
                     for (int i : searchResult){
-                        System.out.println((j) + ". " +documentsNames.get(i));
+                        System.out.println((j) + ". " + fr.documentsName[i]);
                         j++;
                     }
                 }
@@ -59,7 +60,7 @@ public class Main {
             return false;
         }
         for (String word : input.split(" ")){
-            for(String w : Normalize.Normalized(word)) {
+            for(String w : normalization.Normalize(word)) {
                 w = w.toLowerCase();
                 if (Stop_Words.words.contains(w)) {
                     containsStopWords = true;
@@ -99,7 +100,7 @@ public class Main {
             }
         }
         else{
-            for (int i = 0; i < documents.size(); i++){
+            for (int i = 0; i < fr.documents.size(); i++){
                 intersection.add(i);
             }
         }
