@@ -1,30 +1,33 @@
-import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
 public class FullTextSearch {
-    private FileReader fileReader;
-    private InvertedIndex invertedIndex;
-    private Normalization normalization;
+    private final FileReader fileReader;
+    private final InvertedIndex invertedIndex;
+    private final Normalization normalization;
     private int inputCount;
     private boolean containsStopWords;
     private ArrayList<String> normalWords;
     private ArrayList<String> plusWords;
     private ArrayList<String> minusWords;
 
-    public FullTextSearch(String documentsFolderPath, Normalization normalization) throws FileNotFoundException {
+    public FullTextSearch(String documentsFolderPath, Normalization normalization, Tokenizer tokenizer) throws FileNotFoundException {
         this.normalization = normalization;
-        fileReader = new FileReader(documentsFolderPath, normalization, "txt");
+        fileReader = new FileReader(documentsFolderPath, normalization, "txt", tokenizer);
         invertedIndex = new InvertedIndex(fileReader.documents);
     }
 
-    public String[] Search(String searchInput) {
+    public String[] Search(String searchInput) throws Exception {
+        if(searchInput.strip().equals("")){
+            throw new Exception("Please enter some words!");
+        }
         ReadInput(searchInput);
+        if(inputCount == 0 && containsStopWords){
+            throw new Exception("Please be more specific!");
+        }
         Set<Integer> resultSet = GetSearchResult();
         return GetResultDocumentsNames(resultSet);
     }
@@ -64,10 +67,10 @@ public class FullTextSearch {
         return resultSet;
     }
 
-    private Boolean ReadInput(String inputString) {
-        normalWords = new ArrayList<String>();
-        plusWords = new ArrayList<String>();
-        minusWords = new ArrayList<String>();
+    private void ReadInput(String inputString) {
+        normalWords = new ArrayList<>();
+        plusWords = new ArrayList<>();
+        minusWords = new ArrayList<>();
         for (String word : inputString.split(" ")) {
             for (String w : normalization.Normalize(word)) {
                 if (Stop_Words.words.contains(w.toLowerCase())) {
@@ -84,7 +87,6 @@ public class FullTextSearch {
                 }
             }
         }
-        return true;
     }
 
 }

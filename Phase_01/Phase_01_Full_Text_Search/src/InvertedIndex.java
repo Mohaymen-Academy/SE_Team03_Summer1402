@@ -8,12 +8,12 @@ public class InvertedIndex {
     /**
      * The inverted index hashtable.
      */
-    private Hashtable<String, Set<Integer>> indexMap;
+    private final Hashtable<String, Set<Integer>> indexMap;
 
     /**
      * The documents' content.
      */
-    private ArrayList<Set<String>> documents;
+    private final ArrayList<Set<String>> documents;
 
 
     /**
@@ -22,7 +22,7 @@ public class InvertedIndex {
      */
     public  InvertedIndex(ArrayList<Set<String>> documents){
         this.documents = documents;
-        this.indexMap = new Hashtable<String, Set<Integer>>();
+        this.indexMap = new Hashtable<>();
         CalculateIndexes();
     }
 
@@ -33,7 +33,7 @@ public class InvertedIndex {
         for (int i = 0; i < documents.size(); i++){
             for (String word : documents.get(i)){
                 if(!indexMap.containsKey(word)){
-                    indexMap.put(word, new HashSet<Integer>());
+                    indexMap.put(word, new HashSet<>());
                 }
                 indexMap.get(word).add(i);
             }
@@ -49,7 +49,7 @@ public class InvertedIndex {
         if (indexMap.get(word) != null){
             return indexMap.get(word);
         }
-        return new HashSet<Integer>();
+        return new HashSet<>();
     }
 
     /**
@@ -58,19 +58,11 @@ public class InvertedIndex {
      * @return a list of sets of indexes for documents.
      */
     public ArrayList<Set<Integer>> GetDocumentSets(ArrayList<String> words){
-        ArrayList<Set<Integer>> result = new ArrayList<Set<Integer>>();
+        ArrayList<Set<Integer>> result = new ArrayList<>();
         for (String word : words) {
             result.add(GetDocumentSet(word));
         }
         return result;
-    }
-
-    public void PrintOutput(){
-        for (String word : indexMap.keySet()) {
-            System.out.println("word : " + word
-                    + "\t\t books : "
-                    + indexMap.get(word));
-        }
     }
 
 }

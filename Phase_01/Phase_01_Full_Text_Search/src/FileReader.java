@@ -16,7 +16,7 @@ public class FileReader {
     /**
      * Document file.
      */
-    private List<File> files;
+    private final List<File> files;
 
     /**
      * Constructs file reader.
@@ -25,13 +25,13 @@ public class FileReader {
      * @param extension   documents' file extension.
      * @throws FileNotFoundException   if path doesn't exist.
      */
-    public FileReader(String folderPath, Normalization normalization, String extension) throws FileNotFoundException {
-        files = new ArrayList<File>();
+    public FileReader(String folderPath, Normalization normalization, String extension, Tokenizer tokenizer) throws FileNotFoundException {
+        files = new ArrayList<>();
         GetFiles(folderPath, extension);
         documentsName = new String[files.size()];
         GetNames();
-        documents = new ArrayList<Set<String>>();
-        ReadDocuments(folderPath, normalization, extension);
+        documents = new ArrayList<>();
+        ReadDocuments(normalization, tokenizer);
     }
 
     /**
@@ -53,6 +53,7 @@ public class FileReader {
     private void GetFiles(String folderPath, String extension) {
         File folder = new File(folderPath);
         File[] folderFiles = folder.listFiles();
+        assert folderFiles != null;
         for(File file : folderFiles) {
             String name = file.getName();
             if(name.length() < extension.length() + 1 || !GetExtension(file).equals(extension)){
@@ -74,19 +75,17 @@ public class FileReader {
 
     /**
      * Reads documents' content and stores them.
-     * @param path   path of documents' folder.
      * @param normalization   normalization method.
-     * @param extention   documents' file extension.
+     * @param tokenizer   tokenize method.
      * @throws FileNotFoundException   if path doesn't exist.
      */
-    private void ReadDocuments(String path, Normalization normalization, String extention) throws FileNotFoundException {
-        Scanner sc = null;
-        StringBuffer sd = new StringBuffer();
+    private void ReadDocuments(Normalization normalization, Tokenizer tokenizer) throws FileNotFoundException {
+        Scanner sc;
         for(File file : files) {
             sc = new Scanner(file);
-            Set<String> document = new HashSet<String>();
+            Set<String> document = new HashSet<>();
             while(sc.hasNextLine()){
-                for(String word : sc.nextLine().strip().split(" ")) {
+                for(String word : tokenizer.Tokenize(sc.nextLine().strip())) {
                     for(String w : normalization.Normalize(word)){
                         if(Stop_Words.words.contains(w.toLowerCase()))
                             continue;

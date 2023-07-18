@@ -23,8 +23,7 @@ class UpperCaseNormalization implements Normalization{
      * @return return an array on string containing only one upper case string.
      */
     public String[] Normalize(String inputString){
-        String[] result = {inputString.toUpperCase()};
-        return result;
+        return new String[]{inputString.toUpperCase()};
     }
 
 }
@@ -37,7 +36,7 @@ class RemoveMarksNormalization implements Normalization{
      * @return return array of normalized strings with only alphanumeric characters.
      */
     public String[] Normalize(String inputString){
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         int lastIdx = 0;
         for(int i = 0; i < inputString.length(); i++){
             if(Character.isDigit(inputString.charAt(i)) || Character.isLetter((inputString.charAt(i)))) {
@@ -49,7 +48,7 @@ class RemoveMarksNormalization implements Normalization{
             lastIdx = i + 1;
         }
         if(inputString.length() - lastIdx > 0){
-            list.add(inputString.substring(lastIdx, inputString.length()));
+            list.add(inputString.substring(lastIdx));
         }
         String[] result = new String[list.size()];
         list.toArray(result);

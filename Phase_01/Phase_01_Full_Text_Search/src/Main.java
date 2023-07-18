@@ -5,10 +5,10 @@ import java.io.InputStreamReader;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        // construct inverted index for documents
-        FullTextSearch fts = new FullTextSearch("..\\Books", new RemoveMarksAndUpperCaseNormalization());
+        FullTextSearch fts = new FullTextSearch("..\\Books",
+                new RemoveMarksAndUpperCaseNormalization(),
+                new StringTokenizer(" "));
 
-        // input and search
         System.out.println("if you want to stop the program enter empty");
         while (true) {
             System.out.println("Input your search phrase:");
@@ -20,7 +20,14 @@ public class Main {
                 break;
             }
 
-            String[] searchResult = fts.Search(input);
+            String[] searchResult;
+            try {
+                searchResult = fts.Search(input);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                continue;
+            }
+
             int i = 1;
             for (String s : searchResult){
                 System.out.println(i + ". " + s);
