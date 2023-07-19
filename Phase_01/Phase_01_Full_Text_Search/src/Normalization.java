@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Normalization interface.
  */
@@ -36,23 +33,8 @@ class RemoveMarksNormalization implements Normalization{
      * @return return array of normalized strings with only alphanumeric characters.
      */
     public String[] Normalize(String inputString){
-        List<String> list = new ArrayList<>();
-        int lastIdx = 0;
-        for(int i = 0; i < inputString.length(); i++){
-            if(Character.isDigit(inputString.charAt(i)) || Character.isLetter((inputString.charAt(i)))) {
-                continue;
-            }
-            if(i - lastIdx > 0){
-                list.add(inputString.substring(lastIdx, i));
-            }
-            lastIdx = i + 1;
-        }
-        if(inputString.length() - lastIdx > 0){
-            list.add(inputString.substring(lastIdx));
-        }
-        String[] result = new String[list.size()];
-        list.toArray(result);
-        return result;
+        String regex = "[^a-zA-Z0-9']+";
+        return inputString.split(regex);
     }
 
 }

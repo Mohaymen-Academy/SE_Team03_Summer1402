@@ -2,35 +2,33 @@
  * Tokenizer interface.
  */
 public interface Tokenizer {
-
+    String separator();
     String[] Tokenize(String inputString);
 
 }
 
 /**
  * Tokenizing by spiriting by an input string.
+ *
+ * @param separator Separator string.
  */
-class StringTokenizer implements Tokenizer{
-
-    /**
-     * Separator string.
-     */
-    private final String separator;
+record StringTokenizer(String separator) implements Tokenizer {
 
     /**
      * Constructs the tokenizer with custom separator.
-     * @param separator   the separator string.
+     *
+     * @param separator the separator string.
      */
-    public StringTokenizer(String separator){
-        this.separator = separator;
+    StringTokenizer {
     }
 
     /**
      * Splits the input by the separator string.
-     * @param inputString   input string to tokenize.
+     *
+     * @param inputString input string to tokenize.
      * @return return the tokenized strings.
      */
-    public String[] Tokenize(String inputString){
+    public String[] Tokenize(String inputString) {
         return inputString.split(separator);
     }
 

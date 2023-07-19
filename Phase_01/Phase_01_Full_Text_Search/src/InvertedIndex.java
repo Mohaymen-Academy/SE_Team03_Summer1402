@@ -47,7 +47,7 @@ public class InvertedIndex {
      * @param words   the search words.
      * @return a list of sets of indexes for documents.
      */
-    public ArrayList<Set<Integer>> GetDocumentSets(ArrayList<String> words){
+    public ArrayList<Set<Integer>> GetDocumentSets(Set<String> words){
         ArrayList<Set<Integer>> result = new ArrayList<>();
         for (String word : words) {
             result.add(GetDocumentSet(word));

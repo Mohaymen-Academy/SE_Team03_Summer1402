@@ -40,12 +40,12 @@ public class FileReader {
      * @return returns the document.
      * @throws FileNotFoundException   if the file path dose not exists.
      */
-    private static Document GetDocument(File file) throws FileNotFoundException {
+    private static Document GetDocument(File file, Tokenizer tokenizer) throws FileNotFoundException {
         String name = file.getName();
         Scanner sc = new Scanner(file);
         StringBuilder sb = new StringBuilder();
         while(sc.hasNextLine()){
-            sb.append(sc.nextLine().strip()).append(" ");
+            sb.append(sc.nextLine().strip()).append(tokenizer.separator());
         }
         return new Document(name.substring(0, name.length() - GetExtension(file).length()), sb.toString());
     }
@@ -54,18 +54,23 @@ public class FileReader {
      * Reads all files in the folder with the specified extension and get the documents from them.
      * @param folderPath   the folder path.
      * @param extension   the file extension to read.
+     * @param tokenizer   the tokenizer to get the separator.
      * @return a list of documents read from the folder.
      */
-    public static ArrayList<Document> GetDocumentsInFolder(String folderPath, String extension){
+    public static ArrayList<Document> GetDocumentsInFolder(String folderPath, String extension, Tokenizer tokenizer){
         ArrayList<Document> result = new ArrayList<>();
         ArrayList<File> files = GetFiles(folderPath, extension);
         for (File file : files){
             try {
-                result.add(GetDocument(file));
+                result.add(GetDocument(file, tokenizer));
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
             }
         }
         return result;
+    }
+
+    public static ArrayList<Document> GetDocumentsInFolder(String folderPath, String extension){
+        return GetDocumentsInFolder(folderPath, extension, new StringTokenizer(" "));
     }
 }

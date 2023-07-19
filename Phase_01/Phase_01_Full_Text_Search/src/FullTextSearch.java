@@ -25,29 +25,9 @@ public class FullTextSearch {
     private final Tokenizer tokenizer;
 
     /**
-     * Count of accept words.
+     * Search input categories.
      */
-    private int inputCount;
-
-    /**
-     * Have stop words.
-     */
-    private boolean containsStopWords;
-
-    /**
-     * Words that must be in the result.
-     */
-    private ArrayList<String> normalWords;
-
-    /**
-     * words that at least on of them must be in the result.
-     */
-    private ArrayList<String> plusWords;
-
-    /**
-     * Words that mustn't be in the result.
-     */
-    private ArrayList<String> minusWords;
+    private Categories categories;
 
     /**
      * Constructor of full text search.
@@ -84,10 +64,7 @@ public class FullTextSearch {
         if(searchInput.strip().equals("")){
             throw new Exception("Please enter some words!");
         }
-        ReadInput(searchInput);
-        if(inputCount == 0 && containsStopWords){
-            throw new Exception("Please be more specific!");
-        }
+        categories = new Categories(searchInput, normalization);
         Set<Integer> resultSet = GetSearchResult();
         return GetResultDocumentsNames(resultSet);
     }
@@ -117,49 +94,26 @@ public class FullTextSearch {
             resultSet.add(i);
         }
 
-        if (normalWords.size() > 0) {
-            ArrayList<Set<Integer>> normalWordsResultSets = invertedIndex.GetDocumentSets(normalWords);
+        if (categories.getIncludeWords().size() > 0) {
+            ArrayList<Set<Integer>> normalWordsResultSets =
+                    invertedIndex.GetDocumentSets(categories.getIncludeWords());
             normalWordsResultSets.add(resultSet);
             resultSet = SetLogic.Intersection(normalWordsResultSets);
         }
 
-        if (minusWords.size() > 0) {
-            Set<Integer> minusWordsResultSet = SetLogic.Union(invertedIndex.GetDocumentSets(minusWords));
+        if (categories.getExcludeWords().size() > 0) {
+            Set<Integer> minusWordsResultSet =
+                    SetLogic.Union(invertedIndex.GetDocumentSets(categories.getExcludeWords()));
             resultSet = SetLogic.Subtract(resultSet, minusWordsResultSet);
         }
 
-        if (plusWords.size() > 0) {
-            Set<Integer> plusWordsResultSet = SetLogic.Union(invertedIndex.GetDocumentSets(plusWords));
+        if (categories.getOptionalWords().size() > 0) {
+            Set<Integer> plusWordsResultSet =
+                    SetLogic.Union(invertedIndex.GetDocumentSets(categories.getOptionalWords()));
             resultSet = SetLogic.Intersection(new ArrayList<>(Arrays.asList(resultSet, plusWordsResultSet)));
         }
 
         return resultSet;
-    }
-
-    /**
-     * Processes the search input and separate words.
-     * @param inputString   input string.
-     */
-    private void ReadInput(String inputString) {
-        normalWords = new ArrayList<>();
-        plusWords = new ArrayList<>();
-        minusWords = new ArrayList<>();
-        for (String word : inputString.split(" ")) {
-            for (String w : normalization.Normalize(word)) {
-                if (Stop_Words.words.contains(w.toLowerCase())) {
-                    containsStopWords = true;
-                    continue;
-                }
-                inputCount++;
-                if (word.charAt(0) == '+') {
-                    plusWords.add(w);
-                } else if (word.charAt(0) == '-') {
-                    minusWords.add(w);
-                } else {
-                    normalWords.add(w);
-                }
-            }
-        }
     }
 
 }
