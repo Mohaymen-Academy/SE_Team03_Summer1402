@@ -15,7 +15,8 @@ public class Main {
                 new StringTokenizer(" "));
 
         // read the documents in the folder and add them to search data.
-        for (Document d : FileReader.GetDocumentsInFolder("..\\Books", "txt")){
+        FileReader fileReader = new TxtFileReader();
+        for (Document d : fileReader.getDocumentsInFolder("..\\Books")){
             fts.AddDocument(d);
         }
 
