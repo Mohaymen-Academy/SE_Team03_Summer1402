@@ -14,6 +14,7 @@ public class FullTextSearch {
      * Inverted index.
      */
     private final InvertedIndex invertedIndex;
+
     /**
      * Normalize content.
      */
@@ -28,6 +29,8 @@ public class FullTextSearch {
      * Search input categories.
      */
     private Categories categories;
+
+    private Set<Integer> resultSet;
 
     /**
      * Constructor of full text search.
@@ -46,9 +49,9 @@ public class FullTextSearch {
      * @param document   the document to add.
      */
     public void AddDocument(Document document){
-        documentsName.add(document.name);
+        documentsName.add(document.getName());
         ArrayList<String> words = new ArrayList<>();
-        for (String word : tokenizer.Tokenize(document.context)){
+        for (String word : tokenizer.Tokenize(document.getContext())){
             words.addAll(Arrays.asList(normalization.Normalize(word)));
         }
         invertedIndex.AddDada(documentsName.size() - 1, words);
@@ -89,31 +92,41 @@ public class FullTextSearch {
      * @return   number of documents.
      */
     private Set<Integer> GetSearchResult(){
-        Set<Integer> resultSet = new HashSet<>();
+        resultSet = new HashSet<>();
         for (int i = 0; i < documentsName.size(); i++) {
             resultSet.add(i);
         }
 
+        checkIncludeWords();
+        checkExcludeWords();
+        checkOptionalWords();
+
+        return resultSet;
+    }
+
+    private void checkIncludeWords() {
         if (categories.getIncludeWords().size() > 0) {
             ArrayList<Set<Integer>> normalWordsResultSets =
                     invertedIndex.GetDocumentSets(categories.getIncludeWords());
             normalWordsResultSets.add(resultSet);
             resultSet = SetLogic.Intersection(normalWordsResultSets);
         }
+    }
 
+    private void checkExcludeWords() {
         if (categories.getExcludeWords().size() > 0) {
             Set<Integer> minusWordsResultSet =
                     SetLogic.Union(invertedIndex.GetDocumentSets(categories.getExcludeWords()));
             resultSet = SetLogic.Subtract(resultSet, minusWordsResultSet);
         }
+    }
 
+    private void checkOptionalWords() {
         if (categories.getOptionalWords().size() > 0) {
             Set<Integer> plusWordsResultSet =
                     SetLogic.Union(invertedIndex.GetDocumentSets(categories.getOptionalWords()));
             resultSet = SetLogic.Intersection(new ArrayList<>(Arrays.asList(resultSet, plusWordsResultSet)));
         }
-
-        return resultSet;
     }
 
 }

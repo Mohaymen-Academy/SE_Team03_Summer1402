@@ -6,12 +6,12 @@ public class Document{
     /**
      * The name of the document.
      */
-    public String name;
+    private String name;
 
     /**
      * The context of the document.
      */
-    public String context;
+    private String context;
 
     /**
      * Construct the document instance
@@ -22,4 +22,8 @@ public class Document{
         this.name = name;
         this.context = context;
     }
+
+    public String getName() { return name; }
+
+    public String getContext() { return context; }
 }
