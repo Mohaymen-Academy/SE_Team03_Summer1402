@@ -1,6 +1,6 @@
 import java.util.*;
 
-class Stop_Words{
+class StopWords {
 
     /**
      * The words that should be removed from query and documents.
@@ -17,9 +17,6 @@ class Stop_Words{
             "same", "so", "than", "too", "very", "s", "t", "can", "will", "just", "don", "should", "now"));
 
     public static Boolean isStopWord(String word){
-        if(words.contains(word.toLowerCase())){
-            return true;
-        }
-        return false;
+        return words.contains(word.toLowerCase());
     }
 }

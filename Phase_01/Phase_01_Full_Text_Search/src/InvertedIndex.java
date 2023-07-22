@@ -1,21 +1,18 @@
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.ArrayList;
-import java.util.Set;
+import java.util.*;
 
 public class InvertedIndex {
 
     /**
      * The inverted index hashtable.
      */
-    private final Hashtable<String, Set<Integer>> indexMap;
+    private final HashMap<String, Set<Integer>> indexMap;
 
 
     /**
      * Constructs an inverted index data structure.
      */
     public  InvertedIndex(){
-        this.indexMap = new Hashtable<>();
+        this.indexMap = new HashMap<>();
     }
 
     /**

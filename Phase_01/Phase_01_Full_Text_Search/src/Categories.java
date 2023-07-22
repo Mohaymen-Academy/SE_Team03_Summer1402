@@ -47,7 +47,7 @@ public class Categories {
     private void processWords(String inputString, Normalization normalization){
         for (String word : inputString.split(" ")) {
             for (String w : normalization.Normalize(word)) {
-                if (Stop_Words.isStopWord(w)) {
+                if (StopWords.isStopWord(w)) {
                     containsStopWords = true;
                     continue;
                 }
