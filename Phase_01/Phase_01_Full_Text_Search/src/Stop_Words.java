@@ -1,12 +1,7 @@
 import java.util.*;
 
 class Stop_Words{
-
-    /**
-     * The words that should be removed from query and documents.
-     */
-    public static Set<String> words = new HashSet<>(Arrays.asList("", " ", "i", "me", "my", "myself", "we", "our",
-            "ours", "ourselves", "you", "your", "yours", "yourself", "yourselves",
+    public static Set<String> words = new HashSet<String>(Arrays.asList("", " ", "i", "me", "my", "myself", "we", "our", "ours", "ourselves", "you", "your", "yours", "yourself", "yourselves",
             "he", "him", "his", "himself", "she", "her", "hers", "herself", "it", "its", "itself", "they", "them", "their",
             "theirs", "themselves", "what", "which", "who", "whom", "this", "that", "these", "those", "am", "is", "are", "was",
             "were", "be", "been", "being", "have", "has", "had", "having", "do", "does", "did", "doing", "a", "an", "the",
