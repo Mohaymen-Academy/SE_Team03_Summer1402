@@ -51,7 +51,7 @@ public class FullTextSearch {
         for (String word : tokenizer.Tokenize(document.context)){
             words.addAll(Arrays.asList(normalization.Normalize(word)));
         }
-        invertedIndex.AddDada(documentsName.size() - 1, words);
+        invertedIndex.addData(documentsName.size() - 1, words);
     }
 
     /**
@@ -96,21 +96,21 @@ public class FullTextSearch {
 
         if (categories.getIncludeWords().size() > 0) {
             ArrayList<Set<Integer>> normalWordsResultSets =
-                    invertedIndex.GetDocumentSets(categories.getIncludeWords());
+                    invertedIndex.getDocumentSets(categories.getIncludeWords());
             normalWordsResultSets.add(resultSet);
-            resultSet = SetLogic.Intersection(normalWordsResultSets);
+            resultSet = SetLogic.intersect(normalWordsResultSets);
         }
 
         if (categories.getExcludeWords().size() > 0) {
             Set<Integer> minusWordsResultSet =
-                    SetLogic.Union(invertedIndex.GetDocumentSets(categories.getExcludeWords()));
-            resultSet = SetLogic.Subtract(resultSet, minusWordsResultSet);
+                    SetLogic.union(invertedIndex.getDocumentSets(categories.getExcludeWords()));
+            resultSet = SetLogic.subtract(resultSet, minusWordsResultSet);
         }
 
         if (categories.getOptionalWords().size() > 0) {
             Set<Integer> plusWordsResultSet =
-                    SetLogic.Union(invertedIndex.GetDocumentSets(categories.getOptionalWords()));
-            resultSet = SetLogic.Intersection(new ArrayList<>(Arrays.asList(resultSet, plusWordsResultSet)));
+                    SetLogic.union(invertedIndex.getDocumentSets(categories.getOptionalWords()));
+            resultSet = SetLogic.intersect(new ArrayList<>(Arrays.asList(resultSet, plusWordsResultSet)));
         }
 
         return resultSet;

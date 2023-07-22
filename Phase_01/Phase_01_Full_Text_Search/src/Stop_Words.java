@@ -5,7 +5,7 @@ class Stop_Words{
     /**
      * The words that should be removed from query and documents.
      */
-    public static Set<String> words = new HashSet<>(Arrays.asList("", " ", "i", "me", "my", "myself", "we", "our",
+    private static final Set<String> words = new HashSet<>(Arrays.asList("", " ", "i", "me", "my", "myself", "we", "our",
             "ours", "ourselves", "you", "your", "yours", "yourself", "yourselves",
             "he", "him", "his", "himself", "she", "her", "hers", "herself", "it", "its", "itself", "they", "them", "their",
             "theirs", "themselves", "what", "which", "who", "whom", "this", "that", "these", "those", "am", "is", "are", "was",
@@ -15,4 +15,11 @@ class Stop_Words{
             "on", "off", "over", "under", "again", "further", "then", "once", "here", "there", "when", "where", "why", "how",
             "all", "any", "both", "each", "few", "more", "most", "other", "some", "such", "no", "nor", "not", "only", "own",
             "same", "so", "than", "too", "very", "s", "t", "can", "will", "just", "don", "should", "now"));
+
+    public static Boolean isStopWord(String word){
+        if(words.contains(word.toLowerCase())){
+            return true;
+        }
+        return false;
+    }
 }

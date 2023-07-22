@@ -28,10 +28,6 @@ public class Categories {
      */
     private final Set<String> excludeWords;
 
-    public Set<String> getIncludeWords() { return includeWords; }
-    public Set<String> getOptionalWords() { return optionalWords; }
-    public Set<String> getExcludeWords() { return excludeWords; }
-
     /**
      * Processes the search input and separate words.
      * @param inputString   input string.
@@ -40,9 +36,18 @@ public class Categories {
         includeWords = new HashSet<>();
         optionalWords = new HashSet<>();
         excludeWords = new HashSet<>();
+
+        processWords(inputString, normalization);
+
+        if(inputCount == 0 && containsStopWords){
+            throw new Exception("Please be more specific!");
+        }
+    }
+
+    private void processWords(String inputString, Normalization normalization){
         for (String word : inputString.split(" ")) {
             for (String w : normalization.Normalize(word)) {
-                if (Stop_Words.words.contains(w.toLowerCase())) {
+                if (Stop_Words.isStopWord(w)) {
                     containsStopWords = true;
                     continue;
                 }
@@ -54,9 +59,12 @@ public class Categories {
                 }
             }
         }
-        if(inputCount == 0 && containsStopWords){
-            throw new Exception("Please be more specific!");
-        }
     }
+
+    public Set<String> getIncludeWords() { return includeWords; }
+
+    public Set<String> getOptionalWords() { return optionalWords; }
+
+    public Set<String> getExcludeWords() { return excludeWords; }
 
 }

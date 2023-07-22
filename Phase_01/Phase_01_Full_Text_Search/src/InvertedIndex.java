@@ -21,7 +21,7 @@ public class InvertedIndex {
     /**
      * Calculates the indexes and stores in the hashtable.
      */
-    public void AddDada(int idx, ArrayList<String> words){
+    public void addData(int idx, ArrayList<String> words){
         for (String word : words){
             if(!indexMap.containsKey(word)){
                 indexMap.put(word, new HashSet<>());
@@ -35,7 +35,7 @@ public class InvertedIndex {
      * @param word   the search word.
      * @return a set of indexes for documents.
      */
-    public Set<Integer> GetDocumentSet(String word){
+    public Set<Integer> getDocumentSet(String word){
         if (indexMap.get(word) != null){
             return indexMap.get(word);
         }
@@ -47,10 +47,10 @@ public class InvertedIndex {
      * @param words   the search words.
      * @return a list of sets of indexes for documents.
      */
-    public ArrayList<Set<Integer>> GetDocumentSets(Set<String> words){
+    public ArrayList<Set<Integer>> getDocumentSets(Set<String> words){
         ArrayList<Set<Integer>> result = new ArrayList<>();
         for (String word : words) {
-            result.add(GetDocumentSet(word));
+            result.add(getDocumentSet(word));
         }
         return result;
     }

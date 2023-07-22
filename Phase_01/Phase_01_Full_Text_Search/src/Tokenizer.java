@@ -15,14 +15,6 @@ public interface Tokenizer {
 record StringTokenizer(String separator) implements Tokenizer {
 
     /**
-     * Constructs the tokenizer with custom separator.
-     *
-     * @param separator the separator string.
-     */
-    StringTokenizer {
-    }
-
-    /**
      * Splits the input by the separator string.
      *
      * @param inputString input string to tokenize.
