@@ -48,11 +48,11 @@ public class FullTextSearch {
      * Add data to inverted index.
      * @param document   the document to add.
      */
-    public void AddDocument(Document document){
+    public void addDocument(Document document){
         documentsName.add(document.getName());
         ArrayList<String> words = new ArrayList<>();
-        for (String word : tokenizer.Tokenize(document.getContext())){
-            words.addAll(Arrays.asList(normalization.Normalize(word)));
+        for (String word : tokenizer.tokenize(document.getContext())){
+            words.addAll(Arrays.asList(normalization.normalize(word)));
         }
         invertedIndex.addData(documentsName.size() - 1, words);
     }
@@ -63,13 +63,13 @@ public class FullTextSearch {
      * @return   name of documents that you request.
      * @throws Exception   if query is null or query just have stop words.
      */
-    public String[] Search(String searchInput) throws Exception {
+    public String[] search(String searchInput) throws Exception {
         if(searchInput.strip().equals("")){
             throw new Exception("Please enter some words!");
         }
         categories = new Categories(searchInput, normalization);
-        Set<Integer> resultSet = GetSearchResult();
-        return GetResultDocumentsNames(resultSet);
+        Set<Integer> resultSet = getSearchResult();
+        return getResultDocumentsNames(resultSet);
     }
 
     /**
@@ -77,7 +77,7 @@ public class FullTextSearch {
      * @param resultSet   documents' number.
      * @return   name of documents.
      */
-    private String[] GetResultDocumentsNames(Set<Integer> resultSet){
+    private String[] getResultDocumentsNames(Set<Integer> resultSet){
         String[] resultDocumentsNames = new String[resultSet.size()];
         int j = 0;
         for (int i : resultSet) {
@@ -91,7 +91,7 @@ public class FullTextSearch {
      * finds number of documents with calculate logic set.
      * @return   number of documents.
      */
-    private Set<Integer> GetSearchResult(){
+    private Set<Integer> getSearchResult(){
         resultSet = new HashSet<>();
         for (int i = 0; i < documentsName.size(); i++) {
             resultSet.add(i);

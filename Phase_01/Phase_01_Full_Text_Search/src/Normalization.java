@@ -8,7 +8,7 @@ public interface Normalization {
      * @param inputString   string to normalize.
      * @return   array of string containing the normalized string from input string.
      */
-    String[] Normalize(String inputString);
+    String[] normalize(String inputString);
 
 }
 
@@ -19,7 +19,7 @@ class UpperCaseNormalization implements Normalization{
      * @param inputString   string to normalize.
      * @return return an array on string containing only one upper case string.
      */
-    public String[] Normalize(String inputString){
+    public String[] normalize(String inputString){
         return new String[]{inputString.toUpperCase()};
     }
 
@@ -32,7 +32,7 @@ class RemoveMarksNormalization implements Normalization{
      * @param inputString   string to normalize.
      * @return return array of normalized strings with only alphanumeric characters.
      */
-    public String[] Normalize(String inputString){
+    public String[] normalize(String inputString){
         String regex = "[^a-zA-Z0-9']+";
         return inputString.split(regex);
     }
@@ -47,11 +47,11 @@ class RemoveMarksAndUpperCaseNormalization implements Normalization{
      * @param inputString   string to normalize.
      * @return return array of normalized strings with only alphanumeric characters and uppercase letters.
      */
-    public String[] Normalize(String inputString){
+    public String[] normalize(String inputString){
         Normalization upperCaseNormalization = new UpperCaseNormalization();
         Normalization removeMarksNormalization = new RemoveMarksNormalization();
-        String upperCaseString = upperCaseNormalization.Normalize(inputString)[0];
-        return removeMarksNormalization.Normalize(upperCaseString);
+        String upperCaseString = upperCaseNormalization.normalize(inputString)[0];
+        return removeMarksNormalization.normalize(upperCaseString);
     }
 
 }

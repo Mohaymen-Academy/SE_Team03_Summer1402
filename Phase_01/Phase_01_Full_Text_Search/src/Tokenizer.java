@@ -3,7 +3,7 @@
  */
 public interface Tokenizer {
     String separator();
-    String[] Tokenize(String inputString);
+    String[] tokenize(String inputString);
 
 }
 
@@ -20,7 +20,7 @@ record StringTokenizer(String separator) implements Tokenizer {
      * @param inputString input string to tokenize.
      * @return return the tokenized strings.
      */
-    public String[] Tokenize(String inputString) {
+    public String[] tokenize(String inputString) {
         return inputString.split(separator);
     }
 

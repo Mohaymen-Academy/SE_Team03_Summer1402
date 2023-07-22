@@ -17,7 +17,7 @@ public class Main {
         // read the documents in the folder and add them to search data.
         FileReader fileReader = new TxtFileReader();
         for (Document d : fileReader.getDocumentsInFolder("..\\Books")){
-            fts.AddDocument(d);
+            fts.addDocument(d);
         }
 
         System.out.println("if you want to stop the program enter empty");
@@ -36,7 +36,7 @@ public class Main {
             // call the search method and check for exception
             String[] searchResult;
             try {
-                searchResult = fts.Search(input);
+                searchResult = fts.search(input);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
                 continue;
