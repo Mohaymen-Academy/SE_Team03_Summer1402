@@ -1,16 +1,14 @@
 package file_reader;
 
+import lombok.AllArgsConstructor;
 import word_manipulation.Tokenizer;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+@AllArgsConstructor
 public class TxtFileReader extends FileReader {
-
-    public TxtFileReader() {
-        extension = "txt";
-    }
 
     @Override
     public Document getDocument(File file, Tokenizer tokenizer) throws FileNotFoundException {
@@ -23,4 +21,5 @@ public class TxtFileReader extends FileReader {
         String documentName = name.substring(0, name.length() - getExtension(file).length());
         return new Document(documentName, sb.toString());
     }
+
 }

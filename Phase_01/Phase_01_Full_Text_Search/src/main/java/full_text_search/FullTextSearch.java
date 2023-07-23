@@ -56,9 +56,9 @@ public class FullTextSearch {
      * @param document   the document to add.
      */
     public void addDocument(Document document){
-        documentsName.add(document.getName());
+        documentsName.add(document.name());
         ArrayList<String> words = new ArrayList<>();
-        for (String word : tokenizer.tokenize(document.getContext())){
+        for (String word : tokenizer.tokenize(document.context())){
             words.addAll(Arrays.asList(normalization.normalize(word)));
         }
         invertedIndex.addData(documentsName.size() - 1, words);

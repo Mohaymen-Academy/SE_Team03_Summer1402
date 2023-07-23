@@ -3,9 +3,12 @@ package full_text_search;
 import word_manipulation.Normalization;
 import word_manipulation.StopWords;
 
+import lombok.Getter;
 import java.util.HashSet;
 import java.util.Set;
 
+
+@Getter
 public class Categories {
 
     /**
@@ -65,11 +68,5 @@ public class Categories {
             }
         }
     }
-
-    public Set<String> getIncludeWords() { return includeWords; }
-
-    public Set<String> getOptionalWords() { return optionalWords; }
-
-    public Set<String> getExcludeWords() { return excludeWords; }
 
 }
