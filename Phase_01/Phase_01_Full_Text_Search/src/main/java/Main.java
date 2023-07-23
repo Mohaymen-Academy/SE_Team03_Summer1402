@@ -1,3 +1,10 @@
+import file_reader.Document;
+import file_reader.FileReader;
+import file_reader.TxtFileReader;
+import full_text_search.FullTextSearch;
+import word_manipulation.RemoveMarksAndUpperCaseNormalization;
+import word_manipulation.StringTokenizer;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -5,12 +12,12 @@ import java.io.InputStreamReader;
 public class Main {
     /**
      * To use the full text search library, first you should construct
-     * an instance of FullTextSearch class and give the path to your documents'
+     * an instance of fullTextSearch.FullTextSearch class and give the path to your documents'
      * folder and normalization method and tokenizer. then you can search by
-     * calling the Search method on your FullTextSearch instance.
+     * calling the Search method on your fullTextSearch.FullTextSearch instance.
      */
     public static void main(String[] args) throws IOException {
-        // construct the FullTextSearch instance.
+        // construct the fullTextSearch.FullTextSearch instance.
         FullTextSearch fts = new FullTextSearch(new RemoveMarksAndUpperCaseNormalization(),
                 new StringTokenizer(" "));
 

@@ -1,3 +1,5 @@
+package full_text_search;
+
 import java.util.*;
 
 public class InvertedIndex {

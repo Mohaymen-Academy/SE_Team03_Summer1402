@@ -1,18 +1,11 @@
-/**
- * Tokenizer interface.
- */
-public interface Tokenizer {
-    String separator();
-    String[] tokenize(String inputString);
-
-}
+package word_manipulation;
 
 /**
  * Tokenizing by spiriting by an input string.
  *
  * @param separator Separator string.
  */
-record StringTokenizer(String separator) implements Tokenizer {
+public record StringTokenizer(String separator) implements Tokenizer {
 
     /**
      * Splits the input by the separator string.

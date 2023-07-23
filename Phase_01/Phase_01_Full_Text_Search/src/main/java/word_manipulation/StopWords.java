@@ -1,6 +1,8 @@
+package word_manipulation;
+
 import java.util.*;
 
-class StopWords {
+public class StopWords {
 
     /**
      * The words that should be removed from query and documents.

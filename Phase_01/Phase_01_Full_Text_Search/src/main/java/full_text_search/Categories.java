@@ -1,3 +1,8 @@
+package full_text_search;
+
+import word_manipulation.Normalization;
+import word_manipulation.StopWords;
+
 import java.util.HashSet;
 import java.util.Set;
 

@@ -1,5 +1,7 @@
+package file_reader;
+
 /**
- * Document class to store data set for documents.
+ * fileReader.Document class to store data set for documents.
  */
 public class Document{
 
