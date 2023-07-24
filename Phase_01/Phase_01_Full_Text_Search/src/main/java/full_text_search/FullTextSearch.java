@@ -2,7 +2,7 @@ package full_text_search;
 
 import file_reader.Document;
 import logics.SetLogic;
-import word_manipulation.normalization.Normalization;
+import word_manipulation.normalization.Normalizer;
 import word_manipulation.tokenization.Tokenizer;
 
 import java.util.*;
@@ -24,7 +24,7 @@ public class FullTextSearch {
     /**
      * Normalize content.
      */
-    private final Normalization normalization;
+    private final Normalizer normalizer;
 
     /**
      * Tokenize method.
@@ -34,7 +34,7 @@ public class FullTextSearch {
     /**
      * Search input categories.
      */
-    private Categories categories;
+    private InputGroups inputGroups;
 
     /**
      * result of set.
@@ -43,11 +43,11 @@ public class FullTextSearch {
 
     /**
      * Constructs of full text search.
-     * @param normalization   normalization type.
-     * @param tokenizer   tokenizer type.
+     * @param normalizer   normalizer.
+     * @param tokenizer   tokenizer.
      */
-    public FullTextSearch(Normalization normalization, Tokenizer tokenizer) {
-        this.normalization = normalization;
+    public FullTextSearch(Normalizer normalizer, Tokenizer tokenizer) {
+        this.normalizer = normalizer;
         this.tokenizer = tokenizer;
         documentsName = new ArrayList<>();
         invertedIndex = new InvertedIndex();
@@ -61,21 +61,21 @@ public class FullTextSearch {
         int idx = documentsName.size();
         documentsName.add(document.name());
         Stream.of(tokenizer.tokenize(document.context()))
-                .map(normalization::normalize)
+                .map(normalizer::normalize)
                 .forEach(w -> invertedIndex.addData(idx, w));
     }
 
     /**
      * Search query.
      * @param searchInput   query.
-     * @return   name of documents that you request.
+     * @return name of documents that you request.
      * @throws Exception   if query is null or query just have stop words.
      */
     public List<String> search(String searchInput) throws Exception {
         if(searchInput.strip().equals("")){
             throw new Exception("Please enter some words!");
         }
-        categories = new Categories(searchInput, normalization);
+        inputGroups = new InputGroups(searchInput, normalizer);
         Set<Integer> resultSet = getSearchResult();
         return resultSet.stream()
                 .map(documentsName::get)
@@ -84,7 +84,7 @@ public class FullTextSearch {
 
     /**
      * finds number of documents with calculate logic set.
-     * @return   number of documents.
+     * @return number of documents.
      */
     private Set<Integer> getSearchResult(){
         resultSet = new HashSet<>();
@@ -103,9 +103,9 @@ public class FullTextSearch {
      * Removes any document in the result set that don't have the words that must be included.
      */
     private void checkIncludeWords() {
-        if (categories.getIncludeWords().size() > 0) {
+        if (inputGroups.getIncludeWords().size() > 0) {
             ArrayList<Set<Integer>> normalWordsResultSets =
-                    invertedIndex.getDocumentSets(categories.getIncludeWords());
+                    invertedIndex.getDocumentSets(inputGroups.getIncludeWords());
             normalWordsResultSets.add(resultSet);
             resultSet = SetLogic.intersect(normalWordsResultSets);
         }
@@ -115,9 +115,9 @@ public class FullTextSearch {
      * Removes documents from result set if they have any words that must be excluded.
      */
     private void checkExcludeWords() {
-        if (categories.getExcludeWords().size() > 0) {
+        if (inputGroups.getExcludeWords().size() > 0) {
             Set<Integer> minusWordsResultSet =
-                    SetLogic.union(invertedIndex.getDocumentSets(categories.getExcludeWords()));
+                    SetLogic.union(invertedIndex.getDocumentSets(inputGroups.getExcludeWords()));
             resultSet = SetLogic.subtract(resultSet, minusWordsResultSet);
         }
     }
@@ -126,9 +126,9 @@ public class FullTextSearch {
      * Removes document from result set that don't either of the optional words.
      */
     private void checkOptionalWords() {
-        if (categories.getOptionalWords().size() > 0) {
+        if (inputGroups.getOptionalWords().size() > 0) {
             Set<Integer> plusWordsResultSet =
-                    SetLogic.union(invertedIndex.getDocumentSets(categories.getOptionalWords()));
+                    SetLogic.union(invertedIndex.getDocumentSets(inputGroups.getOptionalWords()));
             resultSet = SetLogic.intersect(new ArrayList<>(Arrays.asList(resultSet, plusWordsResultSet)));
         }
     }

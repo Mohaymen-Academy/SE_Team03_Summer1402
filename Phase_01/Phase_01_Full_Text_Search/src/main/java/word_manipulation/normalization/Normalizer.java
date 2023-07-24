@@ -3,7 +3,7 @@ package word_manipulation.normalization;
 /**
  * wordManipulation.Normalization interface.
  */
-public interface Normalization {
+public interface Normalizer {
 
     /**
      * Normalizes the input string.

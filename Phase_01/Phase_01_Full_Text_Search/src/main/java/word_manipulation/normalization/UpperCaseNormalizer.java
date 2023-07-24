@@ -1,6 +1,6 @@
 package word_manipulation.normalization;
 
-public class UpperCaseNormalization implements Normalization {
+public class UpperCaseNormalizer implements Normalizer {
 
     /**
      * Makes every letter in string uppercase.

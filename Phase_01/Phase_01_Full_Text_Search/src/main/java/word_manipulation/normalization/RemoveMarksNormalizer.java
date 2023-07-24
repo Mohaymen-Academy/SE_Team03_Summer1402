@@ -1,6 +1,6 @@
 package word_manipulation.normalization;
 
-public class RemoveMarksNormalization implements Normalization {
+public class RemoveMarksNormalizer implements Normalizer {
 
     /**
      * Removes every character except letters and numbers.

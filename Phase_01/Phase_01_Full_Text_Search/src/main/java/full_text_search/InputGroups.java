@@ -1,6 +1,6 @@
 package full_text_search;
 
-import word_manipulation.normalization.Normalization;
+import word_manipulation.normalization.Normalizer;
 import word_manipulation.StopWords;
 
 import lombok.AccessLevel;
@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Getter
-public class Categories {
+public class InputGroups {
 
     /**
      * Count of accept words.
@@ -41,17 +41,17 @@ public class Categories {
     //Processes the search input and separate words.
 
     /**
-     * Constructs that set words group and check specific of words.
+     * Constructs the input groups and put each word in corresponding group.
      * @param inputString   input string.
-     * @param normalization   normalization type.
+     * @param normalizer   normalizer.
      * @throws Exception
      */
-    Categories(String inputString, Normalization normalization) throws Exception {
+    InputGroups(String inputString, Normalizer normalizer) throws Exception {
         includeWords = new HashSet<>();
         optionalWords = new HashSet<>();
         excludeWords = new HashSet<>();
 
-        processWords(inputString, normalization);
+        processWords(inputString, normalizer);
 
         if(inputCount == 0 && containsStopWords){
             throw new Exception("Please be more specific!");
@@ -61,11 +61,11 @@ public class Categories {
     /**
      * Distinguishes kind of word and checks stop words.
      * @param inputString   input string.
-     * @param normalization   normalization type.
+     * @param normalizer   normalizer.
      */
-    private void processWords(String inputString, Normalization normalization){
+    private void processWords(String inputString, Normalizer normalizer){
         for (String word : inputString.split(" ")) {
-            String w = normalization.normalize(word);
+            String w = normalizer.normalize(word);
             if (StopWords.isStopWord(w)) {
                 containsStopWords = true;
                 continue;

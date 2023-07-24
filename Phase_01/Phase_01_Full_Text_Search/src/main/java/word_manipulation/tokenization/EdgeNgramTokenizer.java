@@ -3,6 +3,8 @@ package word_manipulation.tokenization;
 import lombok.AllArgsConstructor;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 @AllArgsConstructor
 public class EdgeNgramTokenizer implements Tokenizer {
@@ -16,11 +18,6 @@ public class EdgeNgramTokenizer implements Tokenizer {
      * Limit for length of the largest substring.
      */
     private final int maxGram;
-
-    /**
-     * Length difference between consecutive substring.
-     */
-    private final int step;
 
     /**
      * This tokenizer split with any character other than letters and digit, so whitespace can be used as separator.
@@ -39,17 +36,20 @@ public class EdgeNgramTokenizer implements Tokenizer {
     @Override
     public String[] tokenize(String inputString) {
         String regex = "[^a-zA-Z0-9']+";
-        ArrayList<String> words = new ArrayList<>(Arrays.asList(inputString.split(regex)));
-        for (int i = 0; i < words.size(); i++) {
-            for (int j = minGram; j < maxGram; j+= step) {
-                if(j < words.get(i).length()){
-                    words.add(words.get(i).substring(0, j));
+        String[] splitStrings = inputString.split(regex);
+        Set<String> words = new HashSet<>(Arrays.asList(splitStrings));
+        for (String word : splitStrings) {
+            for (int i = minGram; i < maxGram + 1; i++) {
+                for (int j = 0; j < word.length() - i + 1; j++) {
+                    words.add(word.substring(j, j + i));
                 }
             }
         }
         String[] result = new String[words.size()];
-        for (int i = 0; i < words.size(); i++) {
-            result[i] = words.get(i);
+        int j = 0;
+        for (String word : words) {
+            result[j] = word;
+            j++;
         }
         return result;
     }
