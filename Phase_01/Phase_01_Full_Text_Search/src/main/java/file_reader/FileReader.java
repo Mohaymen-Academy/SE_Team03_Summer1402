@@ -6,6 +6,9 @@ import java.util.stream.Stream;
 
 public class FileReader {
 
+    /**
+     * Extension of file.
+     */
     protected String extension;
 
     /**
@@ -20,7 +23,7 @@ public class FileReader {
     }
 
     /**
-     * Finds all the documents in the folder (with the extension).
+     * Finds all documents in the folder (with the extension).
      * @param folderPath   path of documents' folder.
      */
     private Stream<File> getFiles(String folderPath) {
@@ -28,6 +31,11 @@ public class FileReader {
         return Stream.of(folder.listFiles()).filter(this::checkFileExtension);
     }
 
+    /**
+     * Checks extension of file.
+     * @param file   file of document.
+     * @return   if extension was right return True else return False.
+     */
     private Boolean checkFileExtension(File file){
         String name = file.getName();
         Boolean isProperLength = name.length() >= extension.length() + 1;
@@ -63,6 +71,11 @@ public class FileReader {
         return result;
     }
 
+    /**
+     * Reads all files in the folder with ' ' extension and get the documents from them.
+     * @param folderPath   the folder path.
+     * @return   a list of documents read from the folder.
+     */
     public ArrayList<Document> getDocumentsInFolder(String folderPath){
         return getDocumentsInFolder(folderPath, " ");
     }

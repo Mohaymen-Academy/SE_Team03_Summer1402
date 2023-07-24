@@ -10,10 +10,20 @@ import java.util.stream.Stream;
 
 public class TxtFileReader extends FileReader {
 
+    /**
+     * Constructor sets txt for files.
+     */
     public TxtFileReader() {
         extension = "txt";
     }
 
+    /**
+     * Reads context from txt files.
+     * @param file   the txt file to get the data from.
+     * @param separator  the separator string to add to the end of the line before joining.
+     * @return document from text file.
+     * @throws IOException
+     */
     @Override
     public Document getDocument(File file, String separator) throws IOException {
         Stream<String> wordStream;
