@@ -2,7 +2,6 @@ package word_manipulation;
 
 /**
  * Tokenizing by spiriting by an input string.
- *
  * @param separator Separator string.
  */
 public record StringTokenizer(String separator) implements Tokenizer {

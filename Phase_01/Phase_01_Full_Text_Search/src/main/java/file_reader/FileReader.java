@@ -1,8 +1,5 @@
 package file_reader;
 
-import word_manipulation.StringTokenizer;
-import word_manipulation.Tokenizer;
-
 import java.io.*;
 import java.util.*;
 
@@ -47,25 +44,25 @@ public class FileReader {
      * Gets file name and context and makes a document.
      * @param file   the file to get the data from.
      * @return returns the document.
-     * @throws FileNotFoundException   if the file path dose not exists.
+     * @throws IOException   if the file context is not standard encoding.
      */
-    public Document getDocument(File file, Tokenizer tokenizer) throws FileNotFoundException {
+    public Document getDocument(File file, String separator) throws IOException {
         return null;
     }
 
     /**
      * Reads all files in the folder with the specified extension and get the documents from them.
      * @param folderPath   the folder path.
-     * @param tokenizer   the tokenizer to get the separator.
+     * @param separator   the separator string to add to the end of the line before joining.
      * @return a list of documents read from the folder.
      */
-    public ArrayList<Document> getDocumentsInFolder(String folderPath, Tokenizer tokenizer){
+    public ArrayList<Document> getDocumentsInFolder(String folderPath, String separator){
         ArrayList<Document> result = new ArrayList<>();
         ArrayList<File> files = getFiles(folderPath);
         for (File file : files){
             try {
-                result.add(getDocument(file, tokenizer));
-            } catch (FileNotFoundException e) {
+                result.add(getDocument(file, separator));
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -73,7 +70,7 @@ public class FileReader {
     }
 
     public ArrayList<Document> getDocumentsInFolder(String folderPath){
-        return getDocumentsInFolder(folderPath, new StringTokenizer(" "));
+        return getDocumentsInFolder(folderPath, " ");
     }
 }
 
