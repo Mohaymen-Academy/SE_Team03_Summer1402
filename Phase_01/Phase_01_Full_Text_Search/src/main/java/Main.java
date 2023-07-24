@@ -2,7 +2,7 @@ import file_reader.Document;
 import file_reader.FileReader;
 import file_reader.TxtFileReader;
 import full_text_search.FullTextSearch;
-import word_manipulation.RemoveMarksAndUpperCaseNormalization;
+import word_manipulation.normalization.RemoveMarksAndUpperCaseNormalization;
 import word_manipulation.StringTokenizer;
 
 import java.io.BufferedReader;

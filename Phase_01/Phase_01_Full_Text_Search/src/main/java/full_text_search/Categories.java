@@ -1,22 +1,26 @@
 package full_text_search;
 
-import word_manipulation.Normalization;
+import lombok.AccessLevel;
+import lombok.Getter;
+import word_manipulation.normalization.Normalization;
 import word_manipulation.StopWords;
 
 import java.util.HashSet;
 import java.util.Set;
 
-
+@Getter
 public class Categories {
 
     /**
      * Count of accept words.
      */
+    @Getter(AccessLevel.NONE)
     private int inputCount;
 
     /**
      * Have stop words.
      */
+    @Getter(AccessLevel.NONE)
     private boolean containsStopWords;
 
     /**
@@ -66,9 +70,5 @@ public class Categories {
             }
         }
     }
-
-    public Set<String> getIncludeWords() { return includeWords; }
-    public Set<String> getExcludeWords() { return excludeWords; }
-    public Set<String> getOptionalWords() { return optionalWords; }
 
 }

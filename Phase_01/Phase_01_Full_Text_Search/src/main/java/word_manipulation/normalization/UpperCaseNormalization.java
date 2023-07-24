@@ -1,4 +1,4 @@
-package word_manipulation;
+package word_manipulation.normalization;
 
 public class UpperCaseNormalization implements Normalization {
 

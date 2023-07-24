@@ -1,4 +1,4 @@
-package word_manipulation;
+package word_manipulation.normalization;
 
 /**
  * wordManipulation.Normalization interface.

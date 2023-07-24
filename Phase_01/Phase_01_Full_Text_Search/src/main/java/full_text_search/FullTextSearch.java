@@ -2,7 +2,7 @@ package full_text_search;
 
 import file_reader.Document;
 import logics.SetLogic;
-import word_manipulation.Normalization;
+import word_manipulation.normalization.Normalization;
 import word_manipulation.Tokenizer;
 
 import java.util.ArrayList;
