@@ -73,8 +73,6 @@ public class FullTextSearch {
             throw new Exception("Please enter some words!");
         }
         categories = new Categories(searchInput, normalization);
-        System.out.println("categories");
-        System.out.println(categories);
         Set<Integer> resultSet = getSearchResult();
         return resultSet.stream()
                 .map(documentsName::get)

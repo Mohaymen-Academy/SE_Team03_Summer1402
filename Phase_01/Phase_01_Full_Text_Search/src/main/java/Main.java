@@ -3,7 +3,7 @@ import file_reader.FileReader;
 import file_reader.TxtFileReader;
 import full_text_search.FullTextSearch;
 import word_manipulation.normalization.RemoveMarksAndUpperCaseNormalization;
-import word_manipulation.tokenization.MarksTokenizer;
+import word_manipulation.tokenization.EdgeNgramTokenizer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,7 +20,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         // construct the fullTextSearch.FullTextSearch instance.
         FullTextSearch fts = new FullTextSearch(new RemoveMarksAndUpperCaseNormalization(),
-                new MarksTokenizer());
+                new EdgeNgramTokenizer(1, 6, 1));
 
         // read the documents in the folder and add them to search data.
         FileReader fileReader = new TxtFileReader();

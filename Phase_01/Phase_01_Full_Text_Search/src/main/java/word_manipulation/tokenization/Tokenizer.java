@@ -1,5 +1,7 @@
 package word_manipulation.tokenization;
 
+import java.util.List;
+
 /**
  * wordManipulation.Tokenizer interface.
  */
