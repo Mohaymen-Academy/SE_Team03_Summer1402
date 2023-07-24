@@ -2,6 +2,7 @@ package file_reader;
 
 import java.io.*;
 import java.util.*;
+import java.util.stream.Stream;
 
 public class FileReader {
 
@@ -12,7 +13,7 @@ public class FileReader {
      * @param file   file of document.
      * @return   string of extension.
      */
-    protected String getExtension(File file){
+    protected String getFileExtension(File file){
         String name = file.getName();
         String[] split = name.split("\\.");
         return split[split.length - 1];
@@ -22,22 +23,16 @@ public class FileReader {
      * Finds all the documents in the folder (with the extension).
      * @param folderPath   path of documents' folder.
      */
-    private ArrayList<File> getFiles(String folderPath) {
-        ArrayList<File> result = new ArrayList<>();
+    private Stream<File> getFiles(String folderPath) {
         File folder = new File(folderPath);
-        File[] folderFiles = folder.listFiles();
-        assert folderFiles != null;
-        for(File file : folderFiles) {
-            if(isValidFile(file)){
-                result.add(file);
-            }
-        }
-        return result;
+        return Stream.of(folder.listFiles()).filter(this::checkFileExtension);
     }
 
-    private Boolean isValidFile(File file){
+    private Boolean checkFileExtension(File file){
         String name = file.getName();
-        return name.length() >= extension.length() + 1 && getExtension(file).equals(extension);
+        Boolean isProperLength = name.length() >= extension.length() + 1;
+        Boolean hasRightExtension = getFileExtension(file).equals(extension);
+        return  isProperLength && hasRightExtension;
     }
 
     /**
@@ -58,14 +53,13 @@ public class FileReader {
      */
     public ArrayList<Document> getDocumentsInFolder(String folderPath, String separator){
         ArrayList<Document> result = new ArrayList<>();
-        ArrayList<File> files = getFiles(folderPath);
-        for (File file : files){
+        getFiles(folderPath).forEach(f -> {
             try {
-                result.add(getDocument(file, separator));
+                result.add(getDocument(f, separator));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        }
+        });
         return result;
     }
 

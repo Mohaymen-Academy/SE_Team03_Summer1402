@@ -16,11 +16,13 @@ public class TxtFileReader extends FileReader {
 
     @Override
     public Document getDocument(File file, String separator) throws IOException {
-        String name = file.getName();
         Stream<String> wordStream;
         wordStream = Files.lines(Paths.get(file.getPath()), StandardCharsets.UTF_8);
         String joinedString = wordStream.collect(Collectors.joining(separator));
-        String documentName = name.substring(0, name.length() - getExtension(file).length() - 1);
+
+        String name = file.getName();
+        String documentName = name.substring(0, name.length() - getFileExtension(file).length() - 1);
+
         return new Document(documentName, joinedString);
     }
 
