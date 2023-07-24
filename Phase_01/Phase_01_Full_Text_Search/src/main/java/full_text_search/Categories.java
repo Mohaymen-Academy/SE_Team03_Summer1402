@@ -1,10 +1,10 @@
 package full_text_search;
 
-import lombok.AccessLevel;
-import lombok.Getter;
 import word_manipulation.normalization.Normalization;
 import word_manipulation.StopWords;
 
+import lombok.AccessLevel;
+import lombok.Getter;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -38,9 +38,13 @@ public class Categories {
      */
     private final Set<String> excludeWords;
 
+    //Processes the search input and separate words.
+
     /**
-     * Processes the search input and separate words.
+     * Constructs that set words group and check specific of words.
      * @param inputString   input string.
+     * @param normalization   normalization type.
+     * @throws Exception
      */
     Categories(String inputString, Normalization normalization) throws Exception {
         includeWords = new HashSet<>();
@@ -54,6 +58,11 @@ public class Categories {
         }
     }
 
+    /**
+     * Distinguishes kind of word and checks stop words.
+     * @param inputString   input string.
+     * @param normalization   normalization type.
+     */
     private void processWords(String inputString, Normalization normalization){
         for (String word : inputString.split(" ")) {
             String w = normalization.normalize(word);

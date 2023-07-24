@@ -36,12 +36,15 @@ public class FullTextSearch {
      */
     private Categories categories;
 
+    /**
+     * result of set.
+     */
     private Set<Integer> resultSet;
 
     /**
-     * Constructor of full text search.
-     * @param normalization   normalization method.
-     * @param tokenizer   tokenizer method.
+     * Constructs of full text search.
+     * @param normalization   normalization type.
+     * @param tokenizer   tokenizer type.
      */
     public FullTextSearch(Normalization normalization, Tokenizer tokenizer) {
         this.normalization = normalization;
@@ -80,21 +83,6 @@ public class FullTextSearch {
     }
 
     /**
-     * Gets name of documents.
-     * @param resultSet   documents' number.
-     * @return   name of documents.
-     */
-    private String[] getResultDocumentsNames(Set<Integer> resultSet){
-        String[] resultDocumentsNames = new String[resultSet.size()];
-        int j = 0;
-        for (int i : resultSet) {
-            resultDocumentsNames[j] = documentsName.get(i);
-            j++;
-        }
-        return resultDocumentsNames;
-    }
-
-    /**
      * finds number of documents with calculate logic set.
      * @return   number of documents.
      */
@@ -111,6 +99,9 @@ public class FullTextSearch {
         return resultSet;
     }
 
+    /**
+     * Removes any document in the result set that don't have the words that must be included.
+     */
     private void checkIncludeWords() {
         if (categories.getIncludeWords().size() > 0) {
             ArrayList<Set<Integer>> normalWordsResultSets =
@@ -120,6 +111,9 @@ public class FullTextSearch {
         }
     }
 
+    /**
+     * Removes documents from result set if they have any words that must be excluded.
+     */
     private void checkExcludeWords() {
         if (categories.getExcludeWords().size() > 0) {
             Set<Integer> minusWordsResultSet =
@@ -128,6 +122,9 @@ public class FullTextSearch {
         }
     }
 
+    /**
+     * Removes document from result set that don't either of the optional words.
+     */
     private void checkOptionalWords() {
         if (categories.getOptionalWords().size() > 0) {
             Set<Integer> plusWordsResultSet =

@@ -32,7 +32,7 @@ public class SetLogic{
     }
 
     /**
-     * Subtracts second input set from the first one.
+     * Subtracts the second input set from the first one.
      * @param set1   first input set.
      * @param set2   second input set.
      * @return the subtraction on input sets.
@@ -42,4 +42,5 @@ public class SetLogic{
         result.removeAll(set2);
         return result;
     }
+
 }

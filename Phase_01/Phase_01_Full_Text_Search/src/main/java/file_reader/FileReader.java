@@ -79,5 +79,6 @@ public class FileReader {
     public ArrayList<Document> getDocumentsInFolder(String folderPath){
         return getDocumentsInFolder(folderPath, " ");
     }
+
 }
 
