@@ -7,8 +7,8 @@ public class UpperCaseNormalization implements Normalization {
      * @param inputString   string to normalize.
      * @return return an array on string containing only one upper case string.
      */
-    public String[] normalize(String inputString){
-        return new String[]{inputString.toUpperCase()};
+    public String normalize(String inputString){
+        return inputString.toUpperCase();
     }
 
 }

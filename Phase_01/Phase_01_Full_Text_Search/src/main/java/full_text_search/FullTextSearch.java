@@ -3,12 +3,11 @@ package full_text_search;
 import file_reader.Document;
 import logics.SetLogic;
 import word_manipulation.normalization.Normalization;
-import word_manipulation.Tokenizer;
+import word_manipulation.tokenization.Tokenizer;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class FullTextSearch {
 
@@ -56,12 +55,11 @@ public class FullTextSearch {
      * @param document   the document to add.
      */
     public void addDocument(Document document){
+        int idx = documentsName.size();
         documentsName.add(document.name());
-        ArrayList<String> words = new ArrayList<>();
-        for (String word : tokenizer.tokenize(document.context())){
-            words.addAll(Arrays.asList(normalization.normalize(word)));
-        }
-        invertedIndex.addData(documentsName.size() - 1, words);
+        Stream.of(tokenizer.tokenize(document.context()))
+                .map(normalization::normalize)
+                .forEach(w -> invertedIndex.addData(idx, w));
     }
 
     /**
@@ -70,13 +68,17 @@ public class FullTextSearch {
      * @return   name of documents that you request.
      * @throws Exception   if query is null or query just have stop words.
      */
-    public String[] search(String searchInput) throws Exception {
+    public List<String> search(String searchInput) throws Exception {
         if(searchInput.strip().equals("")){
             throw new Exception("Please enter some words!");
         }
         categories = new Categories(searchInput, normalization);
+        System.out.println("categories");
+        System.out.println(categories);
         Set<Integer> resultSet = getSearchResult();
-        return getResultDocumentsNames(resultSet);
+        return resultSet.stream()
+                .map(documentsName::get)
+                .collect(Collectors.toList());
     }
 
     /**

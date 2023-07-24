@@ -10,6 +10,6 @@ public interface Normalization {
      * @param inputString   string to normalize.
      * @return   array of string containing the normalized string from input string.
      */
-    String[] normalize(String inputString);
+    String normalize(String inputString);
 
 }

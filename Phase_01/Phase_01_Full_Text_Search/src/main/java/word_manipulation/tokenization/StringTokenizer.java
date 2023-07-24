@@ -1,9 +1,5 @@
-package word_manipulation;
+package word_manipulation.tokenization;
 
-/**
- * Tokenizing by spiriting by an input string.
- * @param separator Separator string.
- */
 public record StringTokenizer(String separator) implements Tokenizer {
 
     /**

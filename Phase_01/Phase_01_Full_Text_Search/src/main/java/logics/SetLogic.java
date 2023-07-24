@@ -3,7 +3,6 @@ package logics;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Stream;
 
 public class SetLogic{
 
@@ -12,7 +11,7 @@ public class SetLogic{
      * @param sets   input sets.
      * @return the union set of all input sets.
      */
-    public static Set<Integer> union(Stream<Set<Integer>> sets){
+    public static Set<Integer> union(ArrayList<Set<Integer>> sets){
         Set<Integer> result = new HashSet<>();
         sets.forEach(result::addAll);
         return result;
@@ -23,11 +22,11 @@ public class SetLogic{
      * @param sets   input sets.
      * @return the intersection of all input sets.
      */
-    public static Set<Integer> intersect(Stream<Set<Integer>> sets){
-        if(sets.findAny().isEmpty())
+    public static Set<Integer> intersect(ArrayList<Set<Integer>> sets){
+        if(sets.size() == 0)
             return new HashSet<>();
 
-        Set<Integer> result = new HashSet<>(sets.findAny().get());
+        Set<Integer> result = new HashSet<>(sets.get(0));
         sets.forEach(result::retainAll);
         return result;
     }

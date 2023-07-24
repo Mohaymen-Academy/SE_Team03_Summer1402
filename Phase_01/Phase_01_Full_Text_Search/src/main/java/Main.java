@@ -3,11 +3,12 @@ import file_reader.FileReader;
 import file_reader.TxtFileReader;
 import full_text_search.FullTextSearch;
 import word_manipulation.normalization.RemoveMarksAndUpperCaseNormalization;
-import word_manipulation.StringTokenizer;
+import word_manipulation.tokenization.MarksTokenizer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
 
 public class Main {
     /**
@@ -19,7 +20,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         // construct the fullTextSearch.FullTextSearch instance.
         FullTextSearch fts = new FullTextSearch(new RemoveMarksAndUpperCaseNormalization(),
-                new StringTokenizer(" "));
+                new MarksTokenizer());
 
         // read the documents in the folder and add them to search data.
         FileReader fileReader = new TxtFileReader();
@@ -41,7 +42,7 @@ public class Main {
             }
 
             // call the search method and check for exception
-            String[] searchResult;
+            List<String> searchResult;
             try {
                 searchResult = fts.search(input);
             } catch (Exception e) {

@@ -9,7 +9,6 @@ public class InvertedIndex {
      */
     private final HashMap<String, Set<Integer>> indexMap;
 
-
     /**
      * Constructs an inverted index data structure.
      */
@@ -20,11 +19,10 @@ public class InvertedIndex {
     /**
      * Calculates the indexes and stores in the hashtable.
      */
-    public void addData(int idx, ArrayList<String> words){
-        for (String word : words){
-            if(!indexMap.containsKey(word)){
-                indexMap.put(word, new HashSet<>());
-            }
+    public void addData(int idx, String word){
+        if (!indexMap.containsKey(word)){
+            indexMap.put(word, new HashSet<>());
+        } else {
             indexMap.get(word).add(idx);
         }
     }
