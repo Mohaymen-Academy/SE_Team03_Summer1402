@@ -20,8 +20,10 @@ public class Main {
      */
     public static void main(String[] args) throws IOException {
         // construct the fullTextSearch.FullTextSearch instance.
-        FullTextSearch fts = new FullTextSearch(new RemoveMarksAndUpperCaseNormalizer(),
-                new EdgeNgramTokenizer(2, 6));
+        FullTextSearch fts = FullTextSearch.builder()
+                .normalizer(new RemoveMarksAndUpperCaseNormalizer())
+                .tokenizer(new EdgeNgramTokenizer(2, 6))
+                .build();
 
         // read the documents in the folder and add them to search data.
         FileReader fileReader = new TxtFileReader();

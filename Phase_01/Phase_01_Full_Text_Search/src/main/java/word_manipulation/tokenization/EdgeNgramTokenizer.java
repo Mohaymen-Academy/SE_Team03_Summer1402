@@ -1,7 +1,6 @@
 package word_manipulation.tokenization;
 
 import lombok.AllArgsConstructor;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;

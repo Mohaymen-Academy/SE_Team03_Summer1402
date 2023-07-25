@@ -22,9 +22,8 @@ public class InvertedIndex {
     public void addData(int idx, String word){
         if (!indexMap.containsKey(word)){
             indexMap.put(word, new HashSet<>());
-        } else {
-            indexMap.get(word).add(idx);
         }
+        indexMap.get(word).add(idx);
     }
 
     /**

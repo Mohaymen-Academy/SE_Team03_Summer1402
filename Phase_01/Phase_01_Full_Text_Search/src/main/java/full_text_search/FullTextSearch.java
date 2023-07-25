@@ -2,6 +2,7 @@ package full_text_search;
 
 import file_reader.Document;
 import logics.SetLogic;
+import lombok.Builder;
 import word_manipulation.normalization.Normalizer;
 import word_manipulation.tokenization.Tokenizer;
 
@@ -46,12 +47,14 @@ public class FullTextSearch {
      * @param normalizer   normalizer.
      * @param tokenizer   tokenizer.
      */
+    @Builder
     public FullTextSearch(Normalizer normalizer, Tokenizer tokenizer) {
         this.normalizer = normalizer;
         this.tokenizer = tokenizer;
         documentsName = new ArrayList<>();
         invertedIndex = new InvertedIndex();
     }
+
 
     /**
      * Add data to inverted index.

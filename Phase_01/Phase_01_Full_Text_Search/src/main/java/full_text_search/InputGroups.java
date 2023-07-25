@@ -1,5 +1,6 @@
 package full_text_search;
 
+import lombok.ToString;
 import word_manipulation.normalization.Normalizer;
 import word_manipulation.StopWords;
 
