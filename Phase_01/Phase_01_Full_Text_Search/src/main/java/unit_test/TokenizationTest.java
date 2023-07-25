@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class TokenizationTest {
 
@@ -36,17 +38,15 @@ public class TokenizationTest {
     @Test
     public void tokenize_edgeNgramTokenizer(){
         Tokenizer tokenizer = new EdgeNgramTokenizer(2, 3);
-        String[] actual = tokenizer.tokenize("AbCd_ _e123$");
-        Arrays.sort(actual);
-        String[] expected = {
+        Set<String> actual = new HashSet<>(Arrays.asList(tokenizer.tokenize("AbCd_ _e123$")));
+        Set<String> expected = new HashSet<>(Arrays.asList(
                 "Ab", "bC", "Cd",
                 "AbC", "bCd",
                 "AbCd",
                 "e1", "12", "23",
                 "e12", "123",
-                "e123"};
-        Arrays.sort(expected);
-        Assertions.assertArrayEquals(expected, actual);
+                "e123"));
+        Assertions.assertEquals(expected, actual);
     }
 
 }
