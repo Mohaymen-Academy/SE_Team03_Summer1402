@@ -1,6 +1,5 @@
 package full_text_search;
 
-import lombok.ToString;
 import word_manipulation.normalization.Normalizer;
 import word_manipulation.StopWords;
 
@@ -47,7 +46,7 @@ public class InputGroups {
      * @param normalizer   normalizer.
      * @throws Exception
      */
-    InputGroups(String inputString, Normalizer normalizer) throws Exception {
+    public InputGroups(String inputString, Normalizer normalizer) throws Exception {
         includeWords = new HashSet<>();
         optionalWords = new HashSet<>();
         excludeWords = new HashSet<>();
@@ -55,6 +54,9 @@ public class InputGroups {
         processWords(inputString, normalizer);
 
         if(inputCount == 0 && containsStopWords){
+            throw new Exception("Please be more specific!");
+        }
+        if(inputString.strip().equals("")){
             throw new Exception("Please be more specific!");
         }
     }
