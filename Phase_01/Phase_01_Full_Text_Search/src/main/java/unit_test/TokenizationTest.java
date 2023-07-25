@@ -10,7 +10,7 @@ import java.util.Arrays;
 public class TokenizationTest {
 
     @Test
-    public void tokenize_StringTokenizerWhiteSpace(){
+    public void tokenize_stringTokenizerWhiteSpace(){
         Tokenizer tokenizer = new StringTokenizer(" ");
         String[] actual = tokenizer.tokenize("a bc !d $");
         String[] expected = {"a", "bc", "!d", "$"};
@@ -18,7 +18,7 @@ public class TokenizationTest {
     }
 
     @Test
-    public void tokenize_StringTokenizerLongSeparator(){
+    public void tokenize_stringTokenizerLongSeparator(){
         Tokenizer tokenizer = new StringTokenizer("_ ");
         String[] actual = tokenizer.tokenize("a_ bc !d_ _e$");
         String[] expected = {"a", "bc !d", "_e$"};
@@ -26,7 +26,7 @@ public class TokenizationTest {
     }
 
     @Test
-    public void tokenize_MarksTokenizer(){
+    public void tokenize_marksTokenizer(){
         Tokenizer tokenizer = new MarksTokenizer();
         String[] actual = tokenizer.tokenize("a_ bc !d_ _e$");
         String[] expected = {"a", "bc", "d", "e"};
@@ -34,7 +34,7 @@ public class TokenizationTest {
     }
 
     @Test
-    public void tokenize_EdgeNgramTokenizer(){
+    public void tokenize_edgeNgramTokenizer(){
         Tokenizer tokenizer = new EdgeNgramTokenizer(2, 3);
         String[] actual = tokenizer.tokenize("AbCd_ _e123$");
         Arrays.sort(actual);
