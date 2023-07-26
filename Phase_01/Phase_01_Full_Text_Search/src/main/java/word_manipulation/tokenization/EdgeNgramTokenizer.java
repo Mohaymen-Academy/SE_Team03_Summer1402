@@ -44,12 +44,8 @@ public class EdgeNgramTokenizer implements Tokenizer {
                 }
             }
         }
-        String[] result = new String[words.size()];
-        int j = 0;
-        for (String word : words) {
-            result[j] = word;
-            j++;
-        }
+
+        String[] result = words.stream().toArray(String[] ::new);
         return result;
     }
 

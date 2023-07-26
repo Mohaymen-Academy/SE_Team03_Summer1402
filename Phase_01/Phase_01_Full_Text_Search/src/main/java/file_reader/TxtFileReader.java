@@ -26,8 +26,7 @@ public class TxtFileReader extends FileReader {
      */
     @Override
     public Document getDocument(File file, String separator) throws IOException {
-        Stream<String> wordStream;
-        wordStream = Files.lines(Paths.get(file.getPath()), StandardCharsets.UTF_8);
+        Stream<String> wordStream = Files.lines(Paths.get(file.getPath()), StandardCharsets.UTF_8);
         String joinedString = wordStream.collect(Collectors.joining(separator));
 
         String name = file.getName();

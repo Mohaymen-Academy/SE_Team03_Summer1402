@@ -48,6 +48,7 @@ public class InvertedIndex {
         for (String word : words) {
             result.add(getDocumentSet(word));
         }
+
         return result;
     }
 
