@@ -1,9 +1,7 @@
 package word_manipulation.tokenization;
 
 import lombok.AllArgsConstructor;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
 
 @AllArgsConstructor
 public class EdgeNgramTokenizer implements Tokenizer {
@@ -33,22 +31,25 @@ public class EdgeNgramTokenizer implements Tokenizer {
      * @return array of tokenized strings.
      */
     @Override
-    public String[] tokenize(String inputString) {
+    public HashMap<String, Integer> tokenize(String inputString) {
+        HashMap<String, Integer> result = new HashMap<>();
         String regex = "[^a-zA-Z0-9']+";
-        String[] splitStrings = inputString.split(regex);
-        Set<String> words = new HashSet<>(Arrays.asList(splitStrings));
-        for (String word : splitStrings) {
+        for (String word : inputString.split(regex)) {
+            if(maxGram < word.length()) {
+                if(!result.containsKey(word)){
+                    result.put(word, 0);
+                }
+                result.put(word, result.get(word) + 1);
+            }
             for (int i = minGram; i < maxGram + 1; i++) {
                 for (int j = 0; j < word.length() - i + 1; j++) {
-                    words.add(word.substring(j, j + i));
+                    String w = word.substring(j, j + i);
+                    if(!result.containsKey(w)){
+                        result.put(w, 0);
+                    }
+                    result.put(w, result.get(w) + 1);
                 }
             }
-        }
-        String[] result = new String[words.size()];
-        int j = 0;
-        for (String word : words) {
-            result[j] = word;
-            j++;
         }
         return result;
     }

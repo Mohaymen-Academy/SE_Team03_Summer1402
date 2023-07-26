@@ -2,20 +2,16 @@ package full_text_search;
 
 import file_reader.Document;
 import logics.SetLogic;
-import lombok.Builder;
 import word_manipulation.normalization.Normalizer;
 import word_manipulation.tokenization.Tokenizer;
 
+import lombok.Builder;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class FullTextSearch {
 
-    /**
-     * The name of documents.
-     */
-    private final ArrayList<String> documentsName;
+    private final ArrayList<Document> documents;
 
     /**
      * Inverted index.
@@ -51,21 +47,33 @@ public class FullTextSearch {
     public FullTextSearch(Normalizer normalizer, Tokenizer tokenizer) {
         this.normalizer = normalizer;
         this.tokenizer = tokenizer;
-        documentsName = new ArrayList<>();
+        documents = new ArrayList<>();
         invertedIndex = new InvertedIndex();
     }
-
 
     /**
      * Add data to inverted index.
      * @param document   the document to add.
      */
     public void addDocument(Document document){
-        int idx = documentsName.size();
-        documentsName.add(document.name());
-        Stream.of(tokenizer.tokenize(document.context()))
-                .map(normalizer::normalize)
-                .forEach(w -> invertedIndex.addData(idx, w));
+        int idx = documents.size();
+        documents.add(document);
+        HashMap<String, Integer> normalized = new HashMap<>();
+        tokenizer.tokenize(document.getContext()).forEach((key, value) ->{
+            String word = normalizer.normalize(key);
+            if(!normalized.containsKey(word)){
+                normalized.put(word, 0);
+            }
+            document.setWordCount(document.getWordCount() + value);
+            normalized.put(word, normalized.get(word) + value);
+        });
+        normalized.forEach((key, value) ->{
+            Occurrence occurrence = new Occurrence(idx);
+            occurrence.setWordCount(value);
+            occurrence.setIsInTitle(normalizer.normalize(document.getName()).contains(key));
+            invertedIndex.addData(occurrence, key);
+        });
+        invertedIndex.sortData(documents);
     }
 
     /**
@@ -79,10 +87,20 @@ public class FullTextSearch {
             throw new Exception("Please enter some words!");
         }
         inputGroups = new InputGroups(searchInput, normalizer);
-        Set<Integer> resultSet = getSearchResult();
-        return resultSet.stream()
-                .map(documentsName::get)
-                .collect(Collectors.toList());
+        if(inputGroups.getIncludeWords().size() == 1 &&
+                inputGroups.getExcludeWords().size() == 0 &&
+                inputGroups.getOptionalWords().size() == 0){
+            return invertedIndex.getOccurrences(inputGroups.getIncludeWords().iterator().next())
+                    .stream()
+                    .map(x -> documents.get(x.getDocumentIndex()).getName())
+                    .collect(Collectors.toList());
+        }
+        else{
+            Set<Integer> resultSet = getSearchResult();
+            return resultSet.stream()
+                    .map(x -> documents.get(x).getName())
+                    .collect(Collectors.toList());
+        }
     }
 
     /**
@@ -91,7 +109,7 @@ public class FullTextSearch {
      */
     private Set<Integer> getSearchResult(){
         resultSet = new HashSet<>();
-        for (int i = 0; i < documentsName.size(); i++) {
+        for (int i = 0; i < documents.size(); i++) {
             resultSet.add(i);
         }
 

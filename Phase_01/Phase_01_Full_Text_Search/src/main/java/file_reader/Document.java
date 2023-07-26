@@ -1,8 +1,20 @@
 package file_reader;
 
-/**
- * fileReader.Document class to store data set for documents.
- * @param name    The name of the document.
- * @param context The context of the document.
- */
-public record Document(String name, String context) { }
+import lombok.*;
+
+@RequiredArgsConstructor
+@Getter
+@Setter
+public class Document {
+
+    @NonNull
+    @Setter(AccessLevel.NONE)
+    private String name;
+
+    @NonNull
+    @Setter(AccessLevel.NONE)
+    private String context;
+
+    private int wordCount;
+
+}

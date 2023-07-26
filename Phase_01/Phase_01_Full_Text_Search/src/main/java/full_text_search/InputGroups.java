@@ -38,13 +38,11 @@ public class InputGroups {
      */
     private final Set<String> excludeWords;
 
-    //Processes the search input and separate words.
-
     /**
      * Constructs the input groups and put each word in corresponding group.
      * @param inputString   input string.
      * @param normalizer   normalizer.
-     * @throws Exception
+     * @throws Exception if the search input is not specific.
      */
     public InputGroups(String inputString, Normalizer normalizer) throws Exception {
         includeWords = new HashSet<>();
