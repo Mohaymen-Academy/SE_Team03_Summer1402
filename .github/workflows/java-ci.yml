@@ -13,5 +13,7 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-      - name: Build with Maven
+      - name: ▶️ Build with Maven
         run: mvn --batch-mode --update-snapshots package --file "Full-Text-Search-Project/Full_Text_Search_java_project/pom.xml"
+      - name: 🛃 Run the Maven verify phase
+        run: mvn --batch-mode --update-snapshots verify --file "Full-Text-Search-Project/Full_Text_Search_java_project/pom.xml"
