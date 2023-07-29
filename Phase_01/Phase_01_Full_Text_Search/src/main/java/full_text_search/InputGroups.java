@@ -10,15 +10,9 @@ import java.util.Set;
 @Getter
 public class InputGroups {
 
-    /**
-     * Count of accept words.
-     */
     @Getter(AccessLevel.NONE)
     private int inputCount;
 
-    /**
-     * Have stop words.
-     */
     @Getter(AccessLevel.NONE)
     private boolean containsStopWords;
 
@@ -77,6 +71,12 @@ public class InputGroups {
                 default -> includeWords.add(w);
             }
         }
+    }
+
+    public boolean hasOnlyOneNormalWord(){
+        return includeWords.size() == 1 &&
+                optionalWords.size() == 0 &&
+                excludeWords.size() == 0;
     }
 
 }

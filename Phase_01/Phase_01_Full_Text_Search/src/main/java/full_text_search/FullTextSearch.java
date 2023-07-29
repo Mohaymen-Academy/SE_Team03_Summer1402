@@ -12,29 +12,14 @@ public class FullTextSearch {
 
     private final ArrayList<Document> documents;
 
-    /**
-     * Inverted index.
-     */
     private final InvertedIndex invertedIndex;
 
-    /**
-     * Normalize content.
-     */
     private final Normalizer normalizer;
 
-    /**
-     * Tokenize method.
-     */
     private final Tokenizer tokenizer;
 
-    /**
-     * Search input categories.
-     */
     private InputGroups inputGroups;
 
-    /**
-     * result of search.
-     */
     private Set<Integer> resultSet;
 
     /**
@@ -66,12 +51,14 @@ public class FullTextSearch {
             document.setWordCount(document.getWordCount() + value);
             normalized.put(word, normalized.get(word) + value);
         });
-        normalized.forEach((key, value) ->{
+        for (Map.Entry<String, Integer> entry : normalized.entrySet()) {
+            String key = entry.getKey();
+            Integer value = entry.getValue();
             Occurrence occurrence = new Occurrence(idx);
             occurrence.setWordCount(value);
             occurrence.setIsInTitle(normalizer.normalize(document.getName()).contains(key));
             invertedIndex.addData(occurrence, key);
-        });
+        }
         invertedIndex.sortData(documents);
     }
 
@@ -86,9 +73,8 @@ public class FullTextSearch {
             throw new Exception("Please enter some words!");
 
         inputGroups = new InputGroups(searchInput, normalizer);
-        if(inputGroups.getIncludeWords().size() == 1 &&
-                inputGroups.getExcludeWords().size() == 0 &&
-                inputGroups.getOptionalWords().size() == 0){
+
+        if(inputGroups.hasOnlyOneNormalWord()){
             return invertedIndex.getOccurrences(inputGroups.getIncludeWords().iterator().next())
                     .stream()
                     .map(x -> documents.get(x.getDocumentIndex()).getName())

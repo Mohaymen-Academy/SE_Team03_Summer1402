@@ -4,11 +4,8 @@ import java.io.*;
 import java.util.*;
 import java.util.stream.Stream;
 
-public class FileReader {
+public abstract class FileReader {
 
-    /**
-     * Extension of file.
-     */
     protected String extension;
 
     /**
@@ -49,9 +46,7 @@ public class FileReader {
      * @return returns the document.
      * @throws IOException   if the file context is not standard encoding.
      */
-    public Document getDocument(File file, String separator) throws IOException {
-        return null;
-    }
+    public abstract Document getDocument(File file, String separator) throws IOException;
 
     /**
      * Reads all files in the folder with the specified extension and get the documents from them.

@@ -5,9 +5,6 @@ import java.util.*;
 
 public class InvertedIndex {
 
-    /**
-     * The inverted index hashmap.
-     */
     private final HashMap<String, ArrayList<Occurrence>> indexMap;
 
     /**
