@@ -1,6 +1,0 @@
-unit_test\NormalizationTest.class
-unit_test\SetLogicTest.class
-unit_test\StopWordTest.class
-unit_test\InvertedIndexTest.class
-unit_test\InputGroupsTest.class
-unit_test\TokenizationTest.class
