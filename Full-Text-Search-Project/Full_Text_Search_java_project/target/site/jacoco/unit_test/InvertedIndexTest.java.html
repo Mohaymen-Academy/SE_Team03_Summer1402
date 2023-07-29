@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>InvertedIndexTest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Phase_01_Full_Text_Search</a> &gt; <a href="index.source.html" class="el_package">unit_test</a> &gt; <span class="el_source">InvertedIndexTest.java</span></div><h1>InvertedIndexTest.java</h1><pre class="source lang-java linenums">package unit_test;
+
+import full_text_search.InvertedIndex;
+import full_text_search.Occurrence;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+<span class="fc" id="L13">public class InvertedIndexTest {</span>
+
+    @Test
+    public void addData_onWordInOnDocument() {
+<span class="fc" id="L17">        InvertedIndex invertedIndex = new InvertedIndex();</span>
+<span class="fc" id="L18">        Occurrence occurrence = new Occurrence(3);</span>
+<span class="fc" id="L19">        invertedIndex.addData(occurrence, &quot;Hossein&quot;);</span>
+
+<span class="fc" id="L21">        ArrayList&lt;Occurrence&gt; resultOccurrences = invertedIndex.getOccurrences(&quot;Hossein&quot;);</span>
+<span class="fc" id="L22">        Set&lt;Integer&gt; actual = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L23">        resultOccurrences.forEach(x -&gt; actual.add(x.getDocumentIndex()));</span>
+<span class="fc" id="L24">        Set&lt;Integer&gt; expected = Stream.of(3).collect(Collectors.toSet());</span>
+
+<span class="fc" id="L26">        Assertions.assertEquals(expected, actual);</span>
+<span class="fc" id="L27">    }</span>
+
+    @Test
+    public void addData_onWordInManyDocuments() {
+<span class="fc" id="L31">        InvertedIndex invertedIndex = new InvertedIndex();</span>
+
+<span class="fc" id="L33">        invertedIndex.addData(new Occurrence(1), &quot;Hello&quot;);</span>
+<span class="fc" id="L34">        invertedIndex.addData(new Occurrence(2), &quot;Hello&quot;);</span>
+<span class="fc" id="L35">        invertedIndex.addData(new Occurrence(3), &quot;Hello&quot;);</span>
+
+<span class="fc" id="L37">        ArrayList&lt;Occurrence&gt; resultOccurrences = invertedIndex.getOccurrences(&quot;Hello&quot;);</span>
+<span class="fc" id="L38">        Set&lt;Integer&gt; actual = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L39">        resultOccurrences.forEach(x -&gt; actual.add(x.getDocumentIndex()));</span>
+<span class="fc" id="L40">        Set&lt;Integer&gt; expected = Stream.of(1, 2, 3).collect(Collectors.toSet());</span>
+
+<span class="fc" id="L42">        Assertions.assertEquals(expected, actual);</span>
+<span class="fc" id="L43">    }</span>
+
+    @Test
+    public void addData_manyWordsInOneDocument() {
+<span class="fc" id="L47">        InvertedIndex invertedIndex = new InvertedIndex();</span>
+
+<span class="fc" id="L49">        invertedIndex.addData(new Occurrence(1), &quot;Hello&quot;);</span>
+<span class="fc" id="L50">        invertedIndex.addData(new Occurrence(2), &quot;Hossein&quot;);</span>
+<span class="fc" id="L51">        invertedIndex.addData(new Occurrence(3), &quot;Ali&quot;);</span>
+
+<span class="fc" id="L53">        ArrayList&lt;Occurrence&gt; resultOccurrences1 = invertedIndex.getOccurrences(&quot;Hello&quot;);</span>
+<span class="fc" id="L54">        Set&lt;Integer&gt; actual1 = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L55">        resultOccurrences1.forEach(x -&gt; actual1.add(x.getDocumentIndex()));</span>
+<span class="fc" id="L56">        Set&lt;Integer&gt; expected1 = Stream.of(1).collect(Collectors.toSet());</span>
+<span class="fc" id="L57">        Assertions.assertEquals(expected1, actual1);</span>
+
+<span class="fc" id="L59">        ArrayList&lt;Occurrence&gt; resultOccurrences2 = invertedIndex.getOccurrences(&quot;Hossein&quot;);</span>
+<span class="fc" id="L60">        Set&lt;Integer&gt; actual2 = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L61">        resultOccurrences2.forEach(x -&gt; actual2.add(x.getDocumentIndex()));</span>
+<span class="fc" id="L62">        Set&lt;Integer&gt; expected2 = Stream.of(2).collect(Collectors.toSet());</span>
+<span class="fc" id="L63">        Assertions.assertEquals(expected2, actual2);</span>
+
+<span class="fc" id="L65">        ArrayList&lt;Occurrence&gt; resultOccurrences3 = invertedIndex.getOccurrences(&quot;Ali&quot;);</span>
+<span class="fc" id="L66">        Set&lt;Integer&gt; actual3 = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L67">        resultOccurrences3.forEach(x -&gt; actual3.add(x.getDocumentIndex()));</span>
+<span class="fc" id="L68">        Set&lt;Integer&gt; expected3 = Stream.of(3).collect(Collectors.toSet());</span>
+<span class="fc" id="L69">        Assertions.assertEquals(expected3, actual3);</span>
+
+<span class="fc" id="L71">    }</span>
+
+    @Test
+    public void addData_manyWordsInManyDocuments() {
+<span class="fc" id="L75">        InvertedIndex invertedIndex = new InvertedIndex();</span>
+
+<span class="fc" id="L77">        invertedIndex.addData(new Occurrence(1), &quot;Hello&quot;);</span>
+<span class="fc" id="L78">        invertedIndex.addData(new Occurrence(1), &quot;Hossein&quot;);</span>
+<span class="fc" id="L79">        invertedIndex.addData(new Occurrence(1), &quot;Ali&quot;);</span>
+<span class="fc" id="L80">        invertedIndex.addData(new Occurrence(2), &quot;Ali&quot;);</span>
+<span class="fc" id="L81">        invertedIndex.addData(new Occurrence(3), &quot;Ali&quot;);</span>
+<span class="fc" id="L82">        invertedIndex.addData(new Occurrence(2), &quot;By&quot;);</span>
+
+<span class="fc" id="L84">        ArrayList&lt;Set&lt;Integer&gt;&gt; expected = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L85">        expected.add(Stream.of(2).collect(Collectors.toSet()));</span>
+<span class="fc" id="L86">        expected.add(Stream.of(1, 2, 3).collect(Collectors.toSet()));</span>
+
+<span class="fc" id="L88">        Set&lt;String&gt; input = Stream.of(&quot;By&quot;, &quot;Ali&quot;).collect(Collectors.toSet());</span>
+<span class="fc" id="L89">        ArrayList&lt;Set&lt;Integer&gt;&gt; actual = invertedIndex.getDocumentSets(input);</span>
+
+<span class="fc" id="L91">        Assertions.assertEquals(expected, actual);</span>
+<span class="fc" id="L92">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

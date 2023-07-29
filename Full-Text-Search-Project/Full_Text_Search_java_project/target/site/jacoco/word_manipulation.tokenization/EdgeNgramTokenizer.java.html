@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EdgeNgramTokenizer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Phase_01_Full_Text_Search</a> &gt; <a href="index.source.html" class="el_package">word_manipulation.tokenization</a> &gt; <span class="el_source">EdgeNgramTokenizer.java</span></div><h1>EdgeNgramTokenizer.java</h1><pre class="source lang-java linenums">package word_manipulation.tokenization;
+
+import lombok.AllArgsConstructor;
+import java.util.HashMap;
+
+<span class="fc" id="L6">@AllArgsConstructor</span>
+public class EdgeNgramTokenizer implements Tokenizer {
+
+    /**
+     * Length of the smallest substring.
+     */
+    private final int minGram;
+
+    /**
+     * Limit for length of the largest substring.
+     */
+    private final int maxGram;
+
+    /**
+     * This tokenizer split with any character other than letters and digit, so whitespace can be used as separator.
+     * @return whitespace character.
+     */
+    @Override
+    public String separator() {
+<span class="nc" id="L25">        return &quot; &quot;;</span>
+    }
+
+    /**
+     * Splits input string with any character other than letters and digit. then add substrings according to min gram and max gram and step.
+     * @param inputString   the string to tokenize.
+     * @return array of tokenized strings.
+     */
+    @Override
+    public HashMap&lt;String, Integer&gt; tokenize(String inputString) {
+<span class="fc" id="L35">        HashMap&lt;String, Integer&gt; result = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L36">        String regex = &quot;[^a-zA-Z0-9']+&quot;;</span>
+<span class="fc bfc" id="L37" title="All 2 branches covered.">        for (String word : inputString.split(regex)) {</span>
+<span class="fc bfc" id="L38" title="All 2 branches covered.">            if(maxGram &lt; word.length()) {</span>
+<span class="pc bpc" id="L39" title="1 of 2 branches missed.">                if(!result.containsKey(word))</span>
+<span class="fc" id="L40">                    result.put(word, 0);</span>
+<span class="fc" id="L41">                result.put(word, result.get(word) + 1);</span>
+            }
+<span class="fc bfc" id="L43" title="All 2 branches covered.">            for (int i = minGram; i &lt; maxGram + 1; i++) {</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">                for (int j = 0; j &lt; word.length() - i + 1; j++) {</span>
+<span class="fc" id="L45">                    String w = word.substring(j, j + i);</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">                    if(!result.containsKey(w))</span>
+<span class="fc" id="L47">                        result.put(w, 0);</span>
+<span class="fc" id="L48">                    result.put(w, result.get(w) + 1);</span>
+                }
+            }
+        }
+<span class="fc" id="L52">        return result;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

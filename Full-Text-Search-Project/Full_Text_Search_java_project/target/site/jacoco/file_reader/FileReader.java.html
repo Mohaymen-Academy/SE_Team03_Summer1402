@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FileReader.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Phase_01_Full_Text_Search</a> &gt; <a href="index.source.html" class="el_package">file_reader</a> &gt; <span class="el_source">FileReader.java</span></div><h1>FileReader.java</h1><pre class="source lang-java linenums">package file_reader;
+
+import java.io.*;
+import java.util.*;
+import java.util.stream.Stream;
+
+<span class="nc" id="L7">public abstract class FileReader {</span>
+
+    protected String extension;
+
+    /**
+     * Gets extension of files.
+     * @param file   file of document.
+     * @return   string of extension.
+     */
+    protected String getFileExtension(File file) {
+<span class="nc" id="L17">        String name = file.getName();</span>
+<span class="nc" id="L18">        String[] split = name.split(&quot;\\.&quot;);</span>
+<span class="nc" id="L19">        return split[split.length - 1];</span>
+    }
+
+    /**
+     * Finds all documents in the folder (with the extension).
+     * @param folderPath   path of documents' folder.
+     */
+    private Stream&lt;File&gt; getFiles(String folderPath) {
+<span class="nc" id="L27">        File folder = new File(folderPath);</span>
+<span class="nc" id="L28">        return Stream.of(folder.listFiles()).filter(this::checkFileExtension);</span>
+    }
+
+    /**
+     * Checks extension of file.
+     * @param file   file of document.
+     * @return   if extension was right return True else return False.
+     */
+    private Boolean checkFileExtension(File file) {
+<span class="nc" id="L37">        String name = file.getName();</span>
+<span class="nc bnc" id="L38" title="All 2 branches missed.">        Boolean isProperLength = name.length() &gt;= extension.length() + 1;</span>
+<span class="nc" id="L39">        Boolean hasRightExtension = getFileExtension(file).equals(extension);</span>
+<span class="nc bnc" id="L40" title="All 4 branches missed.">        return  isProperLength &amp;&amp; hasRightExtension;</span>
+    }
+
+    /**
+     * Gets file name and context and makes a document.
+     * @param file   the file to get the data from.
+     * @return returns the document.
+     * @throws IOException   if the file context is not standard encoding.
+     */
+    public abstract Document getDocument(File file, String separator) throws IOException;
+
+    /**
+     * Reads all files in the folder with the specified extension and get the documents from them.
+     * @param folderPath   the folder path.
+     * @param separator   the separator string to add to the end of the line before joining.
+     * @return a list of documents read from the folder.
+     */
+    public ArrayList&lt;Document&gt; getDocumentsInFolder(String folderPath, String separator) {
+<span class="nc" id="L58">        ArrayList&lt;Document&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L59">        getFiles(folderPath).forEach(f -&gt; {</span>
+            try {
+<span class="nc" id="L61">                result.add(getDocument(f, separator));</span>
+<span class="nc" id="L62">            } catch (IOException e) {</span>
+<span class="nc" id="L63">                throw new RuntimeException(e);</span>
+<span class="nc" id="L64">            }</span>
+<span class="nc" id="L65">        });</span>
+<span class="nc" id="L66">        return result;</span>
+    }
+
+    /**
+     * Reads all files in the folder with ' ' extension and get the documents from them.
+     * @param folderPath   the folder path.
+     * @return   a list of documents read from the folder.
+     */
+    public ArrayList&lt;Document&gt; getDocumentsInFolder(String folderPath) {
+<span class="nc" id="L75">        return getDocumentsInFolder(folderPath, &quot; &quot;);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

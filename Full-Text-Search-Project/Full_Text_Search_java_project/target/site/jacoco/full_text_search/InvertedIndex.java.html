@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>InvertedIndex.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Phase_01_Full_Text_Search</a> &gt; <a href="index.source.html" class="el_package">full_text_search</a> &gt; <span class="el_source">InvertedIndex.java</span></div><h1>InvertedIndex.java</h1><pre class="source lang-java linenums">package full_text_search;
+
+import file_reader.Document;
+import java.util.*;
+
+public class InvertedIndex {
+
+    private final HashMap&lt;String, ArrayList&lt;Occurrence&gt;&gt; indexMap;
+
+    /**
+     * Constructs an inverted index data structure.
+     */
+<span class="fc" id="L13">    public  InvertedIndex(){</span>
+<span class="fc" id="L14">        this.indexMap = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L15">    }</span>
+
+    /**
+     * Calculates the indexes and stores in the hashtable.
+     */
+    public void addData(Occurrence occurrence, String word) {
+<span class="fc bfc" id="L21" title="All 2 branches covered.">        if (!indexMap.containsKey(word))</span>
+<span class="fc" id="L22">            indexMap.put(word, new ArrayList&lt;&gt;());</span>
+<span class="fc" id="L23">        indexMap.get(word).add(occurrence);</span>
+<span class="fc" id="L24">    }</span>
+
+    public void sortData(ArrayList&lt;Document&gt; documents) {
+<span class="nc" id="L27">        indexMap.forEach((key, value) -&gt; {</span>
+<span class="nc bnc" id="L28" title="All 2 branches missed.">            for (Occurrence occurrence : value)</span>
+<span class="nc" id="L29">                occurrence.calculateScore(documents.get(occurrence.getDocumentIndex()).getWordCount());</span>
+<span class="nc" id="L30">            value.sort(new OccurrenceComparator());</span>
+<span class="nc" id="L31">        });</span>
+<span class="nc" id="L32">    }</span>
+
+    /**
+     * Gets the documents that contains the input string.
+     * @param word   the search string.
+     * @return a set of indexes for documents.
+     */
+    public ArrayList&lt;Occurrence&gt; getOccurrences(String word) {
+<span class="pc bpc" id="L40" title="1 of 2 branches missed.">        if (indexMap.get(word) != null)</span>
+<span class="fc" id="L41">            return indexMap.get(word);</span>
+<span class="nc" id="L42">        return new ArrayList&lt;&gt;();</span>
+    }
+
+    /**
+     * Gets the list of documents that contains the input string.
+     * @param words   the search words.
+     * @return a list of sets of indexes for documents.
+     */
+    public ArrayList&lt;ArrayList&lt;Occurrence&gt;&gt; getListOccurrences(Set&lt;String&gt; words) {
+<span class="nc" id="L51">        ArrayList&lt;ArrayList&lt;Occurrence&gt;&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">        for (String word : words)</span>
+<span class="nc" id="L53">            result.add(getOccurrences(word));</span>
+<span class="nc" id="L54">        return result;</span>
+    }
+
+    public ArrayList&lt;Set&lt;Integer&gt;&gt; getDocumentSets(Set&lt;String&gt; words) {
+<span class="fc" id="L58">        ArrayList&lt;Set&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">        for (String word : words) {</span>
+<span class="fc" id="L60">            HashSet&lt;Integer&gt; set = new HashSet&lt;&gt;();</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">            for (Occurrence occurrence : getOccurrences(word))</span>
+<span class="fc" id="L62">                set.add(occurrence.getDocumentIndex());</span>
+<span class="fc" id="L63">            result.add(set);</span>
+<span class="fc" id="L64">        }</span>
+
+<span class="fc" id="L66">        return result;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
