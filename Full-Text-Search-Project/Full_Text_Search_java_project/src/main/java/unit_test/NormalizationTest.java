@@ -20,7 +20,7 @@ public class NormalizationTest{
     @Test
     public void normalize_removeMarks() {
         Normalizer normalizer = new RemoveMarksNormalizer();
-        String actual1 = normalizer.normalize("aBcD");
+        String actual1 = normalizer.normalize("aBcDs");
         String actual2 = normalizer.normalize("aB_cD");
         String actual3 = normalizer.normalize("!@aB_c D#$");
         Assertions.assertEquals("aBcD", actual1);
