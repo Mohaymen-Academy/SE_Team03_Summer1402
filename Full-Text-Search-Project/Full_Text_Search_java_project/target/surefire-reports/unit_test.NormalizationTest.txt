@@ -1,0 +1,8 @@
+-------------------------------------------------------------------------------
+Test set: unit_test.NormalizationTest
+-------------------------------------------------------------------------------
+Tests run: 3, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.025 s <<< FAILURE! - in unit_test.NormalizationTest
+normalize_removeMarks  Time elapsed: 0.023 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <aBcD> but was: <aBcDs>
+	at unit_test.NormalizationTest.normalize_removeMarks(NormalizationTest.java:26)
+
