@@ -1,6 +1,8 @@
+package word_manipulation;
+
 import java.util.*;
 
-class StopWords {
+public class StopWords {
 
     /**
      * The words that should be removed from query and documents.
@@ -16,7 +18,13 @@ class StopWords {
             "all", "any", "both", "each", "few", "more", "most", "other", "some", "such", "no", "nor", "not", "only", "own",
             "same", "so", "than", "too", "very", "s", "t", "can", "will", "just", "don", "should", "now"));
 
+    /**
+     * Checks if the input string is a stop word.
+     * @param word   the string to check.
+     * @return a boolean that is true if the input string is a stop word.
+     */
     public static Boolean isStopWord(String word){
         return words.contains(word.toLowerCase());
     }
+
 }

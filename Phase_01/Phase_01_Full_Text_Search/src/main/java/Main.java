@@ -1,18 +1,29 @@
+import file_reader.Document;
+import file_reader.FileReader;
+import file_reader.TxtFileReader;
+import full_text_search.FullTextSearch;
+import word_manipulation.normalization.RemoveMarksAndUpperCaseNormalizer;
+import word_manipulation.tokenization.EdgeNgramTokenizer;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
 
 public class Main {
+
     /**
      * To use the full text search library, first you should construct
-     * an instance of FullTextSearch class and give the path to your documents'
+     * an instance of fullTextSearch.FullTextSearch class and give the path to your documents'
      * folder and normalization method and tokenizer. then you can search by
-     * calling the Search method on your FullTextSearch instance.
+     * calling the Search method on your fullTextSearch.FullTextSearch instance.
      */
     public static void main(String[] args) throws IOException {
-        // construct the FullTextSearch instance.
-        FullTextSearch fts = new FullTextSearch(new RemoveMarksAndUpperCaseNormalization(),
-                new StringTokenizer(" "));
+        // construct the fullTextSearch.FullTextSearch instance.
+        FullTextSearch fts = FullTextSearch.builder()
+                .normalizer(new RemoveMarksAndUpperCaseNormalizer())
+                .tokenizer(new EdgeNgramTokenizer(2, 6))
+                .build();
 
         // read the documents in the folder and add them to search data.
         FileReader fileReader = new TxtFileReader();
@@ -34,7 +45,7 @@ public class Main {
             }
 
             // call the search method and check for exception
-            String[] searchResult;
+            List<String> searchResult;
             try {
                 searchResult = fts.search(input);
             } catch (Exception e) {

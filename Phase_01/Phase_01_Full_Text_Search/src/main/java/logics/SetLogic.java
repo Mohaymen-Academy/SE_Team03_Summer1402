@@ -1,8 +1,10 @@
+package logics;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-class SetLogic{
+public class SetLogic{
 
     /**
      * Unions input sets.
@@ -10,10 +12,8 @@ class SetLogic{
      * @return the union set of all input sets.
      */
     public static Set<Integer> union(ArrayList<Set<Integer>> sets){
-        Set<Integer> result = new HashSet<>(sets.get(0));
-        for (int i = 1; i < sets.size(); i++){
-            result.addAll(sets.get(i));
-        }
+        Set<Integer> result = new HashSet<>();
+        sets.forEach(result::addAll);
         return result;
     }
 
@@ -23,15 +23,16 @@ class SetLogic{
      * @return the intersection of all input sets.
      */
     public static Set<Integer> intersect(ArrayList<Set<Integer>> sets){
+        if(sets.size() == 0)
+            return new HashSet<>();
+
         Set<Integer> result = new HashSet<>(sets.get(0));
-        for (int i = 1; i < sets.size(); i++){
-            result.retainAll(sets.get(i));
-        }
+        sets.forEach(result::retainAll);
         return result;
     }
 
     /**
-     * Subtracts second input set from the first one.
+     * Subtracts the second input set from the first one.
      * @param set1   first input set.
      * @param set2   second input set.
      * @return the subtraction on input sets.
@@ -41,4 +42,5 @@ class SetLogic{
         result.removeAll(set2);
         return result;
     }
+
 }

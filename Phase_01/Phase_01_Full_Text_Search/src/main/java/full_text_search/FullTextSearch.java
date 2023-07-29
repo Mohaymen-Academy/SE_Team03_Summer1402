@@ -1,7 +1,14 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+package full_text_search;
+
+import file_reader.Document;
+import logics.SetLogic;
+import lombok.Builder;
+import word_manipulation.normalization.Normalizer;
+import word_manipulation.tokenization.Tokenizer;
+
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class FullTextSearch {
 
@@ -18,7 +25,7 @@ public class FullTextSearch {
     /**
      * Normalize content.
      */
-    private final Normalization normalization;
+    private final Normalizer normalizer;
 
     /**
      * Tokenize method.
@@ -28,68 +35,59 @@ public class FullTextSearch {
     /**
      * Search input categories.
      */
-    private Categories categories;
+    private InputGroups inputGroups;
 
+    /**
+     * result of set.
+     */
     private Set<Integer> resultSet;
 
     /**
-     * Constructor of full text search.
-     * @param normalization   normalization method.
-     * @param tokenizer   tokenizer method.
+     * Constructs of full text search.
+     * @param normalizer   normalizer.
+     * @param tokenizer   tokenizer.
      */
-    public FullTextSearch(Normalization normalization, Tokenizer tokenizer) {
-        this.normalization = normalization;
+    @Builder
+    public FullTextSearch(Normalizer normalizer, Tokenizer tokenizer) {
+        this.normalizer = normalizer;
         this.tokenizer = tokenizer;
         documentsName = new ArrayList<>();
         invertedIndex = new InvertedIndex();
     }
+
 
     /**
      * Add data to inverted index.
      * @param document   the document to add.
      */
     public void addDocument(Document document){
-        documentsName.add(document.getName());
-        ArrayList<String> words = new ArrayList<>();
-        for (String word : tokenizer.tokenize(document.getContext())){
-            words.addAll(Arrays.asList(normalization.normalize(word)));
-        }
-        invertedIndex.addData(documentsName.size() - 1, words);
+        int idx = documentsName.size();
+        documentsName.add(document.name());
+        Stream.of(tokenizer.tokenize(document.context()))
+                .map(normalizer::normalize)
+                .forEach(w -> invertedIndex.addData(idx, w));
     }
 
     /**
      * Search query.
      * @param searchInput   query.
-     * @return   name of documents that you request.
+     * @return name of documents that you request.
      * @throws Exception   if query is null or query just have stop words.
      */
-    public String[] search(String searchInput) throws Exception {
+    public List<String> search(String searchInput) throws Exception {
         if(searchInput.strip().equals("")){
             throw new Exception("Please enter some words!");
         }
-        categories = new Categories(searchInput, normalization);
+        inputGroups = new InputGroups(searchInput, normalizer);
         Set<Integer> resultSet = getSearchResult();
-        return getResultDocumentsNames(resultSet);
-    }
-
-    /**
-     * Gets name of documents.
-     * @param resultSet   documents' number.
-     * @return   name of documents.
-     */
-    private String[] getResultDocumentsNames(Set<Integer> resultSet){
-        String[] resultDocumentsNames = new String[resultSet.size()];
-        int j = 0;
-        for (int i : resultSet) {
-            resultDocumentsNames[j] = documentsName.get(i);
-            j++;
-        }
-        return resultDocumentsNames;
+        return resultSet.stream()
+                .map(documentsName::get)
+                .collect(Collectors.toList());
     }
 
     /**
      * finds number of documents with calculate logic set.
-     * @return   number of documents.
+     * @return number of documents.
      */
     private Set<Integer> getSearchResult(){
         resultSet = new HashSet<>();
@@ -104,27 +102,36 @@ public class FullTextSearch {
         return resultSet;
     }
 
+    /**
+     * Removes any document in the result set that don't have the words that must be included.
+     */
     private void checkIncludeWords() {
-        if (categories.getIncludeWords().size() > 0) {
+        if (!inputGroups.getIncludeWords().isEmpty()) {
             ArrayList<Set<Integer>> normalWordsResultSets =
-                    invertedIndex.getDocumentSets(categories.getIncludeWords());
+                    invertedIndex.getDocumentSets(inputGroups.getIncludeWords());
             normalWordsResultSets.add(resultSet);
             resultSet = SetLogic.intersect(normalWordsResultSets);
         }
     }
 
+    /**
+     * Removes documents from result set if they have any words that must be excluded.
+     */
     private void checkExcludeWords() {
-        if (categories.getExcludeWords().size() > 0) {
+        if (inputGroups.getExcludeWords().size() > 0) {
             Set<Integer> minusWordsResultSet =
-                    SetLogic.union(invertedIndex.getDocumentSets(categories.getExcludeWords()));
+                    SetLogic.union(invertedIndex.getDocumentSets(inputGroups.getExcludeWords()));
             resultSet = SetLogic.subtract(resultSet, minusWordsResultSet);
         }
     }
 
+    /**
+     * Removes document from result set that don't either of the optional words.
+     */
     private void checkOptionalWords() {
-        if (categories.getOptionalWords().size() > 0) {
+        if (inputGroups.getOptionalWords().size() > 0) {
             Set<Integer> plusWordsResultSet =
-                    SetLogic.union(invertedIndex.getDocumentSets(categories.getOptionalWords()));
+                    SetLogic.union(invertedIndex.getDocumentSets(inputGroups.getOptionalWords()));
             resultSet = SetLogic.intersect(new ArrayList<>(Arrays.asList(resultSet, plusWordsResultSet)));
         }
     }
