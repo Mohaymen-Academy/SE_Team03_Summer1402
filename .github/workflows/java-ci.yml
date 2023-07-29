@@ -15,5 +15,6 @@ jobs:
           distribution: 'temurin'
       - run: echo "▶️ Start build with Maven."
       - name: Build with Maven
-        run: cd Full-Text-Search-Project/Full_Text_Search_java_project 
-				mvn --batch-mode --update-snapshots package
+        run:|
+      cd Full-Text-Search-Project/Full_Text_Search_java_project
+      mvn --batch-mode --update-snapshots package
