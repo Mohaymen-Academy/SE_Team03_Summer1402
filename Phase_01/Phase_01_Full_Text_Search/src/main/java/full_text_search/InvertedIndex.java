@@ -67,6 +67,7 @@ public class InvertedIndex {
             }
             result.add(set);
         }
+
         return result;
     }
 

@@ -109,7 +109,7 @@ public class FullTextSearch {
      * Removes any document in the result set that don't have the words that must be included.
      */
     private void checkIncludeWords() {
-        if (inputGroups.getIncludeWords().size() > 0) {
+        if (!inputGroups.getIncludeWords().isEmpty()) {
             ArrayList<Set<Integer>> normalWordsResultSets =
                     invertedIndex.getDocumentSets(inputGroups.getIncludeWords());
             normalWordsResultSets.add(resultSet);
