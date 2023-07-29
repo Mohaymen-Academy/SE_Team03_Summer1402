@@ -1,23 +1,18 @@
 name: Java
 
-on:
-  push:
-  workflow_dispatch:
+on: [push]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v1
-
-      - name: Set up JDK 1.11
-        uses: actions/setup-java@v2
+      - uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
         with:
-          java-version: '11'
-          distribution: 'adopt'
+          java-version: '17'
+          distribution: 'temurin'
 
       - name: Build
         run: mvn --batch-mode -DskipTests package --file "Full-Text-Search-Project/Full_Text_Search_java_project/pom.xml"
