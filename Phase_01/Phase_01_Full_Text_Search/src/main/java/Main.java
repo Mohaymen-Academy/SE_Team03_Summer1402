@@ -25,9 +25,8 @@ public class Main {
                 .build();
 
         FileReader fileReader = new TxtFileReader();
-        for (Document d : fileReader.getDocumentsInFolder("..\\Books")){
+        for (Document d : fileReader.getDocumentsInFolder("..\\Books"))
             fts.addDocument(d);
-        }
 
         System.out.println("if you want to stop the program enter " + endingString);
         while (true) {
@@ -36,16 +35,15 @@ public class Main {
                     new InputStreamReader(System.in));
             String input = reader.readLine();
 
-            if(input.strip().equals(endingString)){
+            if(input.strip().equals(endingString))
                 break;
-            }
 
             List<String> searchResult = Search(fts, input);
             DisplayResults(searchResult);
         }
     }
 
-    private static List<String> Search(FullTextSearch fts, String input){
+    private static List<String> Search(FullTextSearch fts, String input) {
         List<String> searchResult = new ArrayList<>();
         try {
             searchResult = fts.search(input);
@@ -55,7 +53,7 @@ public class Main {
         return searchResult;
     }
 
-    private static void DisplayResults(List<String> searchResult){
+    private static void DisplayResults(List<String> searchResult) {
         int i = 1;
         for (String s : searchResult){
             System.out.println(i + ". " + s);

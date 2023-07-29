@@ -18,11 +18,10 @@ public class Occurrence {
 
     private int wordCount;
 
-    public void calculateScore(int documentWordCount){
+    public void calculateScore(int documentWordCount) {
         score = (double) wordCount / documentWordCount;
-        if(isInTitle){
+        if(isInTitle)
             score = score * 1.1 + 0.05;
-        }
     }
 
 }

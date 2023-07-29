@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 public class NormalizationTest{
 
     @Test
-    public void normalize_upperCase(){
+    public void normalize_upperCase() {
         Normalizer normalizer = new UpperCaseNormalizer();
         String actual1 = normalizer.normalize("abcd");
         String actual2 = normalizer.normalize("aBcD");
@@ -18,7 +18,7 @@ public class NormalizationTest{
     }
 
     @Test
-    public void normalize_removeMarks(){
+    public void normalize_removeMarks() {
         Normalizer normalizer = new RemoveMarksNormalizer();
         String actual1 = normalizer.normalize("aBcD");
         String actual2 = normalizer.normalize("aB_cD");
@@ -29,7 +29,7 @@ public class NormalizationTest{
     }
 
     @Test
-    public void normalize_removeMarksAndUpperCase(){
+    public void normalize_removeMarksAndUpperCase() {
         Normalizer normalizer = new RemoveMarksAndUpperCaseNormalizer();
         String actual1 = normalizer.normalize("aBcD");
         String actual2 = normalizer.normalize("aB_cD");

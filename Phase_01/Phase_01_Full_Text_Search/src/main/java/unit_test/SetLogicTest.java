@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 public class SetLogicTest {
 
     @Test
-    public void union_allSets (){
+    public void union_allSets () {
         Set<Integer> set1 = Stream.of(1, 2, 3 ).collect(Collectors.toCollection(HashSet::new));
         Set<Integer> set2 = Stream.of(2, 3, 5 ).collect(Collectors.toCollection(HashSet::new));
         Set<Integer> set3 = Stream.of(4, 6).collect(Collectors.toCollection(HashSet::new));
@@ -25,7 +25,7 @@ public class SetLogicTest {
     }
 
     @Test
-    public void intersect_allSets (){
+    public void intersect_allSets () {
         Set<Integer> set1 = Stream.of(1, 2, 3 ).collect(Collectors.toCollection(HashSet::new));
         Set<Integer> set2 = Stream.of(2, 3, 5 ).collect(Collectors.toCollection(HashSet::new));
         Set<Integer> set3 = Stream.of(2, 5).collect(Collectors.toCollection(HashSet::new));
@@ -38,7 +38,7 @@ public class SetLogicTest {
     }
 
     @Test
-    public void subtract_twoSets (){
+    public void subtract_twoSets () {
         Set<Integer> set1 = Stream.of(1, 2, 3, 4 ).collect(Collectors.toCollection(HashSet::new));
         Set<Integer> set2 = Stream.of(2, 3, 5 ).collect(Collectors.toCollection(HashSet::new));
 

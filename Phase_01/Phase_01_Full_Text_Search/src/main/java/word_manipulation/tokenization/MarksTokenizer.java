@@ -22,10 +22,9 @@ public class MarksTokenizer implements Tokenizer {
     public HashMap<String, Integer> tokenize(String inputString) {
         HashMap<String, Integer> result = new HashMap<>();
         String regex = "[^a-zA-Z0-9']+";
-        for (String word : inputString.split(regex)){
-            if(!result.containsKey(word)){
+        for (String word : inputString.split(regex)) {
+            if(!result.containsKey(word))
                 result.put(word, 0);
-            }
             result.put(word, result.get(word) + 1);
         }
         return result;

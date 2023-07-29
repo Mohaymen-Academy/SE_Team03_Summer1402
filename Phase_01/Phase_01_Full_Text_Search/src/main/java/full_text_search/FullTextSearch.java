@@ -39,19 +39,24 @@ public class FullTextSearch {
      * Add data to inverted index.
      * @param document   the document to add.
      */
-    public void addDocument(Document document){
+    public void addDocument(Document document) {
         int idx = documents.size();
         documents.add(document);
-        HashMap<String, Integer> normalized = new HashMap<>();
-        tokenizer.tokenize(document.getContext()).forEach((key, value) ->{
+        HashMap<String, Integer> tokenizedWord = new HashMap<>();
+        tokenizer.tokenize(document.getContext()).forEach((key, value) -> {
             String word = normalizer.normalize(key);
-            if(!normalized.containsKey(word)){
-                normalized.put(word, 0);
+            if(!tokenizedWord.containsKey(word)) {
+                tokenizedWord.put(word, 0);
             }
             document.setWordCount(document.getWordCount() + value);
-            normalized.put(word, normalized.get(word) + value);
+            tokenizedWord.put(word, tokenizedWord.get(word) + value);
         });
-        for (Map.Entry<String, Integer> entry : normalized.entrySet()) {
+        addWordsToInvertedIndex(tokenizedWord, idx, document);
+        invertedIndex.sortData(documents);
+    }
+
+    public void addWordsToInvertedIndex(HashMap<String, Integer> tokenizedWord, int idx, Document document) {
+        for (Map.Entry<String, Integer> entry : tokenizedWord.entrySet()) {
             String key = entry.getKey();
             Integer value = entry.getValue();
             Occurrence occurrence = new Occurrence(idx);
@@ -59,7 +64,6 @@ public class FullTextSearch {
             occurrence.setIsInTitle(normalizer.normalize(document.getName()).contains(key));
             invertedIndex.addData(occurrence, key);
         }
-        invertedIndex.sortData(documents);
     }
 
     /**
@@ -74,13 +78,12 @@ public class FullTextSearch {
 
         inputGroups = new InputGroups(searchInput, normalizer);
 
-        if(inputGroups.hasOnlyOneNormalWord()){
+        if(inputGroups.hasOnlyOneNormalWord())
             return invertedIndex.getOccurrences(inputGroups.getIncludeWords().iterator().next())
                     .stream()
                     .map(x -> documents.get(x.getDocumentIndex()).getName())
                     .collect(Collectors.toList());
-        }
-        else{
+        else {
             Set<Integer> resultSet = getSearchResult();
             return resultSet.stream()
                     .map(x -> documents.get(x).getName())
@@ -92,7 +95,7 @@ public class FullTextSearch {
      * finds number of documents with calculate logic set.
      * @return number of documents.
      */
-    private Set<Integer> getSearchResult(){
+    private Set<Integer> getSearchResult() {
         resultSet = new HashSet<>();
         for (int i = 0; i < documents.size(); i++) {
             resultSet.add(i);

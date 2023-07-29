@@ -44,12 +44,10 @@ public class InputGroups {
 
         processWords(inputString, normalizer);
 
-        if(inputCount == 0 && containsStopWords){
+        if(inputCount == 0 && containsStopWords)
             throw new Exception("Please be more specific!");
-        }
-        if(inputString.strip().equals("")){
+        if(inputString.strip().equals(""))
             throw new Exception("Please be more specific!");
-        }
     }
 
     /**
@@ -57,7 +55,7 @@ public class InputGroups {
      * @param inputString   input string.
      * @param normalizer   normalizer.
      */
-    private void processWords(String inputString, Normalizer normalizer){
+    private void processWords(String inputString, Normalizer normalizer) {
         for (String word : inputString.split(" ")) {
             String w = normalizer.normalize(word);
             if (StopWords.isStopWord(w)) {
@@ -73,7 +71,7 @@ public class InputGroups {
         }
     }
 
-    public boolean hasOnlyOneNormalWord(){
+    public boolean hasOnlyOneNormalWord() {
         return includeWords.size() == 1 &&
                 optionalWords.size() == 0 &&
                 excludeWords.size() == 0;

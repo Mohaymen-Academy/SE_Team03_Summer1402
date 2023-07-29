@@ -17,17 +17,16 @@ public class InvertedIndex {
     /**
      * Calculates the indexes and stores in the hashtable.
      */
-    public void addData(Occurrence occurrence, String word){
+    public void addData(Occurrence occurrence, String word) {
         if (!indexMap.containsKey(word))
             indexMap.put(word, new ArrayList<>());
         indexMap.get(word).add(occurrence);
     }
 
-    public void sortData(ArrayList<Document> documents){
+    public void sortData(ArrayList<Document> documents) {
         indexMap.forEach((key, value) -> {
-            for (Occurrence occurrence : value){
+            for (Occurrence occurrence : value)
                 occurrence.calculateScore(documents.get(occurrence.getDocumentIndex()).getWordCount());
-            }
             value.sort(new OccurrenceComparator());
         });
     }
@@ -37,10 +36,9 @@ public class InvertedIndex {
      * @param word   the search string.
      * @return a set of indexes for documents.
      */
-    public ArrayList<Occurrence> getOccurrences(String word){
-        if (indexMap.get(word) != null){
+    public ArrayList<Occurrence> getOccurrences(String word) {
+        if (indexMap.get(word) != null)
             return indexMap.get(word);
-        }
         return new ArrayList<>();
     }
 
@@ -49,22 +47,19 @@ public class InvertedIndex {
      * @param words   the search words.
      * @return a list of sets of indexes for documents.
      */
-    public ArrayList<ArrayList<Occurrence>> getListOccurrences(Set<String> words){
+    public ArrayList<ArrayList<Occurrence>> getListOccurrences(Set<String> words) {
         ArrayList<ArrayList<Occurrence>> result = new ArrayList<>();
-        for (String word : words) {
+        for (String word : words)
             result.add(getOccurrences(word));
-        }
         return result;
     }
 
-    public ArrayList<Set<Integer>> getDocumentSets(Set<String> words){
+    public ArrayList<Set<Integer>> getDocumentSets(Set<String> words) {
         ArrayList<Set<Integer>> result = new ArrayList<>();
         for (String word : words) {
             HashSet<Integer> set = new HashSet<>();
-            for (Occurrence occurrence : getOccurrences(word)){
-                System.out.println(occurrence.getDocumentIndex() + " = " + occurrence.getScore());
+            for (Occurrence occurrence : getOccurrences(word))
                 set.add(occurrence.getDocumentIndex());
-            }
             result.add(set);
         }
 

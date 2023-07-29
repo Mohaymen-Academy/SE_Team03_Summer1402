@@ -13,7 +13,7 @@ public abstract class FileReader {
      * @param file   file of document.
      * @return   string of extension.
      */
-    protected String getFileExtension(File file){
+    protected String getFileExtension(File file) {
         String name = file.getName();
         String[] split = name.split("\\.");
         return split[split.length - 1];
@@ -33,7 +33,7 @@ public abstract class FileReader {
      * @param file   file of document.
      * @return   if extension was right return True else return False.
      */
-    private Boolean checkFileExtension(File file){
+    private Boolean checkFileExtension(File file) {
         String name = file.getName();
         Boolean isProperLength = name.length() >= extension.length() + 1;
         Boolean hasRightExtension = getFileExtension(file).equals(extension);
@@ -54,7 +54,7 @@ public abstract class FileReader {
      * @param separator   the separator string to add to the end of the line before joining.
      * @return a list of documents read from the folder.
      */
-    public ArrayList<Document> getDocumentsInFolder(String folderPath, String separator){
+    public ArrayList<Document> getDocumentsInFolder(String folderPath, String separator) {
         ArrayList<Document> result = new ArrayList<>();
         getFiles(folderPath).forEach(f -> {
             try {
@@ -71,9 +71,8 @@ public abstract class FileReader {
      * @param folderPath   the folder path.
      * @return   a list of documents read from the folder.
      */
-    public ArrayList<Document> getDocumentsInFolder(String folderPath){
+    public ArrayList<Document> getDocumentsInFolder(String folderPath) {
         return getDocumentsInFolder(folderPath, " ");
     }
 
 }
-

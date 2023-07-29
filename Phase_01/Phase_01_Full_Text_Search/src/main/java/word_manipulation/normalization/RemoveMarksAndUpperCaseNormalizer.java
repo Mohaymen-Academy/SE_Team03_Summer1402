@@ -8,7 +8,7 @@ public class RemoveMarksAndUpperCaseNormalizer implements Normalizer {
      * @param inputString   the string to normalize.
      * @return the normalized string with only alphanumeric characters and uppercase letters.
      */
-    public String normalize(String inputString){
+    public String normalize(String inputString) {
         Normalizer upperCaseNormalizer = new UpperCaseNormalizer();
         Normalizer removeMarksNormalizer = new RemoveMarksNormalizer();
         String upperCaseString = upperCaseNormalizer.normalize(inputString);

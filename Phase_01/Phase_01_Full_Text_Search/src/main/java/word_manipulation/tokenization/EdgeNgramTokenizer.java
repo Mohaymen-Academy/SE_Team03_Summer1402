@@ -36,17 +36,15 @@ public class EdgeNgramTokenizer implements Tokenizer {
         String regex = "[^a-zA-Z0-9']+";
         for (String word : inputString.split(regex)) {
             if(maxGram < word.length()) {
-                if(!result.containsKey(word)){
+                if(!result.containsKey(word))
                     result.put(word, 0);
-                }
                 result.put(word, result.get(word) + 1);
             }
             for (int i = minGram; i < maxGram + 1; i++) {
                 for (int j = 0; j < word.length() - i + 1; j++) {
                     String w = word.substring(j, j + i);
-                    if(!result.containsKey(w)){
+                    if(!result.containsKey(w))
                         result.put(w, 0);
-                    }
                     result.put(w, result.get(w) + 1);
                 }
             }
