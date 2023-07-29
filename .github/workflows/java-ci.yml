@@ -13,6 +13,5 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-      - run: echo "▶️ Start build with Maven."
       - name: Build with Maven
-		run: mvn --batch-mode --update-snapshots package -f /Full-Text-Search-Project/Full_Text_Search_java_project/pom.xml
+        run: mvn --batch-mode --update-snapshots package
