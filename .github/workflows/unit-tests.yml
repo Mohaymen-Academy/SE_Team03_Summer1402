@@ -20,10 +20,10 @@ jobs:
           distribution: 'adopt'
 
       - name: Build
-        run: mvn --batch-mode -DskipTests package
-
-      - name: Test
-        run: mvn --batch-mode -Dmaven.test.failure.ignore=true test
+        run: mvn --batch-mode -DskipTests package --file "Full-Text-Search-Project/Full_Text_Search_java_project/pom.xml"
+ 
+      - name: Test 
+        run: mvn --batch-mode -Dmaven.test.failure.ignore=true test --file "Full-Text-Search-Project/Full_Text_Search_java_project/pom.xml"
 
       - name: Report
         uses: dorny/test-reporter@v1
