@@ -43,7 +43,7 @@ public class SetLogicTest {
         Set<Integer> set2 = Stream.of(2, 3, 5 ).collect(Collectors.toCollection(HashSet::new));
 
         Set<Integer> actual = SetLogic.subtract(set1, set2);
-        Set<Integer> expected = Stream.of(3, 4).collect(Collectors.toCollection(HashSet::new));
+        Set<Integer> expected = Stream.of(1, 4).collect(Collectors.toCollection(HashSet::new));
 
         Assertions.assertEquals(expected, actual);
     }
