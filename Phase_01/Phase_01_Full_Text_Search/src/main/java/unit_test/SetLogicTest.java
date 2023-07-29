@@ -1,10 +1,8 @@
 package unit_test;
 
 import logics.SetLogic;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;

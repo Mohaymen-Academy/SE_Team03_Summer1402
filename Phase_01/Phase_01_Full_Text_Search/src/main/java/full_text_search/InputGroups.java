@@ -2,7 +2,6 @@ package full_text_search;
 
 import word_manipulation.normalization.Normalizer;
 import word_manipulation.StopWords;
-
 import lombok.AccessLevel;
 import lombok.Getter;
 import java.util.HashSet;

@@ -1,7 +1,6 @@
 package unit_test;
 
 import word_manipulation.StopWords;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

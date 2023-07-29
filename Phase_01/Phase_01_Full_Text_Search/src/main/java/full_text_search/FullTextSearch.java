@@ -4,7 +4,6 @@ import file_reader.Document;
 import logics.SetLogic;
 import word_manipulation.normalization.Normalizer;
 import word_manipulation.tokenization.Tokenizer;
-
 import lombok.Builder;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -34,7 +33,7 @@ public class FullTextSearch {
     private InputGroups inputGroups;
 
     /**
-     * result of set.
+     * result of search.
      */
     private Set<Integer> resultSet;
 
@@ -83,9 +82,9 @@ public class FullTextSearch {
      * @throws Exception   if query is null or query just have stop words.
      */
     public List<String> search(String searchInput) throws Exception {
-        if(searchInput.strip().equals("")){
+        if(searchInput.strip().equals(""))
             throw new Exception("Please enter some words!");
-        }
+
         inputGroups = new InputGroups(searchInput, normalizer);
         if(inputGroups.getIncludeWords().size() == 1 &&
                 inputGroups.getExcludeWords().size() == 0 &&

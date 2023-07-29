@@ -1,7 +1,6 @@
 package full_text_search;
 
 import file_reader.Document;
-
 import java.util.*;
 
 public class InvertedIndex {

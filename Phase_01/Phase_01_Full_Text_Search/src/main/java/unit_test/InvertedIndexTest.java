@@ -2,10 +2,8 @@ package unit_test;
 
 import full_text_search.InvertedIndex;
 import full_text_search.Occurrence;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;

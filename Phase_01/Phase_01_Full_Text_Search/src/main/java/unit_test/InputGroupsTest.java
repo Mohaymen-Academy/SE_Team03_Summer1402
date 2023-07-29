@@ -2,10 +2,8 @@ package unit_test;
 
 import full_text_search.InputGroups;
 import word_manipulation.normalization.Normalizer;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
