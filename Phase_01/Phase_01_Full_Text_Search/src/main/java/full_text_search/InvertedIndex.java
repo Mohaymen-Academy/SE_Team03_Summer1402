@@ -22,9 +22,8 @@ public class InvertedIndex {
      * Calculates the indexes and stores in the hashtable.
      */
     public void addData(Occurrence occurrence, String word){
-        if (!indexMap.containsKey(word)){
+        if (!indexMap.containsKey(word))
             indexMap.put(word, new ArrayList<>());
-        }
         indexMap.get(word).add(occurrence);
     }
 
