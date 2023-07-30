@@ -102,7 +102,7 @@ CREATE TABLE Seen
 (
 	fk_chat_id		INT				NOT NULL,
 	fk_user_id		INT				NOT NULL,
-	count			INT				DEFAULT 0,
+	message_count	INT				DEFAULT 0,
 	PRIMARY KEY(fk_chat_id, fk_user_id),
 	FOREIGN KEY(fk_chat_id) REFERENCES Chat(chat_id),
 	FOREIGN KEY(fk_user_id) REFERENCES App_User(user_id)
