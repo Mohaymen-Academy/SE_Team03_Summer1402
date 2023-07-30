@@ -27,8 +27,8 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-      - name: 🛃 Run the Maven verify phase
-        run: mvn --batch-mode --update-snapshots verify --file "Full-Text-Search-Project/Full_Text_Search_java_project/pom.xml"
+      - name: 🛃 Test phase
+        run: mvn --batch-mode --update-snapshots test --file "Full-Text-Search-Project/Full_Text_Search_java_project/pom.xml"
 
   Code-Coverage:
     needs: [Test]
