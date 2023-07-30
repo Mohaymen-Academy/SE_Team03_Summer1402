@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS Seen;
 DROP TABLE IF EXISTS Chat_Member;
 DROP TABLE IF EXISTS Chat_Message;
 DROP SEQUENCE IF EXISTS Chat_Message_id_seq;
@@ -16,7 +17,7 @@ CREATE SEQUENCE Image_id_seq;
 CREATE TABLE Image
 (
 	image_id		INT				PRIMARY KEY		DEFAULT nextval('Image_id_seq'),
-	image_data		OID				NOT NULL
+	image_data		BYTEA			NOT NULL
 );
 
 ALTER SEQUENCE Image_id_seq
@@ -30,7 +31,7 @@ CREATE SEQUENCE App_User_id_seq;
 CREATE TABLE App_User
 (
 	user_id			INT				PRIMARY KEY		DEFAULT nextval('App_User_id_seq'),
-	username		VARCHAR(50)	NOT NULL,
+	username		VARCHAR(50)		NOT NULL,
 	phone_number	VARCHAR(11)		NOT NULL,
 	bio				VARCHAR(250),
 	fk_image_id		INT				DEFAULT 1,
@@ -63,8 +64,7 @@ CREATE SEQUENCE Chat_Message_id_seq;
 CREATE TABLE Chat_Message
 (
 	message_id		INT				PRIMARY KEY		DEFAULT nextval('Chat_Message_id_seq'),
-	seen 			BOOL			DEFAULT 'false',
-	time_message	DATE			NOT NULL,
+	message_time	DATE			NOT NULL,
 	have_text		BOOL			DEFAULT 'false',
 	text_message	TEXT,
 	have_image		BOOL			DEFAULT 'false',
@@ -91,6 +91,18 @@ CREATE TABLE Chat_Member
 	fk_chat_id		INT				NOT NULL,
 	fk_user_id		INT				NOT NULL,
 	is_admin		BOOL			DEFAULT 'false',
+	PRIMARY KEY(fk_chat_id, fk_user_id),
+	FOREIGN KEY(fk_chat_id) REFERENCES Chat(chat_id),
+	FOREIGN KEY(fk_user_id) REFERENCES App_User(user_id)
+);
+
+-- Seen TABLE:
+
+CREATE TABLE Seen
+(
+	fk_chat_id		INT				NOT NULL,
+	fk_user_id		INT				NOT NULL,
+	count			INT				DEFAULT 0,
 	PRIMARY KEY(fk_chat_id, fk_user_id),
 	FOREIGN KEY(fk_chat_id) REFERENCES Chat(chat_id),
 	FOREIGN KEY(fk_user_id) REFERENCES App_User(user_id)
