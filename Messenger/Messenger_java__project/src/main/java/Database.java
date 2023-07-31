@@ -45,7 +45,6 @@ public class Database {
                 + lines.get(3);
     }
 
-
     public void addUser(String username, String displayName, String phoneNumber, String password, String bio) throws SQLException {
         Connection conn = dataSource.getConnection();
 
@@ -161,6 +160,90 @@ public class Database {
         ResultSet rs = stmt.executeQuery();
         conn.close();
         return rs.next();
+    }
+
+    public boolean getLoginCheck(String username, String password) throws SQLException {
+        Connection conn = dataSource.getConnection();
+
+        PreparedStatement accountSelectStmt =
+                conn.prepareStatement("SELECT     * FROM Account " +
+                        "WHERE      fk_username = ? " +
+                        "AND        password_hash = ?");
+
+        accountSelectStmt.setString(1, username);
+        accountSelectStmt.setString(2, password);
+
+        ResultSet rs = accountSelectStmt.executeQuery();
+
+        conn.close();
+
+        return rs.next();
+    }
+
+    public void deleteAccount(String username) throws  SQLException {
+        Connection conn = dataSource.getConnection();
+
+        PreparedStatement profileDeleteStmt =
+                conn.prepareStatement("DELETE     FROM Profile " +
+                        "WHERE      username = ?;");
+        profileDeleteStmt.setString(1, username);
+        profileDeleteStmt.execute();
+
+        conn.close();
+    }
+
+    public void changeBio(String username, String newBio) throws SQLException {
+        Connection conn = dataSource.getConnection();
+
+        PreparedStatement profileUpdate =
+                conn.prepareStatement("UPDATE profile " +
+                        "SET    bio = ? " +
+                        "WHERE  username = ?;");
+        profileUpdate.setString(1, newBio);
+        profileUpdate.setString(2, username);
+        profileUpdate.execute();
+
+        conn.close();
+    }
+
+    public void sendMessage(String username, Integer chatId, String messageText) throws SQLException {
+        Connection conn = dataSource.getConnection();
+
+        PreparedStatement insertChatMessage =
+                conn.prepareStatement("INSERT INTO chat_message(have_text, text_message, fk_chat_id, fk_username) " +
+                        "VALUES ('true', ?, ?, ?);");
+        insertChatMessage.setString(1, messageText);
+        insertChatMessage.setInt(2, chatId);
+        insertChatMessage.setString(3, username);
+        insertChatMessage.execute();
+
+        conn.close();
+    }
+
+    public void editMessage(int messageId, String messageText) throws SQLException {
+        Connection conn = dataSource.getConnection();
+
+        PreparedStatement updateChatMessage =
+                conn.prepareStatement("UPDATE   chat_message " +
+                        "SET    text_message = ? " +
+                        "WHERE  message_id = ?;");
+        updateChatMessage.setString(1, messageText);
+        updateChatMessage.setInt(2, messageId);
+        updateChatMessage.execute();
+
+        conn.close();
+    }
+
+    public void deleteMessage(int messageId) throws SQLException {
+        Connection conn = dataSource.getConnection();
+
+        PreparedStatement deleteChatMessage =
+                conn.prepareStatement("DELETE   FROM chat_message " +
+                        "WHERE  message_id = ?");
+        deleteChatMessage.setInt(1, messageId);
+        deleteChatMessage.execute();
+
+        conn.close();
     }
 
 }

@@ -2,19 +2,19 @@ INSERT 	INTO Image(image_data)
 		VALUES
 		('TestImage');
 			
-INSERT 	INTO Profile(username, display_name, phone_number)
-		VALUES
-		('Ali', 'Ali', '09038426825'),
-		('Hossein', 'Hossein', '09105158355'),
-		('Ahmad', 'Ahmad', '09123456789'),
-		('Reza', 'Reza', '09112223344');
-
-INSERT 	INTO Account(fk_username, password_hash)
+INSERT 	INTO Account(username, password_hash)
 		VALUES
 		('Ali', 'Ali09038426825'),
 		('Hossein', 'Hossein09105158355'),
 		('Ahmad', 'Ahmad09123456789'),
 		('Reza', 'Reza09112223344');
+
+INSERT 	INTO Profile(fk_username, display_name, phone_number)
+		VALUES
+		('Ali', 'Ali', '09038426825'),
+		('Hossein', 'Hossein', '09105158355'),
+		('Ahmad', 'Ahmad', '09123456789'),
+		('Reza', 'Reza', '09112223344');
 
 
 INSERT 	INTO Chat(chat_type, chat_name)
