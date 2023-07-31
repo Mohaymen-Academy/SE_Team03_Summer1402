@@ -44,6 +44,7 @@ CREATE TABLE Account
 	fk_username		VARCHAR(50)		PRIMARY KEY,
 	password_hash 	TEXT			NOT NULL,
 	FOREIGN KEY(fk_username) REFERENCES Profile(username)
+		ON DELETE CASCADE
 );	
 
 
@@ -69,7 +70,7 @@ CREATE SEQUENCE Chat_Message_id_seq;
 CREATE TABLE Chat_Message
 (
 	message_id		INT				PRIMARY KEY		DEFAULT nextval('Chat_Message_id_seq'),
-	message_time	DATE			NOT NULL,
+	message_time	DATE			DEFAULT NOW(),
 	have_text		BOOL			DEFAULT 'false',
 	text_message	TEXT,
 	have_image		BOOL			DEFAULT 'false',
@@ -83,6 +84,7 @@ CREATE TABLE Chat_Message
 	FOREIGN KEY(fk_image_id) REFERENCES Image(image_id),
 	FOREIGN KEY(fk_chat_id) REFERENCES Chat(chat_id),
 	FOREIGN KEY(fk_username) REFERENCES Profile(username)
+		ON DELETE CASCADE
 );
 
 ALTER SEQUENCE Chat_Message_id_seq
@@ -99,6 +101,7 @@ CREATE TABLE Chat_Member
 	PRIMARY KEY(fk_chat_id, fk_username),
 	FOREIGN KEY(fk_chat_id) REFERENCES Chat(chat_id),
 	FOREIGN KEY(fk_username) REFERENCES Profile(username)
+		ON DELETE CASCADE
 );
 
 -- Seen TABLE:
@@ -111,4 +114,5 @@ CREATE TABLE Seen
 	PRIMARY KEY(fk_chat_id, fk_username),
 	FOREIGN KEY(fk_chat_id) REFERENCES Chat(chat_id),
 	FOREIGN KEY(fk_username) REFERENCES Profile(username)
+		ON DELETE CASCADE
 );
