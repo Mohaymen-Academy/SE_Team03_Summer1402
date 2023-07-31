@@ -3,6 +3,7 @@ import org.postgresql.ds.PGSimpleDataSource;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -58,7 +59,7 @@ public class Database {
         profileInsertStmt.execute();
 
         PreparedStatement accountInsertStmt =
-                conn.prepareStatement("INSERT INTO Account(fk_username, password_hash)" +
+                conn.prepareStatement("INSERT INTO account(fk_username, password_hash)" +
                         "VALUES (?, ?)");
         accountInsertStmt.setString(1, username);
         accountInsertStmt.setString(2, password);
@@ -69,6 +70,97 @@ public class Database {
 
     public void addUser(String username, String displayName, String phoneNumber, String password) throws SQLException {
         addUser(username, displayName, phoneNumber, password, "");
+    }
+
+    public ArrayList<String> getAllMessages(String username) throws SQLException {
+        ArrayList<String> result = new ArrayList<>();
+
+        Connection conn = dataSource.getConnection();
+        PreparedStatement stmt =
+                conn.prepareStatement("SELECT text_message FROM chat_message " +
+                        "WHERE fk_username = ?");
+        stmt.setString(1, username);
+        ResultSet rs = stmt.executeQuery();
+        conn.close();
+
+        while (rs.next()) {
+            result.add(rs.getString("text_message"));
+        }
+
+        return result;
+    }
+
+    public int getMessageCount(String username) throws SQLException {
+        Connection conn = dataSource.getConnection();
+        PreparedStatement stmt =
+                conn.prepareStatement("SELECT COUNT(*) FROM chat_message " +
+                        "WHERE fk_username = ?");
+        stmt.setString(1, username);
+        ResultSet rs = stmt.executeQuery();
+        conn.close();
+        rs.next();
+        return rs.getInt("count");
+    }
+
+    public int getRelationshipCount(String username) throws SQLException {
+        Connection conn = dataSource.getConnection();
+        PreparedStatement stmt =
+                conn.prepareStatement("SELECT COUNT(*) " +
+                        "FROM chat_member CM INNER JOIN chat CH ON CM.fk_chat_id = CH.chat_id " +
+                        "WHERE CH.chat_type = '1' " +
+                        "AND CM.fk_username = ?");
+        stmt.setString(1, username);
+        ResultSet rs = stmt.executeQuery();
+        conn.close();
+        rs.next();
+        return rs.getInt("count");
+    }
+
+    public float getAverageMessageSent(String username) throws SQLException {
+        return (float)getMessageCount(username) / getRelationshipCount(username);
+    }
+
+    public void setSeen(int chatId, String username, int count) throws SQLException {
+        setSeenRecord(chatId, username);
+        Connection conn = dataSource.getConnection();
+        PreparedStatement stmt =
+                conn.prepareStatement("UPDATE seen " +
+                        "SET message_count = ? " +
+                        "WHERE fk_chat_id = ? " +
+                        "AND fk_username = ?");
+        stmt.setInt(1, count);
+        stmt.setInt(2, chatId);
+        stmt.setString(3, username);
+        stmt.execute();
+        conn.close();
+    }
+
+    private void setSeenRecord(int chatId, String username) throws SQLException {
+        if(haveSeenRecord(chatId, username)){
+           return;
+        }
+        Connection conn = dataSource.getConnection();
+        PreparedStatement stmt =
+                conn.prepareStatement("INSERT INTO seen(fk_chat_id, fk_username) " +
+                        "VALUES (?, ?)");
+        stmt.setInt(1, chatId);
+        stmt.setString(2, username);
+        stmt.execute();
+        conn.close();
+    }
+
+    private Boolean haveSeenRecord(int chatId, String username) throws SQLException {
+        Connection conn = dataSource.getConnection();
+        PreparedStatement stmt =
+                conn.prepareStatement("SELECT * " +
+                        "FROM seen " +
+                        "WHERE fk_chat_id = ? " +
+                        "AND fk_username = ?");
+        stmt.setInt(1, chatId);
+        stmt.setString(2, username);
+        ResultSet rs = stmt.executeQuery();
+        conn.close();
+        return rs.next();
     }
 
 }
