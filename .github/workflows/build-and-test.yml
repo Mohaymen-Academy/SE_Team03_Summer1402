@@ -83,3 +83,4 @@ jobs:
         with:
           host: ${{ secrets.SONARQUBE_HOST }}
           login: ${{ secrets.SONARQUBE_TOKEN }}
+          projectBaseDir: "Full-Text-Search-Project/Full_Text_Search_java_project/"
