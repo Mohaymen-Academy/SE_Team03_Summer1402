@@ -4,8 +4,8 @@ DROP TABLE IF EXISTS Chat_Message;
 DROP SEQUENCE IF EXISTS Chat_Message_id_seq;
 DROP TABLE IF EXISTS Chat;
 DROP SEQUENCE IF EXISTS Chat_id_seq;
-DROP TABLE IF EXISTS App_User;
-DROP SEQUENCE IF EXISTS App_User_id_seq;
+DROP TABLE IF EXISTS Account;
+DROP TABLE IF EXISTS Profile;
 DROP TABLE IF EXISTS Image;
 DROP SEQUENCE IF EXISTS Image_id_seq;
 
@@ -24,22 +24,27 @@ ALTER SEQUENCE Image_id_seq
 OWNED BY Image.image_id;
 
 
--- APP_USER TABLE:
+-- Profile TABLE:
 
-CREATE SEQUENCE App_User_id_seq;
-
-CREATE TABLE App_User
+CREATE TABLE Profile
 (
-	user_id			INT				PRIMARY KEY		DEFAULT nextval('App_User_id_seq'),
-	username		VARCHAR(50)		NOT NULL,
+	username		VARCHAR(50)		PRIMARY KEY,
+	display_name	VARCHAR(50)		NOT NULL,
 	phone_number	VARCHAR(11)		NOT NULL,
 	bio				VARCHAR(250),
 	fk_image_id		INT				DEFAULT 1,
 	FOREIGN KEY(fk_image_id) REFERENCES Image(image_id)
 );
 
-ALTER SEQUENCE App_User_id_seq
-OWNED BY App_User.user_id;
+
+-- Account TABLE:
+
+CREATE TABLE Account
+(
+	fk_username		VARCHAR(50)		PRIMARY KEY,
+	password_hash 	TEXT			NOT NULL,
+	FOREIGN KEY(fk_username) REFERENCES Profile(username)
+);	
 
 
 -- CHAT TABLE:
@@ -74,10 +79,10 @@ CREATE TABLE Chat_Message
 	have_file 		BOOL			DEFAULT 'false',
 	file_URL		TEXT,
 	fk_chat_id		INT				NOT NULL,
-	fk_user_id		INT				NOT NULL,
+	fk_username		VARCHAR(50)		NOT NULL,
 	FOREIGN KEY(fk_image_id) REFERENCES Image(image_id),
 	FOREIGN KEY(fk_chat_id) REFERENCES Chat(chat_id),
-	FOREIGN KEY(fk_user_id) REFERENCES App_User(user_id)
+	FOREIGN KEY(fk_username) REFERENCES Profile(username)
 );
 
 ALTER SEQUENCE Chat_Message_id_seq
@@ -89,11 +94,11 @@ OWNED BY Chat_Message.message_id;
 CREATE TABLE Chat_Member
 (
 	fk_chat_id		INT				NOT NULL,
-	fk_user_id		INT				NOT NULL,
+	fk_username		VARCHAR(50)		NOT NULL,
 	is_admin		BOOL			DEFAULT 'false',
-	PRIMARY KEY(fk_chat_id, fk_user_id),
+	PRIMARY KEY(fk_chat_id, fk_username),
 	FOREIGN KEY(fk_chat_id) REFERENCES Chat(chat_id),
-	FOREIGN KEY(fk_user_id) REFERENCES App_User(user_id)
+	FOREIGN KEY(fk_username) REFERENCES Profile(username)
 );
 
 -- Seen TABLE:
@@ -101,9 +106,9 @@ CREATE TABLE Chat_Member
 CREATE TABLE Seen
 (
 	fk_chat_id		INT				NOT NULL,
-	fk_user_id		INT				NOT NULL,
+	fk_username		VARCHAR(50)		NOT NULL,
 	message_count	INT				DEFAULT 0,
-	PRIMARY KEY(fk_chat_id, fk_user_id),
+	PRIMARY KEY(fk_chat_id, fk_username),
 	FOREIGN KEY(fk_chat_id) REFERENCES Chat(chat_id),
-	FOREIGN KEY(fk_user_id) REFERENCES App_User(user_id)
+	FOREIGN KEY(fk_username) REFERENCES Profile(username)
 );

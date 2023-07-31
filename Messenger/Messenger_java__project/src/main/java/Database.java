@@ -1,12 +1,12 @@
 import org.postgresql.ds.PGSimpleDataSource;
 
 import javax.sql.DataSource;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 
@@ -45,21 +45,30 @@ public class Database {
     }
 
 
-    public Boolean addUser(String username, String phoneNumber, String bio) throws SQLException {
+    public void addUser(String username, String displayName, String phoneNumber, String password, String bio) throws SQLException {
         Connection conn = dataSource.getConnection();
-        PreparedStatement insertStmt =
-                conn.prepareStatement("INSERT INTO App_User(username, phone_number, bio)" +
-                        "VALUES (?, ?, ?)");
-        insertStmt.setString(1, username);
-        insertStmt.setString(2, phoneNumber);
-        insertStmt.setString(3, bio);
-        Boolean result = insertStmt.execute();
+
+        PreparedStatement profileInsertStmt =
+                conn.prepareStatement("INSERT INTO Profile(username, display_name, phone_number, bio)" +
+                        "VALUES (?, ?, ?, ?)");
+        profileInsertStmt.setString(1, username);
+        profileInsertStmt.setString(2, displayName);
+        profileInsertStmt.setString(3, phoneNumber);
+        profileInsertStmt.setString(4, bio);
+        profileInsertStmt.execute();
+
+        PreparedStatement accountInsertStmt =
+                conn.prepareStatement("INSERT INTO Account(fk_username, password_hash)" +
+                        "VALUES (?, ?)");
+        accountInsertStmt.setString(1, username);
+        accountInsertStmt.setString(2, password);
+        accountInsertStmt.execute();
+
         conn.close();
-        return result;
     }
 
-    public Boolean addUser(String username, String phoneNumber) throws SQLException {
-        return addUser(username, phoneNumber, "");
+    public void addUser(String username, String displayName, String phoneNumber, String password) throws SQLException {
+        addUser(username, displayName, phoneNumber, password, "");
     }
 
 }
