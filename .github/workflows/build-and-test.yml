@@ -68,19 +68,3 @@ jobs:
         with:
           name: jacoco-report
           path: Full-Text-Search-Project/Full_Text_Search_java_project/target/site/jacoco/
-
-  SonarQube:
-    needs: [Test]
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Checking out
-        uses: actions/checkout@master
-        with:
-          fetch-depth: 0
-      - name: SonarQube Scan
-        uses: kitabisa/sonarqube-action@v1.2.0
-        with:
-          host: ${{ secrets.SONARQUBE_HOST }}
-          login: ${{ secrets.SONARQUBE_TOKEN }}
-          projectBaseDir: "Full-Text-Search-Project/Full_Text_Search_java_project/"
