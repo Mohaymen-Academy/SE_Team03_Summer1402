@@ -1,4 +1,5 @@
 import jakarta.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "Profile")
@@ -24,6 +25,15 @@ public class Profile {
     @OneToOne
     @JoinColumn(name ="fk_account_id")
     private Account account;
+
+    @OneToMany(mappedBy = "sender")
+    private Set<Message> sentMessages;
+
+    @OneToMany(mappedBy = "receiver")
+    private Set<Message> receivedMessages;
+
+    @OneToMany(mappedBy = "profile1")
+    private Set<ProfileConnection> connections;
 
     public Profile() {
     }

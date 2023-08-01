@@ -18,15 +18,16 @@ public class Message {
     @Column(name = "have_file")
     private boolean haveFile;
 
-    @Column(name = "fk_file_id")
-    private int fileId;
+    @ManyToOne
+    @JoinColumn(name ="fk_file_id")
+    private File fileId;
 
-    @Column(name = "fk_sender")
-    @ManyToOne(cascade = CascadeType.REMOVE)
-    private  int senderId;
+    @ManyToOne
+    @JoinColumn(name ="fk_sender_id")
+    private Profile sender;
 
-    @Column(name = "fk_receiver")
-    @ManyToOne(targetEntity = Profile)
-    private  int receiverId;
+    @ManyToOne
+    @JoinColumn(name ="fk_receiver_id")
+    private Profile receiver;
 
 }

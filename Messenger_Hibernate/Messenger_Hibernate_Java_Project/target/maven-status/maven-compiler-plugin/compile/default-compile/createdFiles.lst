@@ -3,4 +3,5 @@ Account.class
 Profile.class
 File.class
 ProfileType.class
+ProfileConnection.class
 Message.class
