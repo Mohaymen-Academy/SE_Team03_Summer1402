@@ -1,3 +1,5 @@
+package entity;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -25,6 +27,10 @@ public class Account {
         this.username = username;
         this.password = password;
         this.phoneNumber = phoneNumber;
+    }
+
+    public void setProfile(Profile profile){
+        this.profile = profile;
     }
 
 }

@@ -1,7 +1,8 @@
+Entity\File.class
 Main.class
-Account.class
-Profile.class
-File.class
-ProfileType.class
-ProfileConnection.class
-Message.class
+Entity\Account.class
+Entity\ProfileConnection.class
+Entity\Profile.class
+Entity\ProfileType.class
+database\AddUser.class
+Entity\Message.class

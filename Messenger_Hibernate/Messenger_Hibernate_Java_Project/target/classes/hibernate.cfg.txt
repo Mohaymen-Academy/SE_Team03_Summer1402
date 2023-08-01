@@ -22,9 +22,11 @@
         <property name="hibernate.hbm2ddl.auto">create-drop</property>
 
         <!-- Annotated entity classes -->
-        <mapping class="Account"/>
-        <mapping class="Profile"/>
-        <mapping class="Message"/>
+        <mapping class="entity.Account"/>
+        <mapping class="entity.Profile"/>
+        <mapping class="entity.Message"/>
+        <mapping class="entity.File"/>
+        <mapping class="entity.ProfileConnection"/>
 
     </session-factory>
 </hibernate-configuration>

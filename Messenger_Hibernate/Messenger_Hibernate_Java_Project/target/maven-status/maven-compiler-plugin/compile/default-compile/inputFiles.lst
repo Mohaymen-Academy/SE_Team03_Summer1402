@@ -1,6 +1,8 @@
-E:\Projects\CodeStar\SE_Team03_Summer1402\Messenger_Hibernate\Messenger_Hibernate_Java_Project\src\main\java\Account.java
-E:\Projects\CodeStar\SE_Team03_Summer1402\Messenger_Hibernate\Messenger_Hibernate_Java_Project\src\main\java\Message.java
-E:\Projects\CodeStar\SE_Team03_Summer1402\Messenger_Hibernate\Messenger_Hibernate_Java_Project\src\main\java\ProfileType.java
+E:\Projects\CodeStar\SE_Team03_Summer1402\Messenger_Hibernate\Messenger_Hibernate_Java_Project\src\main\java\entity\Profile.java
+E:\Projects\CodeStar\SE_Team03_Summer1402\Messenger_Hibernate\Messenger_Hibernate_Java_Project\src\main\java\entity\Account.java
 E:\Projects\CodeStar\SE_Team03_Summer1402\Messenger_Hibernate\Messenger_Hibernate_Java_Project\src\main\java\Main.java
-E:\Projects\CodeStar\SE_Team03_Summer1402\Messenger_Hibernate\Messenger_Hibernate_Java_Project\src\main\java\File.java
-E:\Projects\CodeStar\SE_Team03_Summer1402\Messenger_Hibernate\Messenger_Hibernate_Java_Project\src\main\java\Profile.java
+E:\Projects\CodeStar\SE_Team03_Summer1402\Messenger_Hibernate\Messenger_Hibernate_Java_Project\src\main\java\entity\Message.java
+E:\Projects\CodeStar\SE_Team03_Summer1402\Messenger_Hibernate\Messenger_Hibernate_Java_Project\src\main\java\database\AddUser.java
+E:\Projects\CodeStar\SE_Team03_Summer1402\Messenger_Hibernate\Messenger_Hibernate_Java_Project\src\main\java\entity\ProfileType.java
+E:\Projects\CodeStar\SE_Team03_Summer1402\Messenger_Hibernate\Messenger_Hibernate_Java_Project\src\main\java\entity\File.java
+E:\Projects\CodeStar\SE_Team03_Summer1402\Messenger_Hibernate\Messenger_Hibernate_Java_Project\src\main\java\entity\ProfileConnection.java
