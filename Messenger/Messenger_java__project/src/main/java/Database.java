@@ -76,8 +76,11 @@ public class Database {
 
         Connection conn = dataSource.getConnection();
         PreparedStatement stmt =
-                conn.prepareStatement("SELECT text_message FROM chat_message " +
-                        "WHERE fk_username = ?");
+                conn.prepareStatement("SELECT text_message " +
+                        "FROM chat_message CM " +
+                        "INNER JOIN profile PF ON CM.fk_sender = PF.profile_id " +
+                        "INNER JOIN account AC ON PF.fk_account_id = AC.username " +
+                        "WHERE AC.username = ?");
         stmt.setString(1, username);
         ResultSet rs = stmt.executeQuery();
         conn.close();
@@ -92,8 +95,11 @@ public class Database {
     public int getMessageCount(String username) throws SQLException {
         Connection conn = dataSource.getConnection();
         PreparedStatement stmt =
-                conn.prepareStatement("SELECT COUNT(*) FROM chat_message " +
-                        "WHERE fk_username = ?");
+                conn.prepareStatement("SELECT COUNT(*) " +
+                        "FROM chat_message CM " +
+                        "INNER JOIN profile PF ON CM.fk_sender = PF.profile_id " +
+                        "INNER JOIN account AC ON PF.fk_account_id = AC.username " +
+                        "WHERE AC.username = ?");
         stmt.setString(1, username);
         ResultSet rs = stmt.executeQuery();
         conn.close();
@@ -101,13 +107,14 @@ public class Database {
         return rs.getInt("count");
     }
 
-    public int getRelationshipCount(String username) throws SQLException {
+    public int getConnectionCount(String username) throws SQLException {
         Connection conn = dataSource.getConnection();
         PreparedStatement stmt =
                 conn.prepareStatement("SELECT COUNT(*) " +
-                        "FROM chat_member CM INNER JOIN chat CH ON CM.fk_chat_id = CH.chat_id " +
-                        "WHERE CH.chat_type = '1' " +
-                        "AND CM.fk_username = ?");
+                        "FROM profile_connection PC " +
+                        "INNER JOIN profile PF ON PC.fk_profile_1 = PF.profile_id " +
+                        "INNER JOIN account AC ON PF.fk_account_id = AC.username " +
+                        "AND AC.username = ?");
         stmt.setString(1, username);
         ResultSet rs = stmt.executeQuery();
         conn.close();
@@ -116,50 +123,33 @@ public class Database {
     }
 
     public float getAverageMessageSent(String username) throws SQLException {
-        return (float)getMessageCount(username) / getRelationshipCount(username);
+        return (float)getMessageCount(username) / getConnectionCount(username);
     }
 
-    public void setSeen(int chatId, String username, int count) throws SQLException {
-        setSeenRecord(chatId, username);
+    public void setSeen(int profileId1, int profileId2, int messageId) throws SQLException {
         Connection conn = dataSource.getConnection();
         PreparedStatement stmt =
-                conn.prepareStatement("UPDATE seen " +
-                        "SET message_count = ? " +
-                        "WHERE fk_chat_id = ? " +
-                        "AND fk_username = ?");
-        stmt.setInt(1, count);
-        stmt.setInt(2, chatId);
-        stmt.setString(3, username);
+                conn.prepareStatement("UPDATE profile_connection " +
+                        "SET fk_last_message_seen = ? " +
+                        "WHERE fk_profile_1 = ? " +
+                        "AND fk_profile_2 = ?");
+        stmt.setInt(1, messageId);
+        stmt.setInt(2, profileId1);
+        stmt.setInt(3, profileId2);
         stmt.execute();
         conn.close();
     }
 
-    private void setSeenRecord(int chatId, String username) throws SQLException {
-        if(haveSeenRecord(chatId, username)){
-           return;
-        }
+    public Boolean isSeen(int messageId) throws SQLException {
         Connection conn = dataSource.getConnection();
         PreparedStatement stmt =
-                conn.prepareStatement("INSERT INTO seen(fk_chat_id, fk_username) " +
-                        "VALUES (?, ?)");
-        stmt.setInt(1, chatId);
-        stmt.setString(2, username);
-        stmt.execute();
-        conn.close();
-    }
-
-    private Boolean haveSeenRecord(int chatId, String username) throws SQLException {
-        Connection conn = dataSource.getConnection();
-        PreparedStatement stmt =
-                conn.prepareStatement("SELECT * " +
-                        "FROM seen " +
-                        "WHERE fk_chat_id = ? " +
-                        "AND fk_username = ?");
-        stmt.setInt(1, chatId);
-        stmt.setString(2, username);
+                conn.prepareStatement("SELECT is_seen(?)");
+        stmt.setInt(1, messageId);
         ResultSet rs = stmt.executeQuery();
         conn.close();
-        return rs.next();
+        if(!rs.next())
+            return false;
+        return rs.getBoolean("is_seen");
     }
 
     public boolean getLoginCheck(String username, String password) throws SQLException {

@@ -12,7 +12,8 @@ public class Main {
         //database.editMessage(201, "Im ali form Iran.");
         //database.deleteMessage(201);
         //database.addUser("aaa", "aaa", "01234567891", "1234");
-        database.setSeen(1, "aaa", 5);
+        //database.setSeen(1, "aaa", 5);
+        System.out.println(database.isSeen(70));
     }
 
 }
