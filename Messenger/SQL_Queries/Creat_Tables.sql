@@ -1,28 +1,26 @@
-DROP FUNCTION IF EXISTS isSeen;
-DROP TABLE IF EXISTS Seen;
-DROP TABLE IF EXISTS Chat_Member;
+DROP TABLE IF EXISTS Profile_Connection;
 DROP TABLE IF EXISTS Chat_Message;
 DROP SEQUENCE IF EXISTS Chat_Message_id_seq;
-DROP TABLE IF EXISTS Chat;
-DROP SEQUENCE IF EXISTS Chat_id_seq;
 DROP TABLE IF EXISTS Profile;
+DROP SEQUENCE IF EXISTS Profile_id_seq;
 DROP TABLE IF EXISTS Account;
-DROP TABLE IF EXISTS Image;
-DROP SEQUENCE IF EXISTS Image_id_seq;
+DROP TABLE IF EXISTS Data_File;
+DROP SEQUENCE IF EXISTS Data_File_id_seq;
+DROP TYPE IF EXISTS Profile_Type;
+CREATE TYPE Profile_Type AS ENUM ('Pv', 'Group', 'Channel');
 
+-- Data_File TABLE:
 
--- IMAGE TABLE:
+CREATE SEQUENCE Data_File_id_seq;
 
-CREATE SEQUENCE Image_id_seq;
-
-CREATE TABLE Image
+CREATE TABLE Data_File
 (
-	image_id		INT				PRIMARY KEY		DEFAULT nextval('Image_id_seq'),
-	image_data		BYTEA			NOT NULL
+	file_id			INT				PRIMARY KEY		DEFAULT nextval('Data_File_id_seq'),
+	file_data		BYTEA			NOT NULL
 );
 
-ALTER SEQUENCE Image_id_seq
-OWNED BY Image.image_id;
+ALTER SEQUENCE Data_File_id_seq
+OWNED BY Data_File.file_id;
 
 
 -- Account TABLE:
@@ -30,39 +28,30 @@ OWNED BY Image.image_id;
 CREATE TABLE Account
 (
 	username		VARCHAR(50)		PRIMARY KEY,
-	password_hash 	TEXT			NOT NULL
+	password_hash 	TEXT			NOT NULL,
+	phone_number 	VARCHAR(11)		NOT NULL
 );	
 
 
 -- Profile TABLE:
 
+CREATE SEQUENCE Profile_id_seq;
+
 CREATE TABLE Profile
 (
-	fk_username		VARCHAR(50)		PRIMARY KEY,
+	profile_id		INT				PRIMARY KEY 	DEFAULT nextval('Profile_id_seq'),
 	display_name	VARCHAR(50)		NOT NULL,
-	phone_number	VARCHAR(11)		NOT NULL,
-	bio				VARCHAR(250),
+	bio				VARCHAR(250)	DEFAULT '',
 	fk_image_id		INT				DEFAULT 1,
-	FOREIGN KEY(fk_username) REFERENCES Account(username)
+	profile_type    Profile_Type 	DEFAULT 'Pv',
+	fk_account_id 	VARCHAR(50),
+	FOREIGN KEY(fk_account_id) REFERENCES Account(username)
 		ON DELETE CASCADE,
-	FOREIGN KEY(fk_image_id) REFERENCES Image(image_id)
+	FOREIGN KEY(fk_image_id) REFERENCES Data_File(file_id)
 );
 
-
--- CHAT TABLE:
-
-CREATE SEQUENCE Chat_id_seq;
-
-CREATE TABLE Chat
-(
-	chat_id 		INT				PRIMARY KEY		DEFAULT nextval('Chat_id_seq'),
-	chat_type		SMALLINT		NOT NULL,
-	chat_name		VARCHAR(50)
-);
-
-ALTER SEQUENCE Chat_id_seq
-OWNED BY Chat.chat_id;
-
+ALTER SEQUENCE Profile_id_seq
+OWNED BY Profile.profile_id;
 
 -- CHAT_MESSAGE TABLE:
 
@@ -72,19 +61,15 @@ CREATE TABLE Chat_Message
 (
 	message_id		INT				PRIMARY KEY		DEFAULT nextval('Chat_Message_id_seq'),
 	message_time	DATE			DEFAULT NOW(),
-	have_text		BOOL			DEFAULT 'false',
 	text_message	TEXT,
-	have_image		BOOL			DEFAULT 'false',
-	fk_image_id		INT				DEFAULT 1,
-	have_voice		BOOL			DEFAULT 'false',
-	voice_URL		TEXT,
 	have_file 		BOOL			DEFAULT 'false',
-	file_URL		TEXT,
-	fk_chat_id		INT				NOT NULL,
-	fk_username		VARCHAR(50)		NOT NULL,
-	FOREIGN KEY(fk_image_id) REFERENCES Image(image_id),
-	FOREIGN KEY(fk_chat_id) REFERENCES Chat(chat_id),
-	FOREIGN KEY(fk_username) REFERENCES Account(username)
+	fk_file_id		INT,
+	fk_sender		INT				NOT NULL,
+	fk_receiver		INT				NOT NULL,
+	FOREIGN KEY(fk_file_id) REFERENCES Data_File(file_id),
+	FOREIGN KEY(fk_sender) REFERENCES Profile(profile_id)
+		ON DELETE CASCADE,
+	FOREIGN KEY(fk_receiver) REFERENCES Profile(profile_id)
 		ON DELETE CASCADE
 );
 
@@ -92,28 +77,18 @@ ALTER SEQUENCE Chat_Message_id_seq
 OWNED BY Chat_Message.message_id;
 
 
--- CHAT_MEMBER TABLE:
+-- Profile_Connection TABLE:
 
-CREATE TABLE Chat_Member
+CREATE TABLE Profile_Connection
 (
-	fk_chat_id		INT				NOT NULL,
-	fk_username		VARCHAR(50)		NOT NULL,
-	is_admin		BOOL			DEFAULT 'false',
-	PRIMARY KEY(fk_chat_id, fk_username),
-	FOREIGN KEY(fk_chat_id) REFERENCES Chat(chat_id),
-	FOREIGN KEY(fk_username) REFERENCES Account(username)
-		ON DELETE CASCADE
-);
-
--- Seen TABLE:
-
-CREATE TABLE Seen
-(
-	fk_chat_id		INT				NOT NULL,
-	fk_username		VARCHAR(50)		NOT NULL,
-	message_count	INT				DEFAULT 0,
-	PRIMARY KEY(fk_chat_id, fk_username),
-	FOREIGN KEY(fk_chat_id) REFERENCES Chat(chat_id),
-	FOREIGN KEY(fk_username) REFERENCES Account(username)
-		ON DELETE CASCADE
+	fk_profile_1			INT		NOT NULL,
+	fk_profile_2			INT		NOT NULL,
+	is_admin				BOOL	DEFAULT 'false',
+	fk_last_message_seen	INT,
+	PRIMARY KEY(fk_profile_1, fk_profile_2),
+	FOREIGN KEY(fk_profile_1) REFERENCES Profile(profile_id)
+		ON DELETE CASCADE,
+	FOREIGN KEY(fk_profile_2) REFERENCES Profile(profile_id)
+		ON DELETE CASCADE,
+	FOREIGN KEY(fk_last_message_seen) REFERENCES Chat_Message(message_id)
 );
