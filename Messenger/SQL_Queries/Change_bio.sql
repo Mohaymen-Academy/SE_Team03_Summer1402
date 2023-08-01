@@ -1,3 +1,3 @@
-UPDATE	 app_user
+UPDATE	 profile
 set		 bio = 'zende shod.'
-where	 user_id = 6;
+where	 profile_id = 9;

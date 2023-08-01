@@ -1,2 +1,2 @@
 Delete 	FROM chat_message
-WHERE	message_id = '201'
+WHERE	message_id = '202';

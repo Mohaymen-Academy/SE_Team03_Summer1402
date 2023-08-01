@@ -53,7 +53,7 @@ CREATE TABLE Profile
 ALTER SEQUENCE Profile_id_seq
 OWNED BY Profile.profile_id;
 
--- CHAT_MESSAGE TABLE:
+-- Chat_Message TABLE:
 
 CREATE SEQUENCE Chat_Message_id_seq;
 

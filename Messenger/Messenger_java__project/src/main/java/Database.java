@@ -45,30 +45,31 @@ public class Database {
                 + lines.get(3);
     }
 
-    public void addUser(String username, String displayName, String phoneNumber, String password, String bio) throws SQLException {
+    public void addUser(String username, String password, String phoneNumber, String displayName, String bio) throws SQLException {
         Connection conn = dataSource.getConnection();
 
-        PreparedStatement profileInsertStmt =
-                conn.prepareStatement("INSERT INTO Profile(username, display_name, phone_number, bio)" +
-                        "VALUES (?, ?, ?, ?)");
-        profileInsertStmt.setString(1, username);
-        profileInsertStmt.setString(2, displayName);
-        profileInsertStmt.setString(3, phoneNumber);
-        profileInsertStmt.setString(4, bio);
-        profileInsertStmt.execute();
-
         PreparedStatement accountInsertStmt =
-                conn.prepareStatement("INSERT INTO account(fk_username, password_hash)" +
-                        "VALUES (?, ?)");
+                conn.prepareStatement("INSERT INTO account(username, password_hash, phone_number)" +
+                        "VALUES (?, ?, ?)");
         accountInsertStmt.setString(1, username);
         accountInsertStmt.setString(2, password);
+        accountInsertStmt.setString(3, phoneNumber);
         accountInsertStmt.execute();
+
+        PreparedStatement profileInsertStmt =
+                conn.prepareStatement("INSERT INTO Profile(display_name, bio, fk_account_id)" +
+                        "VALUES (?, ?, ?)");
+        profileInsertStmt.setString(1, displayName);
+        profileInsertStmt.setString(2, bio);
+        profileInsertStmt.setString(3, username);
+
+        profileInsertStmt.execute();
 
         conn.close();
     }
 
-    public void addUser(String username, String displayName, String phoneNumber, String password) throws SQLException {
-        addUser(username, displayName, phoneNumber, password, "");
+    public void addUser(String username, String password, String phoneNumber, String displayName) throws SQLException {
+        addUser(username, password, phoneNumber, displayName, "");
     }
 
     public ArrayList<String> getAllMessages(String username) throws SQLException {
@@ -167,7 +168,7 @@ public class Database {
 
         PreparedStatement accountSelectStmt =
                 conn.prepareStatement("SELECT     * FROM Account " +
-                        "WHERE      fk_username = ? " +
+                        "WHERE      username = ? " +
                         "AND        password_hash = ?");
 
         accountSelectStmt.setString(1, username);
@@ -184,7 +185,7 @@ public class Database {
         Connection conn = dataSource.getConnection();
 
         PreparedStatement profileDeleteStmt =
-                conn.prepareStatement("DELETE     FROM Profile " +
+                conn.prepareStatement("DELETE     FROM Account " +
                         "WHERE      username = ?;");
         profileDeleteStmt.setString(1, username);
         profileDeleteStmt.execute();
@@ -192,29 +193,29 @@ public class Database {
         conn.close();
     }
 
-    public void changeBio(String username, String newBio) throws SQLException {
+    public void changeBio(Integer profileId, String newBio) throws SQLException {
         Connection conn = dataSource.getConnection();
 
         PreparedStatement profileUpdate =
                 conn.prepareStatement("UPDATE profile " +
                         "SET    bio = ? " +
-                        "WHERE  username = ?;");
+                        "WHERE  profile_id = ?;");
         profileUpdate.setString(1, newBio);
-        profileUpdate.setString(2, username);
+        profileUpdate.setInt(2, profileId);
         profileUpdate.execute();
 
         conn.close();
     }
 
-    public void sendMessage(String username, Integer chatId, String messageText) throws SQLException {
+    public void sendMessage(int sender, int receiver, String messageText) throws SQLException {
         Connection conn = dataSource.getConnection();
 
         PreparedStatement insertChatMessage =
-                conn.prepareStatement("INSERT INTO chat_message(have_text, text_message, fk_chat_id, fk_username) " +
-                        "VALUES ('true', ?, ?, ?);");
+                conn.prepareStatement("INSERT INTO chat_message(text_message, fk_sender, fk_receiver) " +
+                        "VALUES (?, ?, ?);");
         insertChatMessage.setString(1, messageText);
-        insertChatMessage.setInt(2, chatId);
-        insertChatMessage.setString(3, username);
+        insertChatMessage.setInt(2, sender);
+        insertChatMessage.setInt(3, receiver);
         insertChatMessage.execute();
 
         conn.close();
