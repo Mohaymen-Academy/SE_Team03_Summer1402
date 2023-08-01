@@ -10,7 +10,7 @@
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
         <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/CodeStarHibernate</property>
         <property name="hibernate.connection.username">postgres</property>
-        <property name="hibernate.connection.password">a1l3i8a1t12</property>
+        <property name="hibernate.connection.password">1234</property>
 
         <!-- SQL dialect -->
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
@@ -25,7 +25,6 @@
         <mapping class="Account"/>
         <mapping class="Profile"/>
         <mapping class="Message"/>
-        <mapping class="File"/>
 
     </session-factory>
 </hibernate-configuration>

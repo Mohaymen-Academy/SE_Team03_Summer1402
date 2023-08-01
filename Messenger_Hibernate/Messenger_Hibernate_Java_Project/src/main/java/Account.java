@@ -1,20 +1,22 @@
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Account")
 public class Account {
 
     @Id
+    @Column(nullable = false, length = 50)
     private String username;
 
-    @Column(name = "password_hash")
+    @Column(name = "password_hash", length = 64)
     private String password;
 
-    @Column(name = "phone_number")
+    @Column(name = "phone_number", length = 11)
     private String phoneNumber;
+
+    @OneToOne
+    @JoinColumn(name ="fk_profile_id")
+    private Profile profile;
 
     public Account() {
     }
