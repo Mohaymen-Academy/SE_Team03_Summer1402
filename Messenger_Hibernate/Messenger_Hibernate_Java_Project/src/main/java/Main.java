@@ -13,9 +13,11 @@ public class Main {
                         databaseLocalInfo.getPassword());
         Database database =
                 new Database(hibernateUtil);
-        database.addUser("Ali", "1234", "09038426825",
-                "ali athary", "hello !", null);
-        //hibernateUtil.shutdown();
+//        database.addUser("Ali", "1234", "09038426825",
+//                "ali athary", "hello !", null);
+//        System.out.println(database.getLoginCheck("Ali", "1234"));
+//        database.deleteAccount("Ali");
+        hibernateUtil.shutdown();
     }
 
 }

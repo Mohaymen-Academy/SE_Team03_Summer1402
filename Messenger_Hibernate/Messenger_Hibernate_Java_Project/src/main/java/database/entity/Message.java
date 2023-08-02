@@ -1,9 +1,11 @@
 package database.entity;
 
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import java.util.Date;
 
+@NoArgsConstructor
 @Entity
 @Table(name = "Chat_Message")
 public class Message {

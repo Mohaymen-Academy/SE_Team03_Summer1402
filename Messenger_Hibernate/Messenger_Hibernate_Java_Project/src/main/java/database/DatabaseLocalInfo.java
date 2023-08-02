@@ -1,11 +1,14 @@
 package database;
 
+import lombok.Getter;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 
+@Getter
 public class DatabaseLocalInfo {
 
     private final String url;
@@ -25,18 +28,6 @@ public class DatabaseLocalInfo {
                 + lines.get(1);
         username = lines.get(2);
         password = lines.get(3);
-    }
-
-    public String getUrl(){
-        return url;
-    }
-
-    public String getUsername(){
-        return username;
-    }
-
-    public String getPassword(){
-        return password;
     }
 
 }

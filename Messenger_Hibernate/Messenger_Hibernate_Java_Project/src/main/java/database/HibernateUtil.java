@@ -1,5 +1,8 @@
 package database;
 
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
+import lombok.Getter;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
@@ -7,13 +10,25 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 
-public class HibernateUtil {
+import java.util.Properties;
 
-    private static SessionFactory sessionFactory;
+public class HibernateUtil {
 
     private static StandardServiceRegistry serviceRegistry;
 
+    @Getter
+    private SessionFactory sessionFactory;
+
+    @Getter
+    private EntityManagerFactory entityManagerFactory;
+
     public HibernateUtil(String databaseUrl, String username, String password) {
+        aetUpSessionFactory(databaseUrl, username, password);
+        setUpEntityManagerFactory(databaseUrl, username, password);
+    }
+
+    private void aetUpSessionFactory(String databaseUrl, String username, String password)
+    {
         try {
             Configuration config = new Configuration();
             config.configure();
@@ -40,8 +55,15 @@ public class HibernateUtil {
         }
     }
 
-    public SessionFactory getSessionFactory(){
-        return sessionFactory;
+    private void setUpEntityManagerFactory(String databaseUrl, String username, String password)
+    {
+        Properties props = new Properties();
+        props.setProperty("javax.persistence.jdbc.url", databaseUrl);
+        props.setProperty("javax.persistence.jdbc.user", username);
+        props.setProperty("javax.persistence.jdbc.password", password);
+        entityManagerFactory =
+                Persistence.createEntityManagerFactory(
+                        "dbPersistenceUnit", props);
     }
 
     public void shutdown() {

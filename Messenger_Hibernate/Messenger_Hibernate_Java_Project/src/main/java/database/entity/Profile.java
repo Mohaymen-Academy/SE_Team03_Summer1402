@@ -1,8 +1,15 @@
 package database.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import java.util.Set;
 
+@Getter
+@NoArgsConstructor
 @Entity
 @Table(name = "Profile")
 public class Profile {
@@ -25,6 +32,7 @@ public class Profile {
     private ProfileType type;
 
     @OneToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name ="fk_account_id")
     private Account account;
 
@@ -36,9 +44,6 @@ public class Profile {
 
     @OneToMany(mappedBy = "profile1")
     private Set<ProfileConnection> connections;
-
-    public Profile() {
-    }
 
     public Profile(String name, String bio, File image, ProfileType type, Account account) {
         this.name = name;

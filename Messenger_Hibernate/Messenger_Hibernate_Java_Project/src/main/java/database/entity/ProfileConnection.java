@@ -1,7 +1,9 @@
 package database.entity;
 
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 @Entity
 @Table(name = "Profile_Connection")
 public class ProfileConnection {
@@ -22,8 +24,5 @@ public class ProfileConnection {
     @ManyToOne
     @JoinColumn(name ="fk_last_message_seen")
     private Message lastSeenMessage;
-
-    public ProfileConnection() {
-    }
 
 }

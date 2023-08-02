@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.0" xsi:schemalocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd">
+    <persistence-unit name="my-persistence-unit">
+        <class>database.entity.Account</class>
+        <properties>
+            <property name="toplink.jdbc.url" value="jdbc:mysql://localhost:5432/CodeStarHibernate"/>
+            <property name="toplink.jdbc.driver" value="com.postgresql.Driver"/>
+            <property name="toplink.jdbc.user" value="postgres"/>
+            <property name="toplink.jdbc.password" value="a1l3i8a1t12"/>
+        </properties>
+    </persistence-unit>
+</persistence>

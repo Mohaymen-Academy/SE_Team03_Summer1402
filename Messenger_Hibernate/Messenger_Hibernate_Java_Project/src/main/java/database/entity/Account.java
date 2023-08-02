@@ -1,7 +1,12 @@
 package database.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@NoArgsConstructor
+@Getter
 @Entity
 @Table(name = "Account")
 public class Account {
@@ -10,27 +15,21 @@ public class Account {
     @Column(nullable = false, length = 50)
     private String username;
 
-    @Column(name = "password_hash", length = 64)
-    private String password;
+    @Column(name = "password_hash")
+    private byte[] passwordHash;
 
     @Column(name = "phone_number", length = 11)
     private String phoneNumber;
 
+    @Setter
     @OneToOne
     @JoinColumn(name ="fk_profile_id")
     private Profile profile;
 
-    public Account() {
-    }
-
-    public Account(String username, String password, String phoneNumber) {
+    public Account(String username, byte[] passwordHash, String phoneNumber) {
         this.username = username;
-        this.password = password;
+        this.passwordHash = passwordHash;
         this.phoneNumber = phoneNumber;
-    }
-
-    public void setProfile(Profile profile){
-        this.profile = profile;
     }
 
 }
