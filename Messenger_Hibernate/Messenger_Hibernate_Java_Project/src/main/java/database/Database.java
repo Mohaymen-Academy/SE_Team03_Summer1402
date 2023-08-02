@@ -1,33 +1,24 @@
 package database;
 
-import entity.Account;
-import entity.Profile;
-import entity.File;
-import entity.ProfileType;
+import database.entity.Account;
+import database.entity.Profile;
+import database.entity.File;
+import database.entity.ProfileType;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 
-public class AddUser {
+public class Database {
 
-    private SessionFactory factory;
+    private HibernateUtil hibernateUtil;
 
-    public AddUser() {
-        Config();
-    }
-
-    private void Config()
-    {
-        Configuration config = new Configuration();
-        config.configure();
-        factory = config.buildSessionFactory();
+    public Database(HibernateUtil hibernateUtil){
+        this.hibernateUtil = hibernateUtil;
     }
 
     public void addUser(String username, String password, String phoneNumber, String profileName, String bio, File imageFile)
     {
-        Session session = factory.openSession();
+        Session session = hibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
         try
         {
@@ -49,6 +40,7 @@ public class AddUser {
         {
             session.close();
         }
+
     }
 
 }

@@ -1,8 +1,10 @@
-Entity\File.class
+database\entity\ProfileType.class
+database\Database.class
+database\HibernateUtil.class
+database\entity\ProfileConnection.class
+database\DatabaseLocalInfo.class
+database\entity\Profile.class
 Main.class
-Entity\Account.class
-Entity\ProfileConnection.class
-Entity\Profile.class
-Entity\ProfileType.class
-database\AddUser.class
-Entity\Message.class
+database\entity\File.class
+database\entity\Account.class
+database\entity\Message.class

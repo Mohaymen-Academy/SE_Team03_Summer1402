@@ -1,8 +1,10 @@
-E:\Projects\CodeStar\SE_Team03_Summer1402\Messenger_Hibernate\Messenger_Hibernate_Java_Project\src\main\java\entity\Profile.java
-E:\Projects\CodeStar\SE_Team03_Summer1402\Messenger_Hibernate\Messenger_Hibernate_Java_Project\src\main\java\entity\Account.java
+E:\Projects\CodeStar\SE_Team03_Summer1402\Messenger_Hibernate\Messenger_Hibernate_Java_Project\src\main\java\database\Database.java
+E:\Projects\CodeStar\SE_Team03_Summer1402\Messenger_Hibernate\Messenger_Hibernate_Java_Project\src\main\java\database\entity\Account.java
+E:\Projects\CodeStar\SE_Team03_Summer1402\Messenger_Hibernate\Messenger_Hibernate_Java_Project\src\main\java\database\entity\Profile.java
+E:\Projects\CodeStar\SE_Team03_Summer1402\Messenger_Hibernate\Messenger_Hibernate_Java_Project\src\main\java\database\entity\ProfileConnection.java
+E:\Projects\CodeStar\SE_Team03_Summer1402\Messenger_Hibernate\Messenger_Hibernate_Java_Project\src\main\java\database\DatabaseLocalInfo.java
 E:\Projects\CodeStar\SE_Team03_Summer1402\Messenger_Hibernate\Messenger_Hibernate_Java_Project\src\main\java\Main.java
-E:\Projects\CodeStar\SE_Team03_Summer1402\Messenger_Hibernate\Messenger_Hibernate_Java_Project\src\main\java\entity\Message.java
-E:\Projects\CodeStar\SE_Team03_Summer1402\Messenger_Hibernate\Messenger_Hibernate_Java_Project\src\main\java\database\AddUser.java
-E:\Projects\CodeStar\SE_Team03_Summer1402\Messenger_Hibernate\Messenger_Hibernate_Java_Project\src\main\java\entity\ProfileType.java
-E:\Projects\CodeStar\SE_Team03_Summer1402\Messenger_Hibernate\Messenger_Hibernate_Java_Project\src\main\java\entity\File.java
-E:\Projects\CodeStar\SE_Team03_Summer1402\Messenger_Hibernate\Messenger_Hibernate_Java_Project\src\main\java\entity\ProfileConnection.java
+E:\Projects\CodeStar\SE_Team03_Summer1402\Messenger_Hibernate\Messenger_Hibernate_Java_Project\src\main\java\database\entity\ProfileType.java
+E:\Projects\CodeStar\SE_Team03_Summer1402\Messenger_Hibernate\Messenger_Hibernate_Java_Project\src\main\java\database\entity\File.java
+E:\Projects\CodeStar\SE_Team03_Summer1402\Messenger_Hibernate\Messenger_Hibernate_Java_Project\src\main\java\database\HibernateUtil.java
+E:\Projects\CodeStar\SE_Team03_Summer1402\Messenger_Hibernate\Messenger_Hibernate_Java_Project\src\main\java\database\entity\Message.java

@@ -8,9 +8,6 @@
 
         <!-- Connection settings -->
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/</property>
-        <property name="hibernate.connection.username">postgres</property>
-        <property name="hibernate.connection.password"></property>
 
         <!-- SQL dialect -->
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
@@ -22,11 +19,11 @@
         <property name="hibernate.hbm2ddl.auto">create-drop</property>
 
         <!-- Annotated entity classes -->
-        <mapping class="entity.Account"/>
-        <mapping class="entity.Profile"/>
-        <mapping class="entity.Message"/>
-        <mapping class="entity.File"/>
-        <mapping class="entity.ProfileConnection"/>
+        <mapping class="database.entity.Account"/>
+        <mapping class="database.entity.Profile"/>
+        <mapping class="database.entity.Message"/>
+        <mapping class="database.entity.File"/>
+        <mapping class="database.entity.ProfileConnection"/>
 
     </session-factory>
 </hibernate-configuration>

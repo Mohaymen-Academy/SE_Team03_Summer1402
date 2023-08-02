@@ -1,4 +1,4 @@
-package entity;
+package database.entity;
 
 import jakarta.persistence.*;
 import java.util.Set;

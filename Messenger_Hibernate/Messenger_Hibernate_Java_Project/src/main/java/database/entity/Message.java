@@ -1,6 +1,7 @@
-package entity;
+package database.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.ColumnDefault;
 import java.util.Date;
 
 @Entity
@@ -18,6 +19,7 @@ public class Message {
     private String text;
 
     @Column(name = "have_file")
+    @ColumnDefault("false")
     private boolean haveFile;
 
     @ManyToOne

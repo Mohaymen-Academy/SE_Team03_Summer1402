@@ -1,4 +1,4 @@
-package entity;
+package database.entity;
 
 public enum ProfileType {
     Pv,
