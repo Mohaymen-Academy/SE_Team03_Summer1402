@@ -10,9 +10,6 @@ import java.util.stream.Stream;
 
 public class TxtFileReader extends FileReader {
 
-    /**
-     * Constructor sets txt for files.
-     */
     public TxtFileReader() {
         extension = "txt";
     }

@@ -1,5 +1,7 @@
 package word_manipulation.tokenization;
 
+import java.util.HashMap;
+
 /**
  * wordManipulation.Tokenizer interface.
  */
@@ -15,7 +17,7 @@ public interface Tokenizer {
      * @param inputString   the string to tokenize.
      * @return array of tokenized strings.
      */
-    String[] tokenize(String inputString);
+    HashMap<String, Integer> tokenize(String inputString);
 
 }
 

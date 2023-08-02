@@ -2,44 +2,24 @@ package full_text_search;
 
 import file_reader.Document;
 import logics.SetLogic;
-import lombok.Builder;
 import word_manipulation.normalization.Normalizer;
 import word_manipulation.tokenization.Tokenizer;
-
+import lombok.Builder;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class FullTextSearch {
 
-    /**
-     * The name of documents.
-     */
-    private final ArrayList<String> documentsName;
+    private final ArrayList<Document> documents;
 
-    /**
-     * Inverted index.
-     */
     private final InvertedIndex invertedIndex;
 
-    /**
-     * Normalize content.
-     */
     private final Normalizer normalizer;
 
-    /**
-     * Tokenize method.
-     */
     private final Tokenizer tokenizer;
 
-    /**
-     * Search input categories.
-     */
     private InputGroups inputGroups;
 
-    /**
-     * result of set.
-     */
     private Set<Integer> resultSet;
 
     /**
@@ -51,21 +31,39 @@ public class FullTextSearch {
     public FullTextSearch(Normalizer normalizer, Tokenizer tokenizer) {
         this.normalizer = normalizer;
         this.tokenizer = tokenizer;
-        documentsName = new ArrayList<>();
+        documents = new ArrayList<>();
         invertedIndex = new InvertedIndex();
     }
-
 
     /**
      * Add data to inverted index.
      * @param document   the document to add.
      */
-    public void addDocument(Document document){
-        int idx = documentsName.size();
-        documentsName.add(document.name());
-        Stream.of(tokenizer.tokenize(document.context()))
-                .map(normalizer::normalize)
-                .forEach(w -> invertedIndex.addData(idx, w));
+    public void addDocument(Document document) {
+        int idx = documents.size();
+        documents.add(document);
+        HashMap<String, Integer> tokenizedWord = new HashMap<>();
+        tokenizer.tokenize(document.getContext()).forEach((key, value) -> {
+            String word = normalizer.normalize(key);
+            if(!tokenizedWord.containsKey(word)) {
+                tokenizedWord.put(word, 0);
+            }
+            document.setWordCount(document.getWordCount() + value);
+            tokenizedWord.put(word, tokenizedWord.get(word) + value);
+        });
+        addWordsToInvertedIndex(tokenizedWord, idx, document);
+        invertedIndex.sortData(documents);
+    }
+
+    public void addWordsToInvertedIndex(HashMap<String, Integer> tokenizedWord, int idx, Document document) {
+        for (Map.Entry<String, Integer> entry : tokenizedWord.entrySet()) {
+            String key = entry.getKey();
+            Integer value = entry.getValue();
+            Occurrence occurrence = new Occurrence(idx);
+            occurrence.setWordCount(value);
+            occurrence.setIsInTitle(normalizer.normalize(document.getName()).contains(key));
+            invertedIndex.addData(occurrence, key);
+        }
     }
 
     /**
@@ -75,23 +73,31 @@ public class FullTextSearch {
      * @throws Exception   if query is null or query just have stop words.
      */
     public List<String> search(String searchInput) throws Exception {
-        if(searchInput.strip().equals("")){
+        if(searchInput.strip().equals(""))
             throw new Exception("Please enter some words!");
-        }
+
         inputGroups = new InputGroups(searchInput, normalizer);
-        Set<Integer> resultSet = getSearchResult();
-        return resultSet.stream()
-                .map(documentsName::get)
-                .collect(Collectors.toList());
+
+        if(inputGroups.hasOnlyOneNormalWord())
+            return invertedIndex.getOccurrences(inputGroups.getIncludeWords().iterator().next())
+                    .stream()
+                    .map(x -> documents.get(x.getDocumentIndex()).getName())
+                    .collect(Collectors.toList());
+        else {
+            Set<Integer> resultSet = getSearchResult();
+            return resultSet.stream()
+                    .map(x -> documents.get(x).getName())
+                    .collect(Collectors.toList());
+        }
     }
 
     /**
      * finds number of documents with calculate logic set.
      * @return number of documents.
      */
-    private Set<Integer> getSearchResult(){
+    private Set<Integer> getSearchResult() {
         resultSet = new HashSet<>();
-        for (int i = 0; i < documentsName.size(); i++) {
+        for (int i = 0; i < documents.size(); i++) {
             resultSet.add(i);
         }
 

@@ -4,11 +4,8 @@ import java.io.*;
 import java.util.*;
 import java.util.stream.Stream;
 
-public class FileReader {
+public abstract class FileReader {
 
-    /**
-     * Extension of file.
-     */
     protected String extension;
 
     /**
@@ -16,7 +13,7 @@ public class FileReader {
      * @param file   file of document.
      * @return   string of extension.
      */
-    protected String getFileExtension(File file){
+    protected String getFileExtension(File file) {
         String name = file.getName();
         String[] split = name.split("\\.");
         return split[split.length - 1];
@@ -36,7 +33,7 @@ public class FileReader {
      * @param file   file of document.
      * @return   if extension was right return True else return False.
      */
-    private Boolean checkFileExtension(File file){
+    private Boolean checkFileExtension(File file) {
         String name = file.getName();
         Boolean isProperLength = name.length() >= extension.length() + 1;
         Boolean hasRightExtension = getFileExtension(file).equals(extension);
@@ -49,9 +46,7 @@ public class FileReader {
      * @return returns the document.
      * @throws IOException   if the file context is not standard encoding.
      */
-    public Document getDocument(File file, String separator) throws IOException {
-        return null;
-    }
+    public abstract Document getDocument(File file, String separator) throws IOException;
 
     /**
      * Reads all files in the folder with the specified extension and get the documents from them.
@@ -59,7 +54,7 @@ public class FileReader {
      * @param separator   the separator string to add to the end of the line before joining.
      * @return a list of documents read from the folder.
      */
-    public ArrayList<Document> getDocumentsInFolder(String folderPath, String separator){
+    public ArrayList<Document> getDocumentsInFolder(String folderPath, String separator) {
         ArrayList<Document> result = new ArrayList<>();
         getFiles(folderPath).forEach(f -> {
             try {
@@ -76,9 +71,8 @@ public class FileReader {
      * @param folderPath   the folder path.
      * @return   a list of documents read from the folder.
      */
-    public ArrayList<Document> getDocumentsInFolder(String folderPath){
+    public ArrayList<Document> getDocumentsInFolder(String folderPath) {
         return getDocumentsInFolder(folderPath, " ");
     }
 
 }
-

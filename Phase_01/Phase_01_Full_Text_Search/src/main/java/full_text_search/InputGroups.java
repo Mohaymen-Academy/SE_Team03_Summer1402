@@ -1,9 +1,7 @@
 package full_text_search;
 
-import lombok.ToString;
 import word_manipulation.normalization.Normalizer;
 import word_manipulation.StopWords;
-
 import lombok.AccessLevel;
 import lombok.Getter;
 import java.util.HashSet;
@@ -12,15 +10,9 @@ import java.util.Set;
 @Getter
 public class InputGroups {
 
-    /**
-     * Count of accept words.
-     */
     @Getter(AccessLevel.NONE)
     private int inputCount;
 
-    /**
-     * Have stop words.
-     */
     @Getter(AccessLevel.NONE)
     private boolean containsStopWords;
 
@@ -39,24 +31,23 @@ public class InputGroups {
      */
     private final Set<String> excludeWords;
 
-    //Processes the search input and separate words.
-
     /**
      * Constructs the input groups and put each word in corresponding group.
      * @param inputString   input string.
      * @param normalizer   normalizer.
-     * @throws Exception
+     * @throws Exception if the search input is not specific.
      */
-    InputGroups(String inputString, Normalizer normalizer) throws Exception {
+    public InputGroups(String inputString, Normalizer normalizer) throws Exception {
         includeWords = new HashSet<>();
         optionalWords = new HashSet<>();
         excludeWords = new HashSet<>();
 
         processWords(inputString, normalizer);
 
-        if(inputCount == 0 && containsStopWords){
+        if(inputCount == 0 && containsStopWords)
             throw new Exception("Please be more specific!");
-        }
+        if(inputString.strip().equals(""))
+            throw new Exception("Please be more specific!");
     }
 
     /**
@@ -64,7 +55,7 @@ public class InputGroups {
      * @param inputString   input string.
      * @param normalizer   normalizer.
      */
-    private void processWords(String inputString, Normalizer normalizer){
+    private void processWords(String inputString, Normalizer normalizer) {
         for (String word : inputString.split(" ")) {
             String w = normalizer.normalize(word);
             if (StopWords.isStopWord(w)) {
@@ -78,6 +69,12 @@ public class InputGroups {
                 default -> includeWords.add(w);
             }
         }
+    }
+
+    public boolean hasOnlyOneNormalWord() {
+        return includeWords.size() == 1 &&
+                optionalWords.size() == 0 &&
+                excludeWords.size() == 0;
     }
 
 }

@@ -1,5 +1,7 @@
 package word_manipulation.tokenization;
 
+import java.util.HashMap;
+
 public class MarksTokenizer implements Tokenizer {
 
     /**
@@ -17,9 +19,15 @@ public class MarksTokenizer implements Tokenizer {
      * @return array of tokenized strings.
      */
     @Override
-    public String[] tokenize(String inputString) {
+    public HashMap<String, Integer> tokenize(String inputString) {
+        HashMap<String, Integer> result = new HashMap<>();
         String regex = "[^a-zA-Z0-9']+";
-        return inputString.split(regex);
+        for (String word : inputString.split(regex)) {
+            if(!result.containsKey(word))
+                result.put(word, 0);
+            result.put(word, result.get(word) + 1);
+        }
+        return result;
     }
 
 }
