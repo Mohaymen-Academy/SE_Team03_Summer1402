@@ -1,9 +1,6 @@
 package database;
 
-import database.entity.Account;
-import database.entity.Profile;
-import database.entity.File;
-import database.entity.ProfileType;
+import database.entity.*;
 import jakarta.persistence.EntityManager;
 import lombok.SneakyThrows;
 import java.nio.charset.StandardCharsets;
@@ -58,12 +55,78 @@ public class Database {
     public void deleteAccount(String username){
         EntityManager em = hibernateUtil.getEntityManagerFactory().createEntityManager();
 
+        Account account = em.find(Account.class, username);
+        if(account != null) {
+            em.getTransaction().begin();
+            em.remove(account);
+            em.getTransaction().commit();
+        }
+        else
+            System.out.println("This account doesn't exist!");
+    }
+
+    public void changeBio(int profileId, String newBio) {
+        EntityManager em = hibernateUtil.getEntityManagerFactory().createEntityManager();
+
+        Profile profile = em.find(Profile.class, profileId);
+        if(profile != null) {
+            em.getTransaction().begin();
+            profile.setBio(newBio);
+            em.persist(profile);
+            em.getTransaction().commit();
+        }
+        else
+            System.out.println("This profile doesn't exist!");
+    }
+
+    public void sendMessage(int senderId, int receiverId, String textMessage) {
+        EntityManager em = hibernateUtil.getEntityManagerFactory().createEntityManager();
+
         em.getTransaction().begin();
 
-        Account account = em.find(Account.class, username);
-        em.remove(account);
+        Profile senderProfile = em.find(Profile.class, senderId);
+        Profile receiverProfile = em.find(Profile.class, receiverId);
 
-        em.getTransaction().commit();
+        if(senderProfile == null || receiverProfile == null)
+            System.out.println("Invalid profile id!");
+
+        else {
+            Message message = Message.builder()
+                    .text(textMessage)
+                    .sender(senderProfile)
+                    .receiver(receiverProfile)
+                    .build();
+
+            em.persist(message);
+            em.getTransaction().commit();
+        }
+    }
+
+    public void editMessage(int messageId, String text) {
+        EntityManager em = hibernateUtil.getEntityManagerFactory().createEntityManager();
+
+        Message message = em.find(Message.class, messageId);
+        if(message != null) {
+            em.getTransaction().begin();
+            message.setText(text);
+            em.persist(message);
+            em.getTransaction().commit();
+        }
+        else
+            System.out.println("This message doesn't exist!");
+    }
+
+    public void deleteMessage(int messageId) {
+        EntityManager em = hibernateUtil.getEntityManagerFactory().createEntityManager();
+
+        Message message = em.find(Message.class, messageId);
+        if(message != null) {
+            em.getTransaction().begin();
+            em.remove(message);
+            em.getTransaction().commit();
+        }
+        else
+            System.out.println("This message id doesn't exist!");
     }
 
 }

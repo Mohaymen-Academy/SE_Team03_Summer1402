@@ -3,6 +3,7 @@ package database.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -22,6 +23,7 @@ public class Profile {
     private String name;
 
     @Column(name = "bio", length = 256)
+    @Setter
     private String bio;
 
     @ManyToOne

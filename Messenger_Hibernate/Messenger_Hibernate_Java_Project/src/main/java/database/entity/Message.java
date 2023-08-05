@@ -1,11 +1,16 @@
 package database.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import java.util.Date;
 
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "Chat_Message")
 public class Message {
@@ -18,6 +23,7 @@ public class Message {
     private Date time;
 
     @Column(name = "message_text")
+    @Setter
     private String text;
 
     @Column(name = "have_file")
